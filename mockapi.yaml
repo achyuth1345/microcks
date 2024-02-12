@@ -1,25 +1,80 @@
-examples:
-
-  - name: laurent
-
-    summary: Example for Laurent user
-
-    payload: |-
-
-      {"id": "{{randomString(32)}}", "sendAt": "{{now()}}", "fullName": "Laurent Broudoux", "email": "laurent@microcks.io", "age": 41}      
-
-  - name: john:
-
-    summary: Example for John Doe user
-
-    payload:
-
-      id: '{{randomString(32)}}'
-
-      sendAt: '{{now()}}'
-
-      fullName: John Doe
-
-      email: john@microcks.io
-
-      age: 36
+swagger: '2.0'
+info:
+  title: Test API
+  description: Description for Test API using Apicurio Studio
+  contact:
+    name: Laurent Broudoux
+    url: http://www.github.com/lbroudoux
+    email: laurent.broudoux@gmail.com
+  license:
+    name: GNU GPLv3
+    url: https://www.gnu.org/licenses/gpl.txt
+  version: 0.0.1
+paths:
+  /API/GetNewCustomers:
+    post:
+      summary: Create (place) a new order
+      description: Create (place) a new order
+      parameters:
+        - name: body
+          in: body
+          description: The order to create
+          schema:
+            $ref: '#/definitions/PostPayload'
+      responses:
+        '201':
+          description: Order was correctly created
+          schema:
+            $ref: '#/definitions/Customers'
+          examples:
+                Eclair Cafe Xml:
+                  value: |-
+                    DataSet:
+                      Table:
+                        - CustomerID: 643158
+                        - CustomerID: 643159
+                        - CustomerID: 643160
+                        - CustomerID: 643161
+                        - CustomerID: 643162
+                        - CustomerID: 643163
+                        - CustomerID: 643164
+                        - CustomerID: 643165
+                        - CustomerID: 998877
+                        - CustomerID: 998880
+                        - CustomerID: 998881
+                        - CustomerID: 998882
+                        - CustomerID: 998883
+                        - CustomerID: 998884
+                        - CustomerID: 998886
+                        - CustomerID: 998879
+                    ResponseValues: {}
+                    ExceptionList: []
+                    Successful: true
+                    MaxRows: 0
+                    
+definitions:
+  Customer:
+    properties:
+      CustomerID:
+        type: string
+  Customers:
+    properties:
+      DataSet:
+        properties:
+          Table:
+            type: array
+            items:
+              $ref: '#/definitions/Customer'
+  PostPayload:
+    properties:
+      SinceDate:
+        type: string
+    
+      
+        
+              
+            
+              
+                
+                
+          
