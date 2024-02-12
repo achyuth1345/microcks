@@ -14,53 +14,37 @@ info:
 paths:
   /getCustomers:
     summary: Specific operation on customer
-    patch:
+    post:
       responses:
         "200":
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Pastry'
+                $ref: '#/components/schemas/Customers'
               examples:
                 Eclair Cafe:
                   value:
-                    name: Eclair Cafe
-                    description: Delicieux Eclair au Cafe pas calorique du tout
-                    size: M
-                    price: 2.6
-                    status: available
+                    DataSet:
+                      name: achyuth
+                    
           description: Changed pastry
       operationId: PatchPastry
       summary: Patch existing pastry
 components:
   schemas:
-    Pastry:
-      title: Root Type for Pastry
-      description: The root of the Pastry type's schema.
+    Customers:
+      title: Root Type for custoemrs
+      description: The root of the customers type's schema.
       type: object
       properties:
-        name:
-          description: Name of this pastry
-          type: string
-        description:
-          description: A short description of this pastry
-          type: string
-        size:
-          description: Size of pastry (S, M, L)
-          type: string
-        price:
-          format: double
-          description: Price (in USD) of this pastry
-          type: number
-        status:
-          description: Status in stock (available, out_of_stock)
-          type: string
+        DataSet:
+          type: object
+          properties:
+            name: 
+              type: string
       example:
-        name: My Pastry
-        description: A short description os my pastry
-        size: M
-        price: 4.5
-        status: available
+        DataSet:
+          name: nishnanath
 tags:
 - name: pastry
   description: Pastry resource
