@@ -12,7 +12,7 @@ info:
     name: MIT License
     url: https://opensource.org/licenses/MIT
 paths:
-  /getCustomers:
+  /API/GetNewCustomers:
     summary: Specific operation on customer
     post:
       responses:
@@ -25,8 +25,18 @@ paths:
                 Eclair Cafe:
                   value:
                     DataSet:
-                      name: achyuth
-                    
+                      Table:
+                      - CustomerID: 12312313
+                      - CustomerID: 12312314
+                      - CustomerID: 12312315
+                      - CustomerID: 12312316
+                      - CustomerID: 12312317
+                      - CustomerID: 12312318
+                      - CustomerID: 12312319
+                      - CustomerID: 12312310
+                      - CustomerID: 12312311
+                      - CustomerID: 12312312
+                      - CustomerID: 12312112
           description: Changed pastry
       operationId: PatchPastry
       summary: Patch existing pastry
@@ -40,11 +50,28 @@ components:
         DataSet:
           type: object
           properties:
-            name: 
-              type: string
+            Table: 
+              type: array
+              items:
+                type: object
+                properties:
+                  CustomerID:
+                    type: string
       example:
         DataSet:
-          name: nishnanath
+          Table: 
+          - CustomerID: 12312313
+          - CustomerID: 12312314
+          - CustomerID: 12312315
+          - CustomerID: 12312316
+          - CustomerID: 12312317
+          - CustomerID: 12312318
+          - CustomerID: 12312319
+          - CustomerID: 12312310
+          - CustomerID: 12312311
+          - CustomerID: 12312312
+          - CustomerID: 12312112
+          
 tags:
 - name: pastry
   description: Pastry resource
