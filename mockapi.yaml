@@ -1,9 +1,9 @@
 ---
 openapi: 3.0.2
 info:
-  title: API Pastry - 2.0
+  title: API Customers - 2.0
   version: 2.0.0
-  description: API definition of API Pastry sample app
+  description: API definition of API Customers sample app
   contact:
     name: Laurent Broudoux
     url: http://github.com/lbroudoux
@@ -13,18 +13,17 @@ info:
     url: https://opensource.org/licenses/MIT
 paths:
   /API/GetNewCustomers:
-    summary: Global operations on pastries
+    summary: Global operations on customers
     post:
-      tags:
-      - customers
       responses:
         "200":
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Customers'
+                $ref: '#/components/schemas/Customers'
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Customers'
           description: Get list of customers
       operationId: GetCustomers
       summary: Get list of Customers
