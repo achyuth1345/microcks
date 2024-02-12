@@ -12,9 +12,96 @@ info:
     name: MIT License
     url: https://opensource.org/licenses/MIT
 paths:
+  /pastry:
+    summary: Global operations on pastries
+    get:
+      tags:
+      - pastry
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Pastry'
+              examples:
+                pastries_json:
+                  value:
+                  - name: Baba Rhum
+                    description: Delicieux Baba au Rhum pas calorique du tout
+                    size: L
+                    price: 3.2
+                    status: available
+                  - name: Divorces
+                    description: Delicieux Divorces pas calorique du tout
+                    size: M
+                    price: 2.8
+                    status: available
+                  - name: Tartelette Fraise
+                    description: Delicieuse Tartelette aux Fraises fraiches
+                    size: S
+                    price: 2
+                    status: available
+          description: Get list of pastries
+      operationId: GetPastries
+      summary: Get list of pastries
   /pastry/{name}:
     summary: Specific operation on pastry
-    post:
+    get:
+      parameters:
+      - examples:
+          Eclair Cafe:
+            value: Eclair Cafe
+          Eclair Cafe Xml:
+            value: Eclair Cafe
+          Millefeuille:
+            value: Millefeuille
+        name: name
+        description: pastry name
+        schema:
+          type: string
+        in: path
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Pastry'
+              examples:
+                Eclair Cafe:
+                  value:
+                    name: Eclair Cafe
+                    description: Delicieux Eclair au Cafe pas calorique du tout
+                    size: M
+                    price: 2.5
+                    status: available
+                Millefeuille:
+                  value:
+                    name: Millefeuille
+                    description: Delicieux Millefeuille pas calorique du tout
+                    size: L
+                    price: 4.4
+                    status: available
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/Pastry'
+              examples:
+                Eclair Cafe Xml:
+                  value: |-
+                    <pastry>
+                        <name>Eclair Cafe</name>
+                        <description>Delicieux Eclair au Cafe pas calorique du tout</description>
+                        <size>M</size>
+                        <price>2.5</price>
+                        <status>available</status>
+                    </pastry>
+          description: Pastry with specified name
+      operationId: GetPastryByName
+      summary: Get Pastry by name
+      description: Get Pastry by name
+    patch:
       requestBody:
         content:
           application/json:
@@ -73,7 +160,6 @@ paths:
           description: Changed pastry
       operationId: PatchPastry
       summary: Patch existing pastry
-    
     parameters:
     - name: name
       description: pastry name
