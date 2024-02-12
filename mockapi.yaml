@@ -25,31 +25,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Customers'
-              examples:
-                # customer_json:
-                #   value:
-                #   - name: Baba Rhum
-                #     description: Delicieux Baba au Rhum pas calorique du tout
-                #     size: L
-                #     price: 3.2
-                #     status: available
-                #   - name: Divorces
-                #     description: Delicieux Divorces pas calorique du tout
-                #     size: M
-                #     price: 2.8
-                #     status: available
-                #   - name: Tartelette Fraise
-                #     description: Delicieuse Tartelette aux Fraises fraiches
-                #     size: S
-                #     price: 2
-                #     status: available
-                customer_json:
-                  value:
-                  - DataSet:
-                      Table:
-                      - CustomerID: 643158
-                      - CustomerID: 687162
-                      - CustomerID: 761928
           description: Get list of customers
       operationId: GetCustomers
       summary: Get list of Customers
