@@ -1,0 +1,25 @@
+examples:
+
+  - name: laurent
+
+    summary: Example for Laurent user
+
+    payload: |-
+
+      {"id": "{{randomString(32)}}", "sendAt": "{{now()}}", "fullName": "Laurent Broudoux", "email": "laurent@microcks.io", "age": 41}      
+
+  - name: john:
+
+    summary: Example for John Doe user
+
+    payload:
+
+      id: '{{randomString(32)}}'
+
+      sendAt: '{{now()}}'
+
+      fullName: John Doe
+
+      email: john@microcks.io
+
+      age: 36
