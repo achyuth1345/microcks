@@ -113,37 +113,7 @@ paths:
     </Table>
   </DataSet>
 </Results>'
-                    # DataSet:
-                    #   Table:
-                    #   - CustomerID: 94603
-                    #     CustomerStatus: Active
-                    #     CustomerType: Residential
-                    #     EmailAddress: dt2013@hotmail.com
-                    #     Address1: PO BOX 442
-                    #     Address2: ''
-                    #     Address3: ''
-                    #     City: ADRIAN
-                    #     State: MN
-                    #     Zipcode: '56110'
-                    #     ContactPerson: ''
-                    #     PrimaryPhone: '5072274738'
-                    #     CustomerLastName: ROSALES
-                    #     CustomerFirstName: DANIELLE
-                    #   - CustomerID: 94603
-                    #     CustomerStatus: Active
-                    #     CustomerType: Residential
-                    #     EmailAddress: dt2013@hotmail.com
-                    #     Address1: PO BOX 442
-                    #     Address2: ''
-                    #     Address3: ''
-                    #     City: ADRIAN
-                    #     State: MN
-                    #     Zipcode: '56110'
-                    #     ContactPerson: ''
-                    #     PrimaryPhone: '5072274738'
-                    #     CustomerLastName: ROSALES
-                    #     CustomerFirstName: DANIELLE
-
+                   
           description: Changed
       operationId: GetCustomerAccounts
       summary: Get Customer Accounts
@@ -164,41 +134,49 @@ paths:
               examples:
                 Customer Locations Example:
                   value:
-                    DataSet:
-                      Table:
-                      - Name: ''
-                        Address1: PO BOX 442
-                        Address2: ''
-                        Address3: ''
-                        City: ADRIAN
-                        State: MN
-                        Zipcode: '56110'
-                        ContactPerson: ''
-                        Inactive: false
-                        LocationType: ''
-                        PhoneNumber: "(507) 227-4738"
-                      - Name: Primary Location
-                        Address1: 500 INDIANA AVE
-                        Address2: ''
-                        Address3: ''
-                        City: ADRIAN
-                        State: MN
-                        Zipcode: '56110'
-                        ContactPerson: ''
-                        Inactive: false
-                        LocationType: ''
-                        PhoneNumber: "(507) 227-4738"
-                      - Name: Primary Location
-                        Address1: 500 INDIANA AVE
-                        Address2: ''
-                        Address3: ''
-                        City: ADRIAN
-                        State: MN
-                        Zipcode: '56110'
-                        ContactPerson: ''
-                        Inactive: false
-                        LocationType: Owner
-                        PhoneNumber: "(507) 227-4738"
+                    '<Results>
+  <DataSet>
+    <Table>
+      <Name></Name>
+      <Address1>PO BOX442</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType></LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+    <Table>
+      <Name>Primary Location</Name>
+      <Address1>500 INDIANA AVE</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType></LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+    <Table>
+      <Name>Primary Location</Name>
+      <Address1>500 INDIANA AVE</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType>Owner</LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+  </DataSet>
+</Results>'
           description: Changed
       operationId: GetCustomerLocations
       summary: Get Customer Locations
@@ -348,104 +326,86 @@ components:
     </Table>
   </DataSet>
 </Results>'
-        # DataSet:
-        #   Table:
-        #   - CustomerID: 94603
-        #     CustomerStatus: Active
-        #     CustomerType: Residential
-        #     EmailAddress: dt2013@hotmail.com
-        #     Address1: PO BOX 442
-        #     Address2: ''
-        #     Address3: ''
-        #     City: ADRIAN
-        #     State: MN
-        #     Zipcode: '56110'
-        #     ContactPerson: ''
-        #     PrimaryPhone: '5072274738'
-        #     CustomerLastName: ROSALES
-        #     CustomerFirstName: DANIELLE
-        #   - CustomerID: 94603
-        #     CustomerStatus: Active
-        #     CustomerType: Residential
-        #     EmailAddress: dt2013@hotmail.com
-        #     Address1: PO BOX 442
-        #     Address2: ''
-        #     Address3: ''
-        #     City: ADRIAN
-        #     State: MN
-        #     Zipcode: '56110'
-        #     ContactPerson: ''
-        #     PrimaryPhone: '5072274738'
-        #     CustomerLastName: ROSALES
-        #     CustomerFirstName: DANIELLE
+        
     Locations:
       title: Root Type for locations
       description: The root of the locations type's schema.
       type: object
       properties:
-        DataSet:
+        Results:
           type: object
-          properties:
-            Table: 
-              type: array
-              items:
-                type: object
-                properties:
-                  Name:
-                    type: string
-                  Address1:
-                    type: string                  
-                  Address2:
-                    type: string                  
-                  Address3:
-                    type: string                  
-                  City:
-                    type: string                  
-                  State:
-                    type: string                    
-                  Zipcode:
-                    type: string
-                  ContactPerson:
-                    type: string
-                  Inactive:
-                    type: boolean
-                  LocationType:
-                    type: string                  
-                  PhoneNumber:
-                    type: string
+          properties: 
+            DataSet:
+              type: object
+              properties:
+                Table: 
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      Name:
+                        type: string
+                      Address1:
+                        type: string                  
+                      Address2:
+                        type: string                  
+                      Address3:
+                        type: string                  
+                      City:
+                        type: string                  
+                      State:
+                        type: string                    
+                      Zipcode:
+                        type: string
+                      ContactPerson:
+                        type: string
+                      Inactive:
+                        type: boolean
+                      LocationType:
+                        type: string                  
+                      PhoneNumber:
+                        type: string
       example:
-        DataSet:
-          Table:
-          - Name: ''
-            Address1: PO BOX 442
-            Address2: ''
-            Address3: ''
-            City: ADRIAN
-            State: MN
-            Zipcode: '56110'
-            ContactPerson: ''
-            Inactive: false
-            LocationType: ''
-            PhoneNumber: "(507) 227-4738"
-          - Name: Primary Location
-            Address1: 500 INDIANA AVE
-            Address2: ''
-            Address3: ''
-            City: ADRIAN
-            State: MN
-            Zipcode: '56110'
-            ContactPerson: ''
-            Inactive: false
-            LocationType: ''
-            PhoneNumber: "(507) 227-4738"
-          - Name: Primary Location
-            Address1: 500 INDIANA AVE
-            Address2: ''
-            Address3: ''
-            City: ADRIAN
-            State: MN
-            Zipcode: '56110'
-            ContactPerson: ''
-            Inactive: false
-            LocationType: Owner
-            PhoneNumber: "(507) 227-4738"            
+        Value: '<Results>
+  <DataSet>
+    <Table>
+      <Name></Name>
+      <Address1>PO BOX 442</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType></LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+    <Table>
+      <Name>Primary Location</Name>
+      <Address1>500 INDIANA AVE</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType></LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+    <Table>
+      <Name>Primary Location</Name>
+      <Address1>500 INDIANA AVE</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType>Owner</LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+  </DataSet>
+</Results>'      
