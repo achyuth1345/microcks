@@ -1,19 +1,16 @@
 ---
 openapi: 3.0.2
 info:
-  title: API Pastry - 2.0
-  version: 2.0.0
-  description: API definition of API Pastry sample app
+  title: API Cargas - 1.0
+  version: 1.0.0
+  description: API definition of Cargas
   contact:
-    name: Laurent Broudoux
-    url: http://github.com/lbroudoux
-    email: laurent.broudoux@gmail.com
-  license:
-    name: MIT License
-    url: https://opensource.org/licenses/MIT
+    name: Cargas-lakesgas
+    url: https://lakesgas-cargas.silverlinevps.com
+    email: achyuth@mailinator.com
 paths:
   /API/GetNewCustomers:
-    summary: Specific operation on customer
+    summary: Get list of new customers
     post:
       responses:
         "200":
@@ -22,7 +19,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Customers'
               examples:
-                Eclair Cafe:
+                New Customers Example:
                   value:
                     DataSet:
                       Table:
@@ -37,11 +34,124 @@ paths:
                       - CustomerID: 12312311
                       - CustomerID: 12312312
                       - CustomerID: 12312112
-          description: Changed pastry
-      operationId: PatchPastry
-      summary: Patch existing pastry
+          description: Changed Customers
+      operationId: GetNewCustomers
+      summary: Get New Customers
+  /API/GetCustomerAccount:
+    summary: Get list of customer accounts
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerId'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Accounts'
+              examples:
+                Customer Accounts Example:
+                  value:
+                    DataSet:
+                      Table:
+                      - CustomerID: 94603
+                        CustomerStatus: Active
+                        CustomerType: Residential
+                        EmailAddress: dt2013@hotmail.com
+                        Address1: PO BOX 442
+                        Address2: ''
+                        Address3: ''
+                        City: ADRIAN
+                        State: MN
+                        Zipcode: '56110'
+                        ContactPerson: ''
+                        PrimaryPhone: '5072274738'
+                        CustomerLastName: ROSALES
+                        CustomerFirstName: DANIELLE
+                      - CustomerID: 94603
+                        CustomerStatus: Active
+                        CustomerType: Residential
+                        EmailAddress: dt2013@hotmail.com
+                        Address1: PO BOX 442
+                        Address2: ''
+                        Address3: ''
+                        City: ADRIAN
+                        State: MN
+                        Zipcode: '56110'
+                        ContactPerson: ''
+                        PrimaryPhone: '5072274738'
+                        CustomerLastName: ROSALES
+                        CustomerFirstName: DANIELLE
+
+          description: Changed
+      operationId: GetCustomerAccounts
+      summary: Get Customer Accounts
+  /API/GetCustomerLocations:
+    summary: Get customer locations
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerId'
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Locations'
+              examples:
+                Customer Locations Example:
+                  value:
+                    DataSet:
+                      Table:
+                      - Name: ''
+                        Address1: PO BOX 442
+                        Address2: ''
+                        Address3: ''
+                        City: ADRIAN
+                        State: MN
+                        Zipcode: '56110'
+                        ContactPerson: ''
+                        Inactive: false
+                        LocationType: ''
+                        PhoneNumber: "(507) 227-4738"
+                      - Name: Primary Location
+                        Address1: 500 INDIANA AVE
+                        Address2: ''
+                        Address3: ''
+                        City: ADRIAN
+                        State: MN
+                        Zipcode: '56110'
+                        ContactPerson: ''
+                        Inactive: false
+                        LocationType: ''
+                        PhoneNumber: "(507) 227-4738"
+                      - Name: Primary Location
+                        Address1: 500 INDIANA AVE
+                        Address2: ''
+                        Address3: ''
+                        City: ADRIAN
+                        State: MN
+                        Zipcode: '56110'
+                        ContactPerson: ''
+                        Inactive: false
+                        LocationType: Owner
+                        PhoneNumber: "(507) 227-4738"
+          description: Changed
+      operationId: GetCustomerLocations
+      summary: Get Customer Locations
 components:
   schemas:
+    CustomerId:
+      type: object
+      properties:
+        CustomerID:
+          type: string
+          description: Customer Id
+          example: 12312313
     Customers:
       title: Root Type for custoemrs
       description: The root of the customers type's schema.
@@ -71,7 +181,146 @@ components:
           - CustomerID: 12312311
           - CustomerID: 12312312
           - CustomerID: 12312112
-          
-tags:
-- name: pastry
-  description: Pastry resource
+    Accounts:
+      title: Root Type for accounts
+      description: The root of the accounts type's schema.
+      type: object
+      properties:
+        DataSet:
+          type: object
+          properties:
+            Table: 
+              type: array
+              items:
+                type: object
+                properties:
+                  CustomerID:
+                    type: string
+                  CustomerStatus:
+                    type: string
+                  CustomerType:
+                    type: string                  
+                  EmailAddress:
+                    type: string
+                  Address1:
+                    type: string                  
+                  Address2:
+                    type: string                  
+                  Address3:
+                    type: string                  
+                  City:
+                    type: string                  
+                  State:
+                    type: string                    
+                  Zipcode:
+                    type: string
+                  ContactPerson:
+                    type: string
+                  PrimaryPhone:
+                    type: string
+                  CustomerLastName:
+                    type: string
+                  CustomerFirstName:
+                    type: string
+      example:
+        DataSet:
+          Table:
+          - CustomerID: 94603
+            CustomerStatus: Active
+            CustomerType: Residential
+            EmailAddress: dt2013@hotmail.com
+            Address1: PO BOX 442
+            Address2: ''
+            Address3: ''
+            City: ADRIAN
+            State: MN
+            Zipcode: '56110'
+            ContactPerson: ''
+            PrimaryPhone: '5072274738'
+            CustomerLastName: ROSALES
+            CustomerFirstName: DANIELLE
+          - CustomerID: 94603
+            CustomerStatus: Active
+            CustomerType: Residential
+            EmailAddress: dt2013@hotmail.com
+            Address1: PO BOX 442
+            Address2: ''
+            Address3: ''
+            City: ADRIAN
+            State: MN
+            Zipcode: '56110'
+            ContactPerson: ''
+            PrimaryPhone: '5072274738'
+            CustomerLastName: ROSALES
+            CustomerFirstName: DANIELLE
+    Locations:
+      title: Root Type for locations
+      description: The root of the locations type's schema.
+      type: object
+      properties:
+        DataSet:
+          type: object
+          properties:
+            Table: 
+              type: array
+              items:
+                type: object
+                properties:
+                  Name:
+                    type: string
+                  Address1:
+                    type: string                  
+                  Address2:
+                    type: string                  
+                  Address3:
+                    type: string                  
+                  City:
+                    type: string                  
+                  State:
+                    type: string                    
+                  Zipcode:
+                    type: string
+                  ContactPerson:
+                    type: string
+                  Inactive:
+                    type: boolean
+                  LocationType:
+                    type: string                  
+                  PhoneNumber:
+                    type: string
+      example:
+        DataSet:
+          Table:
+          - Name: ''
+            Address1: PO BOX 442
+            Address2: ''
+            Address3: ''
+            City: ADRIAN
+            State: MN
+            Zipcode: '56110'
+            ContactPerson: ''
+            Inactive: false
+            LocationType: ''
+            PhoneNumber: "(507) 227-4738"
+          - Name: Primary Location
+            Address1: 500 INDIANA AVE
+            Address2: ''
+            Address3: ''
+            City: ADRIAN
+            State: MN
+            Zipcode: '56110'
+            ContactPerson: ''
+            Inactive: false
+            LocationType: ''
+            PhoneNumber: "(507) 227-4738"
+          - Name: Primary Location
+            Address1: 500 INDIANA AVE
+            Address2: ''
+            Address3: ''
+            City: ADRIAN
+            State: MN
+            Zipcode: '56110'
+            ContactPerson: ''
+            Inactive: false
+            LocationType: Owner
+            PhoneNumber: "(507) 227-4738"            
