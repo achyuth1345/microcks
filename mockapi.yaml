@@ -15,7 +15,7 @@ paths:
       responses:
         "200":
           content:
-            application/json:
+            application/xml:
               schema:
                 $ref: '#/components/schemas/Customers'
               examples:
@@ -42,13 +42,13 @@ paths:
     post:
       requestBody:
         content:
-          application/json:
+          application/xml:
             schema:
               $ref: '#/components/schemas/CustomerId'
       responses:
         "200":
           content:
-            application/json:
+            application/xml:
               schema:
                 $ref: '#/components/schemas/Accounts'
               examples:
@@ -93,13 +93,13 @@ paths:
     post:
       requestBody:
         content:
-          application/json:
+          application/xml:
             schema:
               $ref: '#/components/schemas/CustomerId'
       responses:
         "200":
           content:
-            application/json:
+            application/xml:
               schema:
                 $ref: '#/components/schemas/Locations'
               examples:
