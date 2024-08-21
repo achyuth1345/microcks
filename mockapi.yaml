@@ -1,72 +1,892 @@
----
-openapi: 3.0.2
-info:
-  title: API Items - 1.0
-  version: 1.0.0
-  description: API definition of Items
-  contact:
-    name: Items
-    url: https://lakesgas-cargas.silverlinevps.com
-    email: achyuth@mailinator.com
-paths:
-  /API/GetItem:
-    summary: Get  Item
-    post:
-      requestBody:
-        content:
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/ItemId'
-      responses:
-        "200":
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Items'
-              examples:
-                Customer Items Example:
-                  value:
-                    DataSet:
-                      Table:
-                      - ItemId: 12312313
-                        Itemstatus: Active
-                        ItemType: laptop
-          description: Changed
-      operationId: GetCustomerAccounts
-      summary: Get Customer Accounts
-components:
-  schemas:
-    ItemId:
-      type: object
-      properties:
-        ItemId:
-          type: string
-          description: Item Id
-          example: 12312313
-    Items:
-      title: Root Type for accounts
-      description: The root of the accounts type's schema.
-      type: object
-      properties:
-        DataSet:
-          type: object
-          properties:
-            Table: 
-              type: array
-              items:
-                type: object
-                properties:
-                  ItemId:
-                    type: string
-                  Itemstatus:
-                    type: string
-                  ItemType:
-                    type: string                  
-      example:
-        DataSet:
-          Table:
-          - ItemId: 12312313
-            Itemstatus: Active
-            ItemType: Residential
-           
-    
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Asset Manager API Docs",
+    "description": "Asset Manager API Documentation",
+    "version": "v2"
+  },
+  "servers": [
+    {
+      "url": "/assetmanagement"
+    }
+  ],
+  "paths": {
+    "/api/v1/assets": {
+      "post": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Create Asset for specific asset type",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Requests",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssets"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssets"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssets"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Update Asset for specific asset",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assetId",
+            "in": "query",
+            "description": "assetId",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Requests",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssets"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssets"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssets"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Get list of assets by tenant and status",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "status",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/assets/customerId/{customerId}/siteId/{siteId}": {
+      "get": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Get list of assets by customerId and siteId",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "customerId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "siteId",
+            "in": "path",
+            "description": "siteId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/assets/assetId/{assetId}": {
+      "get": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Get specific asset by assetId",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assetId",
+            "in": "path",
+            "description": "assetId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Get specific asset by assetId",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assetId",
+            "in": "path",
+            "description": "assetId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/assets/assetId/{assetId}/approve": {
+      "put": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Get specific asset by assetId",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assetId",
+            "in": "path",
+            "description": "assetId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/assets/assetId/assetmedia/{assetUniqueId}": {
+      "post": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "post specific asset media by assetId",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assetUniqueId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "files": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v2/assets": {
+      "post": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "post specific asset media by assetId",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssets"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssets"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssets"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/assets/assetUniqueId/{assetUniqueId}/isapproved": {
+      "get": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Get specific asset by assetId",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assetUniqueId",
+            "in": "path",
+            "description": "assetUniqueId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/assets/radius/{radius}/latitude/{latitude}/longitude/{longitude}/search": {
+      "get": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Search asset by radius",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "radius",
+            "in": "path",
+            "description": "radius",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "latitude",
+            "in": "path",
+            "description": "latitude",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "path",
+            "description": "longitude",
+            "required": true,
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/assets/serialNo/{serialNo}/assetuniqueId/{assetuniqueId}": {
+      "delete": {
+        "tags": [
+          "Assets"
+        ],
+        "summary": "Get specific asset by assetId",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "serialNo",
+            "in": "path",
+            "description": "serialNo",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assetuniqueId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/assettype": {
+      "post": {
+        "tags": [
+          "AssetType"
+        ],
+        "summary": "Create Asset Type for the given tenant",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Requests",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssetType"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssetType"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssetType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "AssetType"
+        ],
+        "summary": "Get Asset Type List",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/api/v1/assettype/assetTypeId/{assetTypeId}": {
+      "put": {
+        "tags": [
+          "AssetType"
+        ],
+        "summary": "Update Asset Type for specific asset type Id",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assetTypeId",
+            "in": "path",
+            "description": "assetTypeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Requests",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssetType"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssetType"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAssetType"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "AssetType"
+        ],
+        "summary": "Get Asset Type information for given id",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assetTypeId",
+            "in": "path",
+            "description": "assetTypeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "AssetType"
+        ],
+        "summary": "Delete Asset Type information for given id",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "assetTypeId",
+            "in": "path",
+            "description": "assetTypeId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/live": {
+      "get": {
+        "tags": [
+          "SystemCheck"
+        ],
+        "summary": "Check if the API is Live",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddAssetType": {
+        "type": "object",
+        "properties": {
+          "assetTypeName": {
+            "type": "string",
+            "nullable": true
+          },
+          "assetTypeDesc": {
+            "type": "string",
+            "nullable": true
+          },
+          "assetTypeUniqueId": {
+            "type": "string",
+            "nullable": true
+          },
+          "assetTypeVersion": {
+            "type": "string",
+            "nullable": true
+          },
+          "assetTypeTenantIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "assetTypeAppIdentified": {
+            "type": "string",
+            "nullable": true
+          },
+          "associatedAssetType": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "properties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AssetTypeProperty"
+            },
+            "nullable": true
+          },
+          "tags": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "organizationId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddAssets": {
+        "type": "object",
+        "properties": {
+          "assetName": {
+            "type": "string",
+            "nullable": true
+          },
+          "assetUniqueId": {
+            "type": "string",
+            "nullable": true
+          },
+          "assetLocation": {
+            "$ref": "#/components/schemas/AddLocation"
+          },
+          "assetVersion": {
+            "type": "string",
+            "nullable": true
+          },
+          "assetTenantIdentifier": {
+            "type": "string",
+            "nullable": true
+          },
+          "assetDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "assetTypeUniqueId": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerInfo": {
+            "$ref": "#/components/schemas/CustomerInfo"
+          },
+          "modifiedOn": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "assetIcons": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Picture"
+            },
+            "nullable": true
+          },
+          "properties": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "tags": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "associatedAssets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "relatedAssets": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "primaryModifiedOn": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddLocation": {
+        "type": "object",
+        "properties": {
+          "coordinates": {
+            "type": "array",
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetTypeProperty": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string",
+            "nullable": true
+          },
+          "valueType": {
+            "type": "string",
+            "nullable": true
+          },
+          "defaultValue": {
+            "type": "string",
+            "nullable": true
+          },
+          "required": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CustomerInfo": {
+        "type": "object",
+        "properties": {
+          "customerId": {
+            "type": "string",
+            "nullable": true
+          },
+          "siteId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "Picture": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "data": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
