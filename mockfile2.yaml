@@ -6,19 +6,6 @@ info:
 servers:
   - url: /usermanagement
 paths:
-  /live:
-    get:
-      tags:
-        - SystemCheck
-      summary: Check if the API is Live
-      parameters:
-        - name: bearer
-          in: header
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
   /api/v1/solution:
     get:
       tags:
