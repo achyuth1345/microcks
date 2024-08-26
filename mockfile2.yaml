@@ -1,395 +1,464 @@
----
-openapi: 3.0.2
+openapi: 3.0.1
 info:
-  title: API Cargas - 1.0
-  version: 1.0.0
-  description: API definition of Cargas
-  contact:
-    name: Cargas-lakesgas
-    url: https://lakesgas-cargas.silverlinevps.com
-    email: achyuth@mailinator.com
+  title: Users Manager API Docs
+  description: Users Manager API Documentation
+  version: v2
+servers:
+  - url: /usermanagement
 paths:
-  /API/GetNewCustomers:
-    summary: Get list of new customers
-    post:
+  /live:
+    get:
+      tags:
+        - SystemCheck
+      summary: Check if the API is Live
+      parameters:
+        - name: bearer
+          in: header
+          schema:
+            type: string
       responses:
-        "200":
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Customers'
-              examples:
-                New Customers Example:
-                  value: '<Results>
-  <DataSet>
-    <Table>
-      <CustomerID>12312313</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312314</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312315</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312316</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312317</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312318</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312319</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312310</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312311</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312312</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312112</CustomerID>
-    </Table>
-  </DataSet>
-</Results>'
-                    
-          description: Changed Customers
-      operationId: GetNewCustomers
-      summary: Get New Customers
-  /API/GetCustomerAccount:
-    summary: Get list of customer accounts
+        '200':
+          description: Success
+  /api/v1/solution:
+    get:
+      tags:
+        - UserManagement
+      summary: this API is used to get all the solution list from platform
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Return list of Solutions
+  /api/v1/token:
+    get:
+      tags:
+        - UserManagement
+      summary: This API is used to fetch the long lived token for mobile application . When triggered this A?Pi talks to platform and provides the long lived token after authentication by platform.
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      responses:
+        '200':
+          description: provides a long lived token  valid for 3 days
+        '401':
+          description: user is unauthorized to use api
+  /api/v1/authority:
+    get:
+      tags:
+        - UserManagement
+      summary: This API returns the list of Authorities from platform . Authorities are the B2C config values that are stored on platform side and these authorities are used during the user creation process
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retruns list of Authorites from platform
+        '400':
+          description: authorities not found for the users
+        '401':
+          description: User is unauthorized to use the api please check the validity of the token
+  /api/v1/users:
     post:
+      tags:
+        - UserManagement
+      summary: This API is used to create new users . the api internally triggers the platform apis for creating the users
+      description: "Request body description\r\n\r\n\r\n\r\n    username: used for user login .\r\n    organiztionId: used for organization mapping of the  user."
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
       requestBody:
+        description: Provide valid payload to create users
         content:
-          application/xml:
+          application/json:
             schema:
-              $ref: '#/components/schemas/CustomerId'
+              $ref: '#/components/schemas/AddUsers'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AddUsers'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AddUsers'
       responses:
-        "200":
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Accounts'
-              examples:
-                Customer Accounts Example:
-                  value: '<Results>
-  <DataSet>
-    <Table>
-      <CustomerID>945135</CustomerID>
-      <CustomerStatus>Active</CustomerStatus>
-      <CustomerType>Residential</CustomerType>
-      <EmailAddress>addddddddddd@hotmail.com</EmailAddress>
-      <Address1>PO BOX442</Address1>
-      <Address2></Address2>
-      <Address3></Address3>
-      <City>sadasdd</City>
-      <State>sdasdasd</State>
-      <Zipcode>8789555</Zipcode>
-      <ContactPerson>adasdsa</ContactPerson>
-      <PrimaryPhone></PrimaryPhone>
-      <CustomerLastName>ROSALES</CustomerLastName>
-      <CustomerFirstName>ROSALES</CustomerFirstName>
-    </Table>
-  </DataSet>
-</Results>'
-                   
-          description: Changed
-      operationId: GetCustomerAccounts
-      summary: Get Customer Accounts
-  /API/GetCustomerLocations:
-    summary: Get customer locations
-    post:
+        '200':
+          description: returns list of users
+        '401':
+          description: user is unauthorized
+    put:
+      tags:
+        - UserManagement
+      summary: This api is used to update the user details by a admin user . This api request platform IDM service to update the user details .
+      description: "Request Body Description\r\n\r\n        \r\n        username: used for login purpose by the user and not editable\r\n        organizationId : used for organization mapping of the user"
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: provide the user Id of the user to be updated
+          schema:
+            type: string
       requestBody:
+        description: Provide valid request body
         content:
-          application/xml:
+          application/json:
             schema:
-              $ref: '#/components/schemas/CustomerId'
+              $ref: '#/components/schemas/updateUsers'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/updateUsers'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/updateUsers'
       responses:
-        "200":
-          content:
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Locations'
-              examples:
-                Customer Locations Example:
-                  value:
-                    '<Results>
-  <DataSet>
-    <Table>
-      <Name></Name>
-      <Address1>edasdas</Address1>
-      <Address2></Address2>
-      <Address3></Address3>
-      <City>ADRIAN</City>
-      <State>Kaka</State>
-      <Zipcode>517025</Zipcode>
-      <ContactPerson></ContactPerson>
-      <Inactive>false</Inactive>
-      <LocationType></LocationType>
-      <PhoneNumber>(507) 227-4738</PhoneNumber>
-    </Table>
-    <Table>
-      <Name>Primary Location</Name>
-      <Address1>500 INDIANA AVE</Address1>
-      <Address2></Address2>
-      <Address3></Address3>
-      <City>ADRIAN</City>
-      <State>MN</State>
-      <Zipcode>56110</Zipcode>
-      <ContactPerson></ContactPerson>
-      <Inactive>false</Inactive>
-      <LocationType></LocationType>
-      <PhoneNumber>(507) 227-4738</PhoneNumber>
-    </Table>
-    <Table>
-      <Name>Primary Location</Name>
-      <Address1>500 INDIANA AVE</Address1>
-      <Address2></Address2>
-      <Address3></Address3>
-      <City>ADRIAN</City>
-      <State>MN</State>
-      <Zipcode>56110</Zipcode>
-      <ContactPerson></ContactPerson>
-      <Inactive>false</Inactive>
-      <LocationType>Owner</LocationType>
-      <PhoneNumber>(507) 227-4738</PhoneNumber>
-    </Table>
-  </DataSet>
-</Results>'
-          description: Changed
-      operationId: GetCustomerLocations
-      summary: Get Customer Locations
+        '200':
+          description: returns 200 when user is edit successful
+        '400':
+          description: user is not found
+        '401':
+          description: user is unauthorized
+    delete:
+      tags:
+        - UserManagement
+      summary: This api is used to delete the users from the database paramanently
+      description: "Request Body description\r\n\r\n\r\n         username: used for login purpose by the user and not editable\r\n         organizationId : used for organization mapping of the user"
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: provide the userId of the user to be deleted
+          schema:
+            type: string
+      responses:
+        '200':
+          description: user delete successsfull
+        '400':
+          description: user not found
+        '401':
+          description: unauthorized action by the user or tokenis invalid
+    get:
+      tags:
+        - UserManagement
+      summary: This api is used to get all the users from platform. When triggered this api fetcheds all the users from platform and provides the list of all users to the client.
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      responses:
+        '200':
+          description: returns list of users
+        '400':
+          description: no users found
+        '401':
+          description: unauthorized user
+  /api/v1/user/getprivacyterms:
+    get:
+      tags:
+        - UserManagement
+      summary: This api is used to get the privacy terms (EULA) of the users . when the API is triggered , rego backend intern requests platform to provide the privacy terms of the user to whom the bearer JWT token belongs to
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Success
+        '400':
+          description: privacy terms not found for the user
+        '401':
+          description: unauthorized user
+  /api/v1/user/setprivacyterms/{isTrue}:
+    put:
+      tags:
+        - UserManagement
+      summary: This api is used to accept the privacy terms of the users . when API is triggered with parameter true privacy terms are accpeted and when false is sent privacy terms are set to not yet accepted so once the user logs in again he has to accept the privacy terms again
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: isTrue
+          in: path
+          description: booleanb to either accept or reject the privacy terms
+          required: true
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: privacy terms updated successfully
+        '401':
+          description: unauthorized user
+  /api/v1/filter/users:
+    post:
+      tags:
+        - UserManagement
+      summary: This API is used to fetch the list of api batch wise . when this api is triggered Rego backed makes a api request to platform and fetches the users list in batch wise . batch size and page number can be set from the request payload
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      requestBody:
+        description: filter request body to define batch size page number and search txt
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PlatformGetUsers'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/PlatformGetUsers'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/PlatformGetUsers'
+      responses:
+        '200':
+          description: succesfully fetched the user list
+        '400':
+          description: no user found
+        '401':
+          description: unauthorized user
 components:
   schemas:
-    CustomerId:
+    AddUsers:
       type: object
       properties:
-        CustomerID:
+        firstName:
           type: string
-          description: Customer Id
-          example: 12312313
-    Customers:
-      title: Root Type for custoemrs
-      description: The root of the customers type's schema.
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        authorityId:
+          type: string
+          nullable: true
+        username:
+          type: string
+          nullable: true
+        companyName:
+          type: string
+          nullable: true
+        alias:
+          type: string
+          nullable: true
+        solutionIds:
+          type: array
+          items:
+            type: string
+          nullable: true
+        solutions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Solution'
+          nullable: true
+        address1:
+          type: string
+          nullable: true
+        address2:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        state:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        zipcode:
+          type: string
+          nullable: true
+        ownEmail:
+          type: string
+          nullable: true
+        ownPhoneNumber:
+          type: string
+          nullable: true
+        ownAlternateNumber:
+          type: string
+          nullable: true
+        application:
+          type: string
+          nullable: true
+        isActive:
+          type: boolean
+        persona:
+          type: string
+          nullable: true
+        organizationId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    PlatformGetUsers:
       type: object
       properties:
-        Results:
-          type: object
-          properties:
-            DataSet:
-              type: object
-              properties:
-                Table: 
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      CustomerID:
-                        type: string
-      example:
-        value: '<Results>
-  <DataSet>
-    <Table>
-      <CustomerID>12312313</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312314</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312315</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312316</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312317</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312318</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312319</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312310</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312311</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312312</CustomerID>
-    </Table>
-    <Table>
-      <CustomerID>12312112</CustomerID>
-    </Table>
-  </DataSet>
-</Results>'
-    Accounts:
-      title: Root Type for accounts
-      description: The root of the accounts type's schema.
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int32
+        gotoPageNumber:
+          type: string
+          nullable: true
+        searchText:
+          type: string
+          nullable: true
+        sortBy:
+          type: string
+          nullable: true
+        isAscending:
+          type: boolean
+        organizationList:
+          type: array
+          items:
+            type: string
+          nullable: true
+        solutionIds:
+          type: array
+          items:
+            type: string
+          nullable: true
+        personaIds:
+          type: array
+          items:
+            type: string
+          nullable: true
+        noOfRecords:
+          type: integer
+          format: int32
+      additionalProperties: false
+    Solution:
       type: object
       properties:
-        Results:
-          type: object
-          properties:
-            DataSet:
-              type: object
-              properties:
-                Table: 
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      CustomerID:
-                        type: string
-                      CustomerStatus:
-                        type: string
-                      CustomerType:
-                        type: string                  
-                      EmailAddress:
-                        type: string
-                      Address1:
-                        type: string                  
-                      Address2:
-                        type: string                  
-                      Address3:
-                        type: string                  
-                      City:
-                        type: string                  
-                      State:
-                        type: string                    
-                      Zipcode:
-                        type: string
-                      ContactPerson:
-                        type: string
-                      PrimaryPhone:
-                        type: string
-                      CustomerLastName:
-                        type: string
-                      CustomerFirstName:
-                        type: string
-      example:
-        Value: '<Results>
-  <DataSet>
-    <Table>
-      <CustomerID>94603</CustomerID>
-      <CustomerStatus>Active</CustomerStatus>
-      <CustomerType>Residential</CustomerType>
-      <EmailAddress>dt2013@hotmail.com</EmailAddress>
-      <Address1>PO BOX442</Address1>
-      <Address2></Address2>
-      <Address3></Address3>
-      <City>ADRIAN</City>
-      <State>MN</State>
-      <Zipcode>56110</Zipcode>
-      <ContactPerson></ContactPerson>
-      <PrimaryPhone>5072274738</PrimaryPhone>
-      <CustomerLastName>ROSALES</CustomerLastName>
-      <CustomerFirstName>DANIELLE</CustomerFirstName>
-    </Table>
-    <Table>
-      <CustomerID>94603</CustomerID>
-      <CustomerStatus>Active</CustomerStatus>
-      <CustomerType>Residential</CustomerType>
-      <EmailAddress>dt2013@hotmail.com</EmailAddress>
-      <Address1>PO BOX442</Address1>
-      <Address2></Address2>
-      <Address3></Address3>
-      <City>ADRIAN</City>
-      <State>MN</State>
-      <Zipcode>56110</Zipcode>
-      <ContactPerson></ContactPerson>
-      <PrimaryPhone>5072274738</PrimaryPhone>
-      <CustomerLastName>ROSALES</CustomerLastName>
-      <CustomerFirstName>DANIELLE</CustomerFirstName>
-    </Table>
-  </DataSet>
-</Results>'
-        
-    Locations:
-      title: Root Type for locations
-      description: The root of the locations type's schema.
+        id:
+          type: string
+          nullable: true
+        tenantName:
+          type: string
+          nullable: true
+        isActive:
+          type: boolean
+        startDate:
+          type: string
+          nullable: true
+        endDate:
+          type: string
+          nullable: true
+        lastUpdateDate:
+          type: string
+          nullable: true
+        isDefaultSolution:
+          type: boolean
+        idprevious:
+          type: string
+          nullable: true
+        isActiveprevious:
+          type: boolean
+      additionalProperties: false
+    updateUsers:
       type: object
       properties:
-        Results:
-          type: object
-          properties: 
-            DataSet:
-              type: object
-              properties:
-                Table: 
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      Name:
-                        type: string
-                      Address1:
-                        type: string                  
-                      Address2:
-                        type: string                  
-                      Address3:
-                        type: string                  
-                      City:
-                        type: string                  
-                      State:
-                        type: string                    
-                      Zipcode:
-                        type: string
-                      ContactPerson:
-                        type: string
-                      Inactive:
-                        type: boolean
-                      LocationType:
-                        type: string                  
-                      PhoneNumber:
-                        type: string
-      example:
-        Value: '<Results>
-  <DataSet>
-    <Table>
-      <Name></Name>
-      <Address1>PO BOX 442222222222</Address1>
-      <Address2></Address2>
-      <Address3></Address3>
-      <City>ADRIAN</City>
-      <State>MN</State>
-      <Zipcode>56110</Zipcode>
-      <ContactPerson></ContactPerson>
-      <Inactive>false</Inactive>
-      <LocationType></LocationType>
-      <PhoneNumber>(507) 227-4738</PhoneNumber>
-    </Table>
-    <Table>
-      <Name>Primary Location</Name>
-      <Address1>500 INDIANA AVE</Address1>
-      <Address2></Address2>
-      <Address3></Address3>
-      <City>ADRIAN</City>
-      <State>MN</State>
-      <Zipcode>56110</Zipcode>
-      <ContactPerson></ContactPerson>
-      <Inactive>false</Inactive>
-      <LocationType></LocationType>
-      <PhoneNumber>(507) 227-4738</PhoneNumber>
-    </Table>
-    <Table>
-      <Name>Primary Location</Name>
-      <Address1>500 INDIANA AVEEEEESSSSSSSSS</Address1>
-      <Address2></Address2>
-      <Address3></Address3>
-      <City>ADRIAN</City>
-      <State>MN</State>
-      <Zipcode>56110</Zipcode>
-      <ContactPerson></ContactPerson>
-      <Inactive>false</Inactive>
-      <LocationType>Owner</LocationType>
-      <PhoneNumber>(507) 227-4738</PhoneNumber>
-    </Table>
-  </DataSet>
-</Results>'      
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        authorityId:
+          type: string
+          nullable: true
+        username:
+          type: string
+          nullable: true
+        companyName:
+          type: string
+          nullable: true
+        alias:
+          type: string
+          nullable: true
+        solutionIds:
+          type: array
+          items:
+            type: string
+          nullable: true
+        solutions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Solution'
+          nullable: true
+        address1:
+          type: string
+          nullable: true
+        address2:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        state:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        zipcode:
+          type: string
+          nullable: true
+        ownEmail:
+          type: string
+          nullable: true
+        ownPhoneNumber:
+          type: string
+          nullable: true
+        ownAlternateNumber:
+          type: string
+          nullable: true
+        application:
+          type: string
+          nullable: true
+        isActive:
+          type: boolean
+        persona:
+          type: string
+          nullable: true
+        organizationId:
+          type: string
+          nullable: true
+        oId:
+          type: string
+          nullable: true
+      additionalProperties: false
