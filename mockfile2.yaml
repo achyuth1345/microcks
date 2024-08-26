@@ -1,23 +1,23 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Asset Manager API Docs",
-    "description": "Asset Manager API Documentation",
+    "title": "Customer Manager API Docs",
+    "description": "Customer Manager API Documentation",
     "version": "v2"
   },
   "servers": [
     {
-      "url": "/assetmanagement"
+      "url": "/customermanagement"
     }
   ],
   "paths": {
-    "/api/v1/assets": {
+    "/api/v1/customer": {
       "post": {
         "tags": [
-          "Assets"
+          "Customers"
         ],
-        "summary": "This API is used to create a New Asset of a specific asset type",
-        "description": "Request Body Description\r\n\r\n        \r\n        assetUniqueId: this field is to provide a unique identitfier for the asset\r\n        assetTenantIdentifier: this field is to provide the tenant details of the asset\r\n        assetTypeUniqueId:  this field is to provide the unque identifier of the asset type so that asseta nd asset type mapping can be done this is a required property\r\n        proprtyies: this field is a lit keyvalue pair  where the inspection and test details of each asset are stored .",
+        "summary": "This API is used to create a new customer with multiple address locations .",
+        "description": "Request Body:\r\n\r\n        \r\n        \r\n        accountNo:  a Unique identifier for the customer in a particular organization\r\n        address:  a list of JSON where each JSON represents one particular location for a customer\r\n        customerType: a enum with two values Business or Residential",
         "parameters": [
           {
             "name": "bearer",
@@ -29,135 +29,45 @@
           }
         ],
         "requestBody": {
-          "description": "provide valid Request Body",
+          "description": "provide valid Request Body here",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddAssets"
+                "$ref": "#/components/schemas/AddCustomerInfo"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddAssets"
+                "$ref": "#/components/schemas/AddCustomerInfo"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddAssets"
+                "$ref": "#/components/schemas/AddCustomerInfo"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Sucessfully created a new asset"
+            "description": "sucessfully created a customer"
           },
           "400": {
-            "description": "requestbody is not valid"
+            "description": "request body is invalid , provide valid request body"
           },
           "401": {
-            "description": "unauthorized user or user doent have access to create asset"
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Assets"
-        ],
-        "summary": "This api is used to update the asset details of a specific asset. when this api is triggered Rego backend updtes the asset details of the asset whose id in provided in URL",
-        "description": "Request Body Description\r\n\r\n        \r\n        assetUniqueId: this field is to provide a unique identitfier for the asset\r\n        assetTenantIdentifier: this field is to provide the tenant details of the asset\r\n        assetTypeUniqueId:  this field is to provide the unque identifier of the asset type so that asseta nd asset type mapping can be done this is a required property\r\n        properties: this field is a lit keyvalue pair  where the inspection and test details of each asset are stored .",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "assetId",
-            "in": "query",
-            "description": "Provide assetId of the asset to be editted",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "provide valid Request body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAssets"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAssets"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAssets"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "sucessfully updated the asset with given assetId"
-          },
-          "404": {
-            "description": "asset not found with the given assetId"
-          },
-          "401": {
-            "description": "unauthorized user or user doesn't have permission to perform the edit operation"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "Assets"
-        ],
-        "summary": "This api is to fetch the list of assets that are in approved status . the default status is approved so this api would fetch all the assets under the users organization",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "status",
-            "in": "query",
-            "description": "Approved,Pending or All only these values are accepted as values and backend searches the assets based on the status and provides only those assets",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Sucessfullt fetched all the assse4ts based on the status"
-          },
-          "400": {
-            "description": "please check the request parameters values"
-          },
-          "401": {
-            "description": "unauthorized user or user doesnt have permission to view assets"
+            "description": "unauthorized acccess or use doesnt have permission to create a customer"
           }
         }
       }
     },
-    "/api/v1/assets/customerId/{customerId}/siteId/{siteId}": {
-      "get": {
+    "/api/v1/customer/customerId/{customerId}": {
+      "put": {
         "tags": [
-          "Assets"
+          "Customers"
         ],
-        "summary": "This api is used to get list of all the assets based on the customerId and siteId. When this API is triggered Rego backend fecthes alll the assets that are created for the siteId and customerId provided",
+        "summary": "This API is sued to update the details of a customer by providing a customerId.",
+        "description": "Request Body:\r\n\r\n        \r\n        \r\n        accountNo:  a Unique identifier for the customer in a particular organization\r\n        address:  a list of JSON where each JSON represents one particular location for a customer\r\n        customerType: a enum with two values Business or Residential",
         "parameters": [
           {
             "name": "bearer",
@@ -170,7 +80,299 @@
           {
             "name": "customerId",
             "in": "path",
-            "description": "provide valid customerId here",
+            "description": "provide valid customerId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "provide valid Request Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCustomerInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCustomerInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddCustomerInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "sucessfully updated the customer details"
+          },
+          "404": {
+            "description": "customer with provided id not found"
+          },
+          "400": {
+            "description": "request body not valid"
+          },
+          "401": {
+            "description": "unauthorized access or user doesnt have access to update the customer details"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "This API allows user to fetch the details of a customer by providing the customerId",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token here",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "provide valid customerId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessfully fetched customer details"
+          },
+          "404": {
+            "description": "customer with Id not found"
+          },
+          "401": {
+            "description": "unauthorized user or user doent have acces to fetch the customer details"
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "This API is used to delete a customer by Id.",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "bearer",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "customerId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "customer deleted sucessfully"
+          },
+          "404": {
+            "description": "customer not found for the Id"
+          },
+          "401": {
+            "description": "unauthrized accesss or user doesnt have permisssion to delete the customer"
+          }
+        }
+      }
+    },
+    "/api/v2/customer/customerId/{customerId}": {
+      "put": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "This is a Version 2 api for updtion of customer details where it only updates the customer details and address details remainas the same as before",
+        "description": "Request Body:\r\n\r\n        \r\n        \r\n        accountNo:  a Unique identifier for the customer in a particular organization\r\n        customerType: a enum with two values Business or Residential",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token here",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "provide valid customerId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "provide valid Request Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditCustomerInfo"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditCustomerInfo"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/EditCustomerInfo"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "sucessfully updated the customer details"
+          },
+          "404": {
+            "description": "customer with provided id not found"
+          },
+          "400": {
+            "description": "request body not valid"
+          },
+          "401": {
+            "description": "unauthorized access or user doesnt have access to update the customer details"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "This API allows user to fetch the details of a customer by providing the customerId",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token here",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "provide valid customerId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessfully fetched customer details"
+          },
+          "404": {
+            "description": "customer with Id not found"
+          },
+          "401": {
+            "description": "unauthorized user or user doent have acces to fetch the customer details"
+          }
+        }
+      }
+    },
+    "/api/v2/addaddress/customerId/{customerId}": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "This is a Version 2 API for creating  new address in a customer . by triggering this API user will be able to create one address in a particular customer which doesn't conflict with any other address in that customer",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token here",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "provide valid customerId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "provide valid Request Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAddress"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAddress"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAddress"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "sucessfully created the address details"
+          },
+          "404": {
+            "description": "customer with provided id not found"
+          },
+          "400": {
+            "description": "request body not valid"
+          },
+          "401": {
+            "description": "unauthorized access or user doesnt have access to add the address details"
+          }
+        }
+      }
+    },
+    "/api/v2/deleteaddress/customerId/{customerId}/siteId/{siteId}": {
+      "delete": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "This is a version2 API for deleting a address from a particular customer . by triggering this API user should be able to delete only one address from list of address of a customer.",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token here",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerId",
+            "in": "path",
+            "description": "provide valid customerId",
             "required": true,
             "schema": {
               "type": "string"
@@ -179,7 +381,6 @@
           {
             "name": "siteId",
             "in": "path",
-            "description": "provide valid siteId here",
             "required": true,
             "schema": {
               "type": "string"
@@ -188,100 +389,23 @@
         ],
         "responses": {
           "200": {
-            "description": "sucessfully fetched list of assets for given customerId and siteId"
-          },
-          "400": {
-            "description": "customerId or siteId not found under the user organization"
+            "description": "sucessfully deleted the address details"
           },
           "404": {
-            "description": "no asset found for given customerId and siteId"
+            "description": "customer with provided id not found"
           },
           "401": {
-            "description": "unauthorized user or user doent have permission to view the asset details"
+            "description": "unauthorized access or user doesnt have access to delete the address details"
           }
         }
       }
     },
-    "/api/v1/assets/assetId/{assetId}": {
-      "get": {
-        "tags": [
-          "Assets"
-        ],
-        "summary": "This API is used to fetch the details of a particular asset  by providing the asset Id . whe this API is triggered Rego Backend searches the asset by Id and return one asset with its details.",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "assetId",
-            "in": "path",
-            "description": "provide valid asset Id here",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "sucessfully fetched the asset by Id"
-          },
-          "404": {
-            "description": "asset not found for this assetId"
-          },
-          "401": {
-            "description": "unauthorized user or user dont have access to view the asset details"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Assets"
-        ],
-        "summary": "This API is sued to delete the asset by ID .Whenm this API is triggered backend deletes the asset with this assetId",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "assetId",
-            "in": "path",
-            "description": "provide valid assetId here",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "sucessfully deleted the asset with given assetId"
-          },
-          "404": {
-            "description": "asset with given assetId not found"
-          },
-          "401": {
-            "description": "unauthorized user or user doesnt have access to delete the asset"
-          }
-        }
-      }
-    },
-    "/api/v1/assets/assetId/{assetId}/approve": {
+    "/api/v2/updateAddress/Customer/{customerId}/siteId/{siteId}": {
       "put": {
         "tags": [
-          "Assets"
+          "Customers"
         ],
-        "summary": "This API is used to change status of the asset from Pending to Approved . when triggered bakcend changes the asset status . Only admins will have access to do this operation.",
+        "summary": "This is a version2 API for updating a address from a particular customer . by triggering this API user should be able to update only one address from list of address of a customer.",
         "parameters": [
           {
             "name": "bearer",
@@ -292,9 +416,85 @@
             }
           },
           {
-            "name": "assetId",
+            "name": "customerId",
             "in": "path",
-            "description": "provide valid assetId here",
+            "description": "provide valid customerId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "siteId",
+            "in": "path",
+            "description": "provide valid siteId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "provide valid Request Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAddress"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAddress"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddAddress"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "sucessfully update the address details"
+          },
+          "404": {
+            "description": "customer with provided id not found"
+          },
+          "401": {
+            "description": "unauthorized access or user doesnt have access to update the address details"
+          }
+        }
+      }
+    },
+    "/api/v1/customer/type/{customerType}/filter/{filter}": {
+      "get": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "This API is used to fetch a list of all the customers with search text. By triggering thi API user can get list of all the customer and their address",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token here",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "customerType",
+            "in": "path",
+            "description": "provide the customerType filter values can be Residential, Business or All",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter",
+            "in": "path",
+            "description": "Provide search text here , api searches the match in accountNo, address, company and email",
             "required": true,
             "schema": {
               "type": "string"
@@ -303,23 +503,71 @@
         ],
         "responses": {
           "200": {
-            "description": "sucessfully updated the status of asset"
+            "description": "sucessfully fetched the customer list"
           },
           "404": {
-            "description": "asset with given asset Id not found"
+            "description": "customers not found in the user's organizations"
           },
           "401": {
-            "description": "unauthorized user or user doesnt have permission to approve the asset"
+            "description": "unauthorized access or user doesnt have permission to get customer list"
           }
         }
       }
     },
-    "/api/v1/assets/assetId/assetmedia/{assetUniqueId}": {
+    "/api/v2/customer/filter": {
       "post": {
         "tags": [
-          "Assets"
+          "Customers"
         ],
-        "summary": "This API is used to add list of Images or icons for a particular asset . When trigggered  the API will upload the assets to blob store and when more than 8 images are uploaded only latest 8 images are stored as part of image imformation rest would be deleted",
+        "summary": "This is a Versioni 2 API to get list of customers and address batch wise. By providing batch size and page number user can fetch only those customers and searching is also provided. Searching can also be done using the same API",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token here",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/filterCustomer"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/filterCustomer"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/filterCustomer"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "sucessfully fetched the customer list"
+          },
+          "404": {
+            "description": "customer not found in the search result"
+          },
+          "401": {
+            "description": "unauthorized user or user doesnt have access to feth the customer list"
+          }
+        }
+      }
+    },
+    "/api/v2/customer/{customerId}/getAddress/filter": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "This API is used to fetchg the list of address of a particular customer batch wise.",
         "parameters": [
           {
             "name": "bearer",
@@ -330,10 +578,59 @@
             }
           },
           {
-            "name": "assetUniqueId",
+            "name": "customerId",
             "in": "path",
-            "description": "provide valid assetUniqueId here",
+            "description": "provide valid customer Id",
             "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "provide the valid request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/filterCustomer"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/filterCustomer"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/filterCustomer"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "sucessfully fetch the list of adddress for the given customerId"
+          },
+          "404": {
+            "description": "customer not found for the given customerId"
+          },
+          "401": {
+            "description": "user unauthorized or user dont have access to fetch list of address for the customer"
+          }
+        }
+      }
+    },
+    "/api/v2/bulkUpload/customer": {
+      "post": {
+        "tags": [
+          "Customers"
+        ],
+        "summary": "This API allows user to upload a csv file to initiate a bulk upload job which reads all the rows from the csv and starts creating  customers",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token here",
             "schema": {
               "type": "string"
             }
@@ -345,17 +642,38 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "files": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "format": "binary"
-                    }
+                  "fileSize": {
+                    "type": "string"
+                  },
+                  "totalRecords": {
+                    "type": "string"
+                  },
+                  "filename": {
+                    "type": "string"
+                  },
+                  "username": {
+                    "type": "string"
+                  },
+                  "file": {
+                    "type": "string",
+                    "format": "binary"
                   }
                 }
               },
               "encoding": {
-                "files": {
+                "fileSize": {
+                  "style": "form"
+                },
+                "totalRecords": {
+                  "style": "form"
+                },
+                "filename": {
+                  "style": "form"
+                },
+                "username": {
+                  "style": "form"
+                },
+                "file": {
                   "style": "form"
                 }
               }
@@ -364,75 +682,72 @@
         },
         "responses": {
           "200": {
-            "description": "sucessfully updated the images of asset"
+            "description": "sucessfully uploaded the CSV file"
           },
           "400": {
-            "description": "image format or file format is not supported please provide valid format"
-          },
-          "404": {
-            "description": "asset with given asset unique Id not found"
+            "description": "provide valid bulk upload file details"
           },
           "401": {
-            "description": "unauthorized user or user doesnt have permission to upload images to the asset"
+            "description": "user unauthorized or user cannot upload CSV file"
           }
         }
       }
     },
-    "/api/v2/assets": {
+    "/api/v2/bulkUpload/customerfailrecords": {
       "post": {
         "tags": [
-          "Assets"
+          "Customers"
         ],
-        "summary": "This API is sued to create or edit asset details with same end point . If the asset with the provided assetUnique Id is found the asset details will be updated and if the asset is not found the asset will be created.",
-        "description": "Request Body Description\r\n\r\n        \r\n        assetUniqueId: this field is to provide a unique identitfier for the asset\r\n        assetTenantIdentifier: this field is to provide the tenant details of the asset\r\n        assetTypeUniqueId:  this field is to provide the unque identifier of the asset type so that asseta nd asset type mapping can be done this is a required property\r\n        propreties: this field is a lit keyvalue pair  where the inspection and test details of each asset are stored .",
+        "summary": "This API allows user to download a csv file which contains all the failed records of the uploaded CSV",
         "parameters": [
           {
             "name": "bearer",
             "in": "header",
-            "description": "provide valid JWT token here",
+            "description": "bearer",
             "schema": {
               "type": "string"
             }
           }
         ],
         "requestBody": {
+          "description": "request body to fetch the bulk upload request details vatch wise",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddAssets"
+                "$ref": "#/components/schemas/filterCsv"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddAssets"
+                "$ref": "#/components/schemas/filterCsv"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddAssets"
+                "$ref": "#/components/schemas/filterCsv"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "sucessfully updated/created the  asset"
+            "description": "sucessfully fetched all the bulk requests batch wise"
           },
-          "400": {
-            "description": "provide valid request object body"
+          "404": {
+            "description": "no bulk job requests found"
           },
           "401": {
-            "description": "unauthorized user or user doesnt have permission to upload images to the asset"
+            "description": "unauthorized user or user doesnt have permission to view all the bulk job requests"
           }
         }
       }
     },
-    "/api/v1/assets/assetUniqueId/{assetUniqueId}/isapproved": {
+    "/api/v2/bulkUpload/customer/getTemplate": {
       "get": {
         "tags": [
-          "Assets"
+          "Customers"
         ],
-        "summary": "This API is to check the status of a asset . this api lets the user know if the asset status is Approved or Pending",
+        "summary": "This API is used to download the template CSV . User should use this template to add the customer information in each row and can upload the updated file for triggering bulk upload job",
         "parameters": [
           {
             "name": "bearer",
@@ -441,279 +756,65 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "assetUniqueId",
-            "in": "path",
-            "description": "provide valid assetUniqueId here",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "sucessfully fetched the status of asset"
+            "description": "sucessfully fetched the CSV file"
           },
           "404": {
-            "description": "asset with given asset unique Id not found"
+            "description": "file not found"
           },
           "401": {
-            "description": "unauthorized user or user doesnt have permission to view the asset"
+            "description": "unauthorized access"
           }
         }
       }
     },
-    "/api/v1/assets/radius/{radius}/latitude/{latitude}/longitude/{longitude}/search": {
-      "get": {
-        "tags": [
-          "Assets"
-        ],
-        "summary": "This API lets users to fetch the asset based on the geo location and radius. When provided of the cuurent location of user and radius this API would list all the assets in the radius of the user",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "radius",
-            "in": "path",
-            "description": "provide radius in which the assets are too be searched",
-            "required": true,
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "latitude",
-            "in": "path",
-            "description": "provide the latitude of the centre or latitude of the user",
-            "required": true,
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          },
-          {
-            "name": "longitude",
-            "in": "path",
-            "description": "provide the longitude of the centre or longitude of the user",
-            "required": true,
-            "schema": {
-              "type": "number",
-              "format": "double"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "sucessfully fetched all the assets in the radius"
-          },
-          "404": {
-            "description": "No assests founbd in the radius specified"
-          },
-          "401": {
-            "description": "unauthorized user or user doesnt have permission to view the asset list"
-          }
-        }
-      }
-    },
-    "/api/v1/assets/serialNo/{serialNo}/assetuniqueId/{assetuniqueId}": {
-      "delete": {
-        "tags": [
-          "Assets"
-        ],
-        "summary": "This APi lets the user to delete the asset based on the SerialNo and assetUniqueId. when triggered the asset with the provided serial number and provided assetUniqueId is deleted from the database",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "serialNo",
-            "in": "path",
-            "description": "provide valid SerialNo here",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "assetuniqueId",
-            "in": "path",
-            "description": "provide valid asset Unique Id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "sucessfully deleted the asset with provided serial number and asset uniqueId"
-          },
-          "404": {
-            "description": "No asset is found with the provided serial and assetunique Id"
-          },
-          "401": {
-            "description": "user unauthorized or user doesnt have permission to delete the asset"
-          }
-        }
-      }
-    },
-    "/api/v1/assettype": {
-      "post": {
-        "tags": [
-          "AssetType"
-        ],
-        "summary": "This API is used to create a new Asset Type .A new Asset type can be used for further asset creations.",
-        "description": "Request Body Description:\r\n\r\n    assetTypeUniqueId: a unique Identifier ofor the asset type , this value is used for mapping asset with asset type\r\n    properties: This field is a list of Jsons where each Json defines the properties the asset type . this field defines the list of keys the asset properties should contain and their data types ,and if the key is mandatory or not .\r\n    organizationId: used for organization mapping of the asset type each organization can have independent assset types of their own .",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "Provide valid Request Body here",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAssetType"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAssetType"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAssetType"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "asset type sucessfully created"
-          },
-          "400": {
-            "description": "provide valid request payload"
-          },
-          "401": {
-            "description": "unauthorized user or user doesnt have the permission to create asset type"
-          }
-        }
-      },
-      "get": {
-        "tags": [
-          "AssetType"
-        ],
-        "summary": "This API allows user to fetch all the asset types in his particular organization.",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "sucessffully fetched all the asst types"
-          },
-          "404": {
-            "description": "asset types not found"
-          },
-          "401": {
-            "description": "unauthorized access or user dont have permission to fetch the asset types"
-          }
-        }
-      }
-    },
-    "/api/v1/assettype/assetTypeId/{assetTypeId}": {
+    "/api/v1/customer/customerId/{customerId}/approve": {
       "put": {
         "tags": [
-          "AssetType"
+          "Customers"
         ],
-        "summary": "This API is used to update the Asset type details. When triggered the API will edit the details of asset type like the name , properties",
-        "description": "Request Body Description:\r\n\r\n    assetTypeUniqueId: a unique Identifier ofor the asset type , this value is used for mapping asset with asset type\r\n    properties: This field is a list of Jsons where each Json defines the properties the asset type . this field defines the list of keys the asset properties should contain and their data types ,and if the key is mandatory or not .\r\n    organizationId: used for organization mapping of the asset type each organization can have independent assset types of their own .",
+        "summary": "This API is used to approve the status of the customer",
         "parameters": [
           {
             "name": "bearer",
             "in": "header",
-            "description": "provide valid JWT token here",
+            "description": "bearer",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "assetTypeId",
+            "name": "customerId",
             "in": "path",
-            "description": "provide valid assetTypeId",
+            "description": "customerId",
             "required": true,
             "schema": {
               "type": "string"
             }
           }
         ],
-        "requestBody": {
-          "description": "provide valid Request body here",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAssetType"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAssetType"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAssetType"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
-            "description": "asset type sucessfully created"
+            "description": "sucessfully approved the customer"
           },
           "404": {
-            "description": "asset type with asset type Id not found"
-          },
-          "400": {
-            "description": "provide valid request payload"
+            "description": "customer not found for the given Id"
           },
           "401": {
-            "description": "unauthorized user or user doesnt have the permission to create asset type"
+            "description": "user unauthorized or user doesn't have permission to edit the customer details"
           }
         }
-      },
+      }
+    },
+    "/api/v1/customer/accountNo/{accountNo}/isapproved": {
       "get": {
         "tags": [
-          "AssetType"
+          "Customers"
         ],
-        "summary": "This asset type API allows user to fetch the details of a asset type based on asset type Id",
+        "summary": "This API is used to check if the customer is approved based on the accountNo",
         "parameters": [
           {
             "name": "bearer",
@@ -724,9 +825,9 @@
             }
           },
           {
-            "name": "assetTypeId",
+            "name": "accountNo",
             "in": "path",
-            "description": "provide valid assetTypeId",
+            "description": "provide valid accountNo",
             "required": true,
             "schema": {
               "type": "string"
@@ -735,21 +836,23 @@
         ],
         "responses": {
           "200": {
-            "description": "asset type sucessfully found ,for the Id"
+            "description": "sucessfully fetched the status of the customer for given accountNo"
           },
           "404": {
-            "description": "no asset type found for the given aset type Id"
+            "description": "customer not found for given account number"
           },
           "401": {
-            "description": "unauthorized access or user doesnt have access to fetch the asset id"
+            "description": "user unauthorized or user doesn't have access to check the status of customer"
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/api/v2/customerId/{customerId}/active": {
+      "put": {
         "tags": [
-          "AssetType"
+          "Customers"
         ],
-        "summary": "This API is used to delete a particualr asset type by passing the Id in the URL",
+        "summary": "This API is used to make the customer active/Inactive",
         "parameters": [
           {
             "name": "bearer",
@@ -760,24 +863,31 @@
             }
           },
           {
-            "name": "assetTypeId",
+            "name": "customerId",
             "in": "path",
-            "description": "provide valid assetTypeId",
             "required": true,
             "schema": {
               "type": "string"
+            }
+          },
+          {
+            "name": "active",
+            "in": "query",
+            "description": "provide boolean true or false here . True for activaing the customer false for inactivating the customer",
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "sucessfully delete assset type with given id"
+            "description": "sucessfully updted the customer"
           },
           "404": {
-            "description": "asset with assetId not found"
+            "description": "customer not found for the customerId"
           },
           "401": {
-            "description": "unauthorized access or user doesnt have access to delete the asset type"
+            "description": "user unauthorized or user doesn't have permission to update the customer"
           }
         }
       }
@@ -807,198 +917,217 @@
   },
   "components": {
     "schemas": {
-      "AddAssetType": {
+      "AddAddress": {
         "type": "object",
         "properties": {
-          "assetTypeName": {
-            "type": "string",
-            "nullable": true
-          },
-          "assetTypeDesc": {
-            "type": "string",
-            "nullable": true
-          },
-          "assetTypeUniqueId": {
-            "type": "string",
-            "nullable": true
-          },
-          "assetTypeVersion": {
-            "type": "string",
-            "nullable": true
-          },
-          "assetTypeTenantIdentifier": {
-            "type": "string",
-            "nullable": true
-          },
-          "assetTypeAppIdentified": {
-            "type": "string",
-            "nullable": true
-          },
-          "associatedAssetType": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "properties": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AssetTypeProperty"
-            },
-            "nullable": true
-          },
-          "tags": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string",
-              "nullable": true
-            },
-            "nullable": true
-          },
-          "organizationId": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "AddAssets": {
-        "type": "object",
-        "properties": {
-          "assetName": {
-            "type": "string",
-            "nullable": true
-          },
-          "assetUniqueId": {
-            "type": "string",
-            "nullable": true
-          },
-          "assetLocation": {
-            "$ref": "#/components/schemas/AddLocation"
-          },
-          "assetVersion": {
-            "type": "string",
-            "nullable": true
-          },
-          "assetTenantIdentifier": {
-            "type": "string",
-            "nullable": true
-          },
-          "assetDescription": {
-            "type": "string",
-            "nullable": true
-          },
-          "assetTypeUniqueId": {
-            "type": "string",
-            "nullable": true
-          },
-          "customerInfo": {
-            "$ref": "#/components/schemas/CustomerInfo"
-          },
-          "modifiedOn": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "assetIcons": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Picture"
-            },
-            "nullable": true
-          },
-          "properties": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "tags": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "associatedAssets": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "relatedAssets": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "primaryModifiedOn": {
-            "type": "string",
-            "format": "date-time"
-          }
-        },
-        "additionalProperties": false
-      },
-      "AddLocation": {
-        "type": "object",
-        "properties": {
-          "coordinates": {
-            "type": "array",
-            "items": {
-              "type": "number",
-              "format": "double"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "AssetTypeProperty": {
-        "type": "object",
-        "properties": {
-          "key": {
-            "type": "string",
-            "nullable": true
-          },
-          "valueType": {
-            "type": "string",
-            "nullable": true
-          },
-          "defaultValue": {
-            "type": "string",
-            "nullable": true
-          },
-          "required": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "CustomerInfo": {
-        "type": "object",
-        "properties": {
-          "customerId": {
-            "type": "string",
-            "nullable": true
-          },
           "siteId": {
             "type": "string",
             "nullable": true
+          },
+          "siteName": {
+            "type": "string",
+            "nullable": true
+          },
+          "siteType": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "gasEquipPresent": {
+            "type": "boolean"
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "zipCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailAddress": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "Picture": {
+      "AddCompany": {
         "type": "object",
         "properties": {
           "name": {
             "type": "string",
             "nullable": true
           },
-          "data": {
+          "emailAddress": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AddCustomerInfo": {
+        "type": "object",
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerType": {
+            "type": "string",
+            "nullable": true
+          },
+          "company": {
+            "$ref": "#/components/schemas/AddCompany"
+          },
+          "address": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AddAddress"
+            },
+            "nullable": true
+          },
+          "inspectionReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EditCustomerInfo": {
+        "type": "object",
+        "properties": {
+          "tenantId": {
+            "type": "string",
+            "nullable": true
+          },
+          "accountNo": {
+            "type": "string",
+            "nullable": true
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "emailAddress": {
+            "type": "string",
+            "nullable": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true
+          },
+          "customerType": {
+            "type": "string",
+            "nullable": true
+          },
+          "company": {
+            "$ref": "#/components/schemas/AddCompany"
+          },
+          "inspectionReason": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "filterCsv": {
+        "type": "object",
+        "properties": {
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "filename": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "filterCustomer": {
+        "type": "object",
+        "properties": {
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "searchTxt": {
+            "type": "string",
+            "nullable": true
+          },
+          "sortBy": {
+            "type": "string",
+            "nullable": true
+          },
+          "isAscending": {
+            "type": "boolean"
+          },
+          "customerType": {
+            "type": "string",
+            "nullable": true
+          },
+          "active": {
             "type": "string",
             "nullable": true
           }
