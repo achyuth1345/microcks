@@ -1,23 +1,23 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Email Template Manager API Docs",
-    "description": "Email Template Manager API Documentation",
+    "title": "Organization Manager API Docs",
+    "description": "Organization Manager API Documentation",
     "version": "v2"
   },
   "servers": [
     {
-      "url": "/emailtemplatemanagement"
+      "url": "/organizationmanagement"
     }
   ],
   "paths": {
-    "/api/v1/template": {
+    "/api/v1/cargas/createapikey": {
       "post": {
         "tags": [
-          "Email"
+          "Cargas"
         ],
-        "summary": "This API is used to create a new email template. This email template is used while sending a email technicians and admin",
-        "description": "Request Body Description:\r\n\r\n        type: a unique identitfier for each email template . this field value is used for fetching the email template before sending the email for users\r\n        organizationId:  used for organization mapping , each organization can have distinct emiltemplates",
+        "summary": "This APi is used to input a ERP (cargas) details into Rego Backend",
+        "description": "Request Body description:\r\n\r\n\r\n        CargasUrl: Url for Cargas Integration\r\n        ApiKey: authentication token for Cargas",
         "parameters": [
           {
             "name": "bearer",
@@ -29,43 +29,104 @@
           }
         ],
         "requestBody": {
-          "description": "provide valid Request Body",
+          "description": "provide valid Request body",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddEmailTemplate"
+                "$ref": "#/components/schemas/CargasApiKey"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddEmailTemplate"
+                "$ref": "#/components/schemas/CargasApiKey"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddEmailTemplate"
+                "$ref": "#/components/schemas/CargasApiKey"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "sucessfully created a new email template"
-          },
-          "400": {
-            "description": "provide vaid request body"
+            "description": "sucessfully entered the Cargas information into rego system"
           },
           "401": {
-            "description": "unauthorized access or user doesnt have permission to create email templates"
+            "description": "unauthorized access or user dont have permission to add cargas information"
+          }
+        }
+      }
+    },
+    "/api/v1/cargas": {
+      "put": {
+        "tags": [
+          "Cargas"
+        ],
+        "summary": "This API is used to edit the Cargas details for the organization . This APi also allows user to update the Since Date so that the Cargas sync cycle which would be one day could be restarted from 2010",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token here",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "providerId",
+            "in": "query",
+            "description": "provide valid provider Id",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "changeSinceDate",
+            "in": "query",
+            "description": "provide boolean value true or false",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "provide valid Request body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CargasApiKey"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CargasApiKey"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CargasApiKey"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "sucessfully updated the cargas details"
+          },
+          "404": {
+            "description": "provider Id not found"
+          },
+          "401": {
+            "description": "user dont have permission to update the extrnal provider details"
           }
         }
       },
-      "put": {
+      "get": {
         "tags": [
-          "Email"
+          "Cargas"
         ],
-        "summary": "This API is used to updte a email template. This new email template details will be used while sending a email technicians and admin",
-        "description": "Request Body Description:\r\n\r\n        type: a unique identitfier for each email template . this field value is used for fetching the email template before sending the email for users\r\n        organizationId:  used for organization mapping , each organization can have distinct emiltemplates",
+        "summary": "This APi is used to fetch the External Provider details",
         "parameters": [
           {
             "name": "bearer",
@@ -74,58 +135,308 @@
             "schema": {
               "type": "string"
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessfully fecthed the external provider details"
+          },
+          "404": {
+            "description": "External Provider details not found"
+          },
+          "401": {
+            "description": "user dont have permission to fetch the external provider details"
+          }
+        }
+      }
+    },
+    "/api/v1/counties": {
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "This API is used to fetch Normalized the List of Countries names in the World",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessfully fecthed Country details"
+          },
+          "401": {
+            "description": "user unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/states": {
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "This API is used to fetch Normalized the List of states names in the World for a given country",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
           },
           {
-            "name": "templateId",
+            "name": "countryId",
             "in": "query",
-            "description": "provide valid template Id",
+            "description": "provide valid countryId",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessfully fecthed state details"
+          },
+          "401": {
+            "description": "user unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/cities": {
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "This API is used to fetch Normalized the List of cities names in the World for a given state",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "stateId",
+            "in": "query",
+            "description": "provide valid stateId",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessfully fecthed city details"
+          },
+          "401": {
+            "description": "user unauthorized"
+          }
+        }
+      }
+    },
+    "/api/v1/organization/types": {
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "This APi is sued to get the ist of Organization types",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessfully fetched the list of organization types"
+          },
+          "401": {
+            "description": "unauthorized access or user dont have access to fetch the organization types list"
+          }
+        }
+      }
+    },
+    "/api/v1/organization": {
+      "post": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "This api is used to Create a new Organization",
+        "description": "Request body description:\r\n        \r\n        \r\n        parentOrganizationID:  used to find out the heirarchy of the organization structure\r\n        organizationType: used to assignt he organization a type",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token here",
             "schema": {
               "type": "string"
             }
           }
         ],
         "requestBody": {
-          "description": "provide valid Request Body",
+          "description": "provide vaid Request Body here",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddEmailTemplate"
+                "$ref": "#/components/schemas/CreateOrganizationRequests"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddEmailTemplate"
+                "$ref": "#/components/schemas/CreateOrganizationRequests"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddEmailTemplate"
+                "$ref": "#/components/schemas/CreateOrganizationRequests"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "sucessfully created a new email template"
-          },
-          "404": {
-            "description": "template not found for the Id"
+            "description": "sucessfully created organization"
           },
           "400": {
-            "description": "provide vaid request body"
+            "description": "provide valid organization detals in request body"
           },
           "401": {
-            "description": "unauthorized access or user doesnt have permission to create email templates"
+            "description": ""
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "This API is used to fecth list of all the organizations. when triggered by user the Rego Backend requets platform and fetches all the child organizations of the user's organization.",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token here",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantUniqueIdentifier",
+            "in": "query",
+            "description": "provide tenant details of the organization",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessfullt fetched the list of organiztions"
+          },
+          "404": {
+            "description": "organizations list not found"
+          },
+          "401": {
+            "description": "unauthorized access or user dont have permission to fetch the organization list"
           }
         }
       }
     },
-    "/api/v1/templates": {
+    "/api/v1/organization/uploadicon": {
+      "put": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "This APi is used  upload organization images",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token here",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "files": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              },
+              "encoding": {
+                "files": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "unauthorized access or user dont have access to upload images to organization"
+          }
+        }
+      }
+    },
+    "/api/v1/organization/deleteicon": {
+      "delete": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "This API is used to Delete organization images .",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token details",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "sucessfully deleted organization images"
+          },
+          "404": {
+            "description": "images not found for the organization"
+          },
+          "401": {
+            "description": "unauthorized access or users dont have access to delete the files"
+          }
+        }
+      }
+    },
+    "/api/v1/organization/geticon": {
       "get": {
         "tags": [
-          "Email"
+          "Organization"
         ],
-        "summary": "This API is used to fetch the list of templates for a particular organization",
+        "summary": "This API is used to fetch the SAS UEL of the organizatio icon",
         "parameters": [
           {
             "name": "bearer",
@@ -138,36 +449,92 @@
         ],
         "responses": {
           "200": {
-            "description": "sucessfullly fetched all the list of template details"
+            "description": "sucessfully fetched the organization Logo SAS URL"
           },
           "404": {
-            "description": "templates not found for the organization"
+            "description": "Organization logo not found"
           },
           "401": {
-            "description": "unauthorized access or user dont have permission to fetch list of templates"
+            "description": "unauthorized access or user dont have acces to fetch the organization logo"
           }
         }
       }
     },
-    "/api/v1/template/templateId/{templateId}": {
-      "get": {
+    "/api/v1/organization/orgId/{orgId}": {
+      "put": {
         "tags": [
-          "Email"
+          "Organization"
         ],
-        "summary": "This API is used to fetch template details by Id",
+        "summary": "This API allows user to update th organization details of a particular organization by providing the OrgId in URL",
         "parameters": [
           {
             "name": "bearer",
             "in": "header",
-            "description": "provide valid JWT token here",
+            "description": "povide valid JWT token here",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "templateId",
+            "name": "orgId",
             "in": "path",
-            "description": "provide valid templateId",
+            "description": "provide valid organization Id here",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "provide valid Request Body here",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrganizationRequests"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrganizationRequests"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrganizationRequests"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "organization details updated sucessfully"
+          },
+          "404": {
+            "description": "organization not found"
+          },
+          "401": {
+            "description": "unauthorized access or user dont have access to update organization details"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Organization"
+        ],
+        "summary": "This APi is used to fetch organization details of one organization by providing the OrgId",
+        "parameters": [
+          {
+            "name": "bearer",
+            "in": "header",
+            "description": "provide valid JWT token",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "orgId",
+            "in": "path",
+            "description": "provide Valid OrgId",
             "required": true,
             "schema": {
               "type": "string"
@@ -176,34 +543,34 @@
         ],
         "responses": {
           "200": {
-            "description": "sucesssfully fetched the template details"
+            "description": "sucessfully fetched organization details for the Id"
           },
           "404": {
-            "description": "template not found for given Id"
+            "description": "organzation not found"
           },
           "401": {
-            "description": "unauthorized access"
+            "description": "unauthorized access or user dont have permission to fetch the organization details"
           }
         }
       },
       "delete": {
         "tags": [
-          "Email"
+          "Organization"
         ],
-        "summary": "This API is used for Deleting template information for given id",
+        "summary": "This API is used to delete a organization based on the OrgId",
         "parameters": [
           {
             "name": "bearer",
             "in": "header",
-            "description": "provide valid JWT token here",
+            "description": "provide valid JWT token",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "templateId",
+            "name": "orgId",
             "in": "path",
-            "description": "provide valid template Id",
+            "description": "provide Valid OrgId",
             "required": true,
             "schema": {
               "type": "string"
@@ -212,63 +579,13 @@
         ],
         "responses": {
           "200": {
-            "description": "sucessfully deleted template"
+            "description": "sucessfully deleted organization details for the Id"
           },
           "404": {
-            "description": "template not found for the given Id"
+            "description": "organzation not found"
           },
           "401": {
-            "description": "unauthorized access or user doesn't have permission to delete the template"
-          }
-        }
-      }
-    },
-    "/api/v1/send": {
-      "post": {
-        "tags": [
-          "Email"
-        ],
-        "summary": "This email is to send email to users",
-        "description": "Request Body Description\r\n\r\n\r\n        attachmemts : this fields accepts the attachements in the form of SAS URL strings .",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "provide valid Request Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SendMailRequest"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SendMailRequest"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/SendMailRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "sucessfully sent the emails to the users"
-          },
-          "400": {
-            "description": "please provide valid request body"
-          },
-          "401": {
-            "description": "unauthorized access or user dont have permission to send emails"
+            "description": "unauthorized access or user dont have permission to delete the organization details"
           }
         }
       }
@@ -298,18 +615,32 @@
   },
   "components": {
     "schemas": {
-      "AddEmailTemplate": {
+      "CargasApiKey": {
         "type": "object",
         "properties": {
-          "subject": {
+          "cargasUrl": {
             "type": "string",
             "nullable": true
           },
-          "body": {
+          "apiKey": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CreateOrganizationRequests": {
+        "type": "object",
+        "properties": {
+          "organizationName": {
             "type": "string",
             "nullable": true
           },
-          "type": {
+          "organizationType": {
+            "type": "string",
+            "nullable": true
+          },
+          "organizationTypeId": {
             "type": "string",
             "nullable": true
           },
@@ -317,72 +648,61 @@
             "type": "string",
             "nullable": true
           },
-          "organizationId": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "AddressCollection": {
-        "type": "object",
-        "properties": {
-          "address": {
+          "alias": {
             "type": "string",
             "nullable": true
           },
-          "displayName": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "SendMailRequest": {
-        "type": "object",
-        "properties": {
-          "tenantUniqueIdentifier": {
+          "description": {
             "type": "string",
             "nullable": true
           },
-          "to": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/AddressCollection"
-            },
-            "nullable": true
-          },
-          "cc": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "bcc": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "nullable": true
-          },
-          "type": {
+          "parentOrganizationId": {
             "type": "string",
             "nullable": true
           },
-          "context": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
+          "address1": {
+            "type": "string",
             "nullable": true
           },
-          "attachments": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
+          "address2": {
+            "type": "string",
             "nullable": true
+          },
+          "country": {
+            "type": "string",
+            "nullable": true
+          },
+          "state": {
+            "type": "string",
+            "nullable": true
+          },
+          "city": {
+            "type": "string",
+            "nullable": true
+          },
+          "zipcode": {
+            "type": "string",
+            "nullable": true
+          },
+          "ownEmail": {
+            "type": "string",
+            "nullable": true
+          },
+          "ownPhoneNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "ownAlternateNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
           }
         },
         "additionalProperties": false
