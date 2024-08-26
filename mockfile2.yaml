@@ -1,87 +1,28 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Customer Manager API Docs",
-    "description": "Customer Manager API Documentation",
+    "title": "Email Template Manager API Docs",
+    "description": "Email Template Manager API Documentation",
     "version": "v2"
   },
   "servers": [
     {
-      "url": "/customermanagement"
+      "url": "/emailtemplatemanagement"
     }
   ],
   "paths": {
-    "/api/v1/customer": {
+    "/api/v1/template": {
       "post": {
         "tags": [
-          "Customers"
+          "Email"
         ],
-        "summary": "This API is used to create a new customer with multiple address locations .",
-        "description": "Request Body:\r\n\r\n        \r\n        \r\n        accountNo:  a Unique identifier for the customer in a particular organization\r\n        address:  a list of JSON where each JSON represents one particular location for a customer\r\n        customerType: a enum with two values Business or Residential",
+        "summary": "This API is used to create a new email template. This email template is used while sending a email technicians and admin",
+        "description": "Request Body Description:\r\n\r\n        type: a unique identitfier for each email template . this field value is used for fetching the email template before sending the email for users\r\n        organizationId:  used for organization mapping , each organization can have distinct emiltemplates",
         "parameters": [
           {
             "name": "bearer",
             "in": "header",
             "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "provide valid Request Body here",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddCustomerInfo"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddCustomerInfo"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddCustomerInfo"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "sucessfully created a customer"
-          },
-          "400": {
-            "description": "request body is invalid , provide valid request body"
-          },
-          "401": {
-            "description": "unauthorized acccess or use doesnt have permission to create a customer"
-          }
-        }
-      }
-    },
-    "/api/v1/customer/customerId/{customerId}": {
-      "put": {
-        "tags": [
-          "Customers"
-        ],
-        "summary": "This API is sued to update the details of a customer by providing a customerId.",
-        "description": "Request Body:\r\n\r\n        \r\n        \r\n        accountNo:  a Unique identifier for the customer in a particular organization\r\n        address:  a list of JSON where each JSON represents one particular location for a customer\r\n        customerType: a enum with two values Business or Residential",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "customerId",
-            "in": "path",
-            "description": "provide valid customerId",
-            "required": true,
             "schema": {
               "type": "string"
             }
@@ -92,116 +33,39 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddCustomerInfo"
+                "$ref": "#/components/schemas/AddEmailTemplate"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/AddCustomerInfo"
+                "$ref": "#/components/schemas/AddEmailTemplate"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/AddCustomerInfo"
+                "$ref": "#/components/schemas/AddEmailTemplate"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "sucessfully updated the customer details"
-          },
-          "404": {
-            "description": "customer with provided id not found"
+            "description": "sucessfully created a new email template"
           },
           "400": {
-            "description": "request body not valid"
+            "description": "provide vaid request body"
           },
           "401": {
-            "description": "unauthorized access or user doesnt have access to update the customer details"
+            "description": "unauthorized access or user doesnt have permission to create email templates"
           }
         }
       },
-      "get": {
-        "tags": [
-          "Customers"
-        ],
-        "summary": "This API allows user to fetch the details of a customer by providing the customerId",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "customerId",
-            "in": "path",
-            "description": "provide valid customerId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "sucessfully fetched customer details"
-          },
-          "404": {
-            "description": "customer with Id not found"
-          },
-          "401": {
-            "description": "unauthorized user or user doent have acces to fetch the customer details"
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Customers"
-        ],
-        "summary": "This API is used to delete a customer by Id.",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "bearer",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "customerId",
-            "in": "path",
-            "description": "customerId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "customer deleted sucessfully"
-          },
-          "404": {
-            "description": "customer not found for the Id"
-          },
-          "401": {
-            "description": "unauthrized accesss or user doesnt have permisssion to delete the customer"
-          }
-        }
-      }
-    },
-    "/api/v2/customer/customerId/{customerId}": {
       "put": {
         "tags": [
-          "Customers"
+          "Email"
         ],
-        "summary": "This is a Version 2 api for updtion of customer details where it only updates the customer details and address details remainas the same as before",
-        "description": "Request Body:\r\n\r\n        \r\n        \r\n        accountNo:  a Unique identifier for the customer in a particular organization\r\n        customerType: a enum with two values Business or Residential",
+        "summary": "This API is used to updte a email template. This new email template details will be used while sending a email technicians and admin",
+        "description": "Request Body Description:\r\n\r\n        type: a unique identitfier for each email template . this field value is used for fetching the email template before sending the email for users\r\n        organizationId:  used for organization mapping , each organization can have distinct emiltemplates",
         "parameters": [
           {
             "name": "bearer",
@@ -212,10 +76,9 @@
             }
           },
           {
-            "name": "customerId",
-            "in": "path",
-            "description": "provide valid customerId",
-            "required": true,
+            "name": "templateId",
+            "in": "query",
+            "description": "provide valid template Id",
             "schema": {
               "type": "string"
             }
@@ -226,41 +89,43 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/EditCustomerInfo"
+                "$ref": "#/components/schemas/AddEmailTemplate"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/EditCustomerInfo"
+                "$ref": "#/components/schemas/AddEmailTemplate"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/EditCustomerInfo"
+                "$ref": "#/components/schemas/AddEmailTemplate"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "sucessfully updated the customer details"
+            "description": "sucessfully created a new email template"
           },
           "404": {
-            "description": "customer with provided id not found"
+            "description": "template not found for the Id"
           },
           "400": {
-            "description": "request body not valid"
+            "description": "provide vaid request body"
           },
           "401": {
-            "description": "unauthorized access or user doesnt have access to update the customer details"
+            "description": "unauthorized access or user doesnt have permission to create email templates"
           }
         }
-      },
+      }
+    },
+    "/api/v1/templates": {
       "get": {
         "tags": [
-          "Customers"
+          "Email"
         ],
-        "summary": "This API allows user to fetch the details of a customer by providing the customerId",
+        "summary": "This API is used to fetch the list of templates for a particular organization",
         "parameters": [
           {
             "name": "bearer",
@@ -269,210 +134,27 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "customerId",
-            "in": "path",
-            "description": "provide valid customerId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
           "200": {
-            "description": "sucessfully fetched customer details"
+            "description": "sucessfullly fetched all the list of template details"
           },
           "404": {
-            "description": "customer with Id not found"
+            "description": "templates not found for the organization"
           },
           "401": {
-            "description": "unauthorized user or user doent have acces to fetch the customer details"
+            "description": "unauthorized access or user dont have permission to fetch list of templates"
           }
         }
       }
     },
-    "/api/v2/addaddress/customerId/{customerId}": {
-      "post": {
-        "tags": [
-          "Customers"
-        ],
-        "summary": "This is a Version 2 API for creating  new address in a customer . by triggering this API user will be able to create one address in a particular customer which doesn't conflict with any other address in that customer",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "customerId",
-            "in": "path",
-            "description": "provide valid customerId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "provide valid Request Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAddress"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAddress"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAddress"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "sucessfully created the address details"
-          },
-          "404": {
-            "description": "customer with provided id not found"
-          },
-          "400": {
-            "description": "request body not valid"
-          },
-          "401": {
-            "description": "unauthorized access or user doesnt have access to add the address details"
-          }
-        }
-      }
-    },
-    "/api/v2/deleteaddress/customerId/{customerId}/siteId/{siteId}": {
-      "delete": {
-        "tags": [
-          "Customers"
-        ],
-        "summary": "This is a version2 API for deleting a address from a particular customer . by triggering this API user should be able to delete only one address from list of address of a customer.",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "customerId",
-            "in": "path",
-            "description": "provide valid customerId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "siteId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "sucessfully deleted the address details"
-          },
-          "404": {
-            "description": "customer with provided id not found"
-          },
-          "401": {
-            "description": "unauthorized access or user doesnt have access to delete the address details"
-          }
-        }
-      }
-    },
-    "/api/v2/updateAddress/Customer/{customerId}/siteId/{siteId}": {
-      "put": {
-        "tags": [
-          "Customers"
-        ],
-        "summary": "This is a version2 API for updating a address from a particular customer . by triggering this API user should be able to update only one address from list of address of a customer.",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "customerId",
-            "in": "path",
-            "description": "provide valid customerId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "siteId",
-            "in": "path",
-            "description": "provide valid siteId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "provide valid Request Body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAddress"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAddress"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddAddress"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "sucessfully update the address details"
-          },
-          "404": {
-            "description": "customer with provided id not found"
-          },
-          "401": {
-            "description": "unauthorized access or user doesnt have access to update the address details"
-          }
-        }
-      }
-    },
-    "/api/v1/customer/type/{customerType}/filter/{filter}": {
+    "/api/v1/template/templateId/{templateId}": {
       "get": {
         "tags": [
-          "Customers"
+          "Email"
         ],
-        "summary": "This API is used to fetch a list of all the customers with search text. By triggering thi API user can get list of all the customer and their address",
+        "summary": "This API is used to fetch template details by Id",
         "parameters": [
           {
             "name": "bearer",
@@ -483,18 +165,9 @@
             }
           },
           {
-            "name": "customerType",
+            "name": "templateId",
             "in": "path",
-            "description": "provide the customerType filter values can be Residential, Business or All",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter",
-            "in": "path",
-            "description": "Provide search text here , api searches the match in accountNo, address, company and email",
+            "description": "provide valid templateId",
             "required": true,
             "schema": {
               "type": "string"
@@ -503,318 +176,21 @@
         ],
         "responses": {
           "200": {
-            "description": "sucessfully fetched the customer list"
+            "description": "sucesssfully fetched the template details"
           },
           "404": {
-            "description": "customers not found in the user's organizations"
-          },
-          "401": {
-            "description": "unauthorized access or user doesnt have permission to get customer list"
-          }
-        }
-      }
-    },
-    "/api/v2/customer/filter": {
-      "post": {
-        "tags": [
-          "Customers"
-        ],
-        "summary": "This is a Versioni 2 API to get list of customers and address batch wise. By providing batch size and page number user can fetch only those customers and searching is also provided. Searching can also be done using the same API",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/filterCustomer"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/filterCustomer"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/filterCustomer"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "sucessfully fetched the customer list"
-          },
-          "404": {
-            "description": "customer not found in the search result"
-          },
-          "401": {
-            "description": "unauthorized user or user doesnt have access to feth the customer list"
-          }
-        }
-      }
-    },
-    "/api/v2/customer/{customerId}/getAddress/filter": {
-      "post": {
-        "tags": [
-          "Customers"
-        ],
-        "summary": "This API is used to fetchg the list of address of a particular customer batch wise.",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "customerId",
-            "in": "path",
-            "description": "provide valid customer Id",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "provide the valid request body",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/filterCustomer"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/filterCustomer"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/filterCustomer"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "sucessfully fetch the list of adddress for the given customerId"
-          },
-          "404": {
-            "description": "customer not found for the given customerId"
-          },
-          "401": {
-            "description": "user unauthorized or user dont have access to fetch list of address for the customer"
-          }
-        }
-      }
-    },
-    "/api/v2/bulkUpload/customer": {
-      "post": {
-        "tags": [
-          "Customers"
-        ],
-        "summary": "This API allows user to upload a csv file to initiate a bulk upload job which reads all the rows from the csv and starts creating  customers",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "fileSize": {
-                    "type": "string"
-                  },
-                  "totalRecords": {
-                    "type": "string"
-                  },
-                  "filename": {
-                    "type": "string"
-                  },
-                  "username": {
-                    "type": "string"
-                  },
-                  "file": {
-                    "type": "string",
-                    "format": "binary"
-                  }
-                }
-              },
-              "encoding": {
-                "fileSize": {
-                  "style": "form"
-                },
-                "totalRecords": {
-                  "style": "form"
-                },
-                "filename": {
-                  "style": "form"
-                },
-                "username": {
-                  "style": "form"
-                },
-                "file": {
-                  "style": "form"
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "sucessfully uploaded the CSV file"
-          },
-          "400": {
-            "description": "provide valid bulk upload file details"
-          },
-          "401": {
-            "description": "user unauthorized or user cannot upload CSV file"
-          }
-        }
-      }
-    },
-    "/api/v2/bulkUpload/customerfailrecords": {
-      "post": {
-        "tags": [
-          "Customers"
-        ],
-        "summary": "This API allows user to download a csv file which contains all the failed records of the uploaded CSV",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "bearer",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "request body to fetch the bulk upload request details vatch wise",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/filterCsv"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/filterCsv"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/filterCsv"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "sucessfully fetched all the bulk requests batch wise"
-          },
-          "404": {
-            "description": "no bulk job requests found"
-          },
-          "401": {
-            "description": "unauthorized user or user doesnt have permission to view all the bulk job requests"
-          }
-        }
-      }
-    },
-    "/api/v2/bulkUpload/customer/getTemplate": {
-      "get": {
-        "tags": [
-          "Customers"
-        ],
-        "summary": "This API is used to download the template CSV . User should use this template to add the customer information in each row and can upload the updated file for triggering bulk upload job",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "provide valid JWT token here",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "sucessfully fetched the CSV file"
-          },
-          "404": {
-            "description": "file not found"
+            "description": "template not found for given Id"
           },
           "401": {
             "description": "unauthorized access"
           }
         }
-      }
-    },
-    "/api/v1/customer/customerId/{customerId}/approve": {
-      "put": {
+      },
+      "delete": {
         "tags": [
-          "Customers"
+          "Email"
         ],
-        "summary": "This API is used to approve the status of the customer",
-        "parameters": [
-          {
-            "name": "bearer",
-            "in": "header",
-            "description": "bearer",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "customerId",
-            "in": "path",
-            "description": "customerId",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "sucessfully approved the customer"
-          },
-          "404": {
-            "description": "customer not found for the given Id"
-          },
-          "401": {
-            "description": "user unauthorized or user doesn't have permission to edit the customer details"
-          }
-        }
-      }
-    },
-    "/api/v1/customer/accountNo/{accountNo}/isapproved": {
-      "get": {
-        "tags": [
-          "Customers"
-        ],
-        "summary": "This API is used to check if the customer is approved based on the accountNo",
+        "summary": "This API is used for Deleting template information for given id",
         "parameters": [
           {
             "name": "bearer",
@@ -825,9 +201,9 @@
             }
           },
           {
-            "name": "accountNo",
+            "name": "templateId",
             "in": "path",
-            "description": "provide valid accountNo",
+            "description": "provide valid template Id",
             "required": true,
             "schema": {
               "type": "string"
@@ -836,23 +212,24 @@
         ],
         "responses": {
           "200": {
-            "description": "sucessfully fetched the status of the customer for given accountNo"
+            "description": "sucessfully deleted template"
           },
           "404": {
-            "description": "customer not found for given account number"
+            "description": "template not found for the given Id"
           },
           "401": {
-            "description": "user unauthorized or user doesn't have access to check the status of customer"
+            "description": "unauthorized access or user doesn't have permission to delete the template"
           }
         }
       }
     },
-    "/api/v2/customerId/{customerId}/active": {
-      "put": {
+    "/api/v1/send": {
+      "post": {
         "tags": [
-          "Customers"
+          "Email"
         ],
-        "summary": "This API is used to make the customer active/Inactive",
+        "summary": "This email is to send email to users",
+        "description": "Request Body Description\r\n\r\n\r\n        attachmemts : this fields accepts the attachements in the form of SAS URL strings .",
         "parameters": [
           {
             "name": "bearer",
@@ -861,33 +238,37 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "customerId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "active",
-            "in": "query",
-            "description": "provide boolean true or false here . True for activaing the customer false for inactivating the customer",
-            "schema": {
-              "type": "boolean"
-            }
           }
         ],
+        "requestBody": {
+          "description": "provide valid Request Body",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendMailRequest"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendMailRequest"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SendMailRequest"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
-            "description": "sucessfully updted the customer"
+            "description": "sucessfully sent the emails to the users"
           },
-          "404": {
-            "description": "customer not found for the customerId"
+          "400": {
+            "description": "please provide valid request body"
           },
           "401": {
-            "description": "user unauthorized or user doesn't have permission to update the customer"
+            "description": "unauthorized access or user dont have permission to send emails"
           }
         }
       }
@@ -917,218 +298,90 @@
   },
   "components": {
     "schemas": {
-      "AddAddress": {
+      "AddEmailTemplate": {
         "type": "object",
         "properties": {
-          "siteId": {
+          "subject": {
             "type": "string",
             "nullable": true
           },
-          "siteName": {
+          "body": {
             "type": "string",
             "nullable": true
           },
-          "siteType": {
+          "type": {
             "type": "string",
             "nullable": true
           },
-          "lastName": {
+          "tenantUniqueIdentifier": {
             "type": "string",
             "nullable": true
           },
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "gasEquipPresent": {
-            "type": "boolean"
-          },
-          "country": {
-            "type": "string",
-            "nullable": true
-          },
-          "address": {
-            "type": "string",
-            "nullable": true
-          },
-          "state": {
-            "type": "string",
-            "nullable": true
-          },
-          "city": {
-            "type": "string",
-            "nullable": true
-          },
-          "zipCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone": {
-            "type": "string",
-            "nullable": true
-          },
-          "emailAddress": {
+          "organizationId": {
             "type": "string",
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "AddCompany": {
+      "AddressCollection": {
         "type": "object",
         "properties": {
-          "name": {
+          "address": {
             "type": "string",
             "nullable": true
           },
-          "emailAddress": {
+          "displayName": {
             "type": "string",
             "nullable": true
           }
         },
         "additionalProperties": false
       },
-      "AddCustomerInfo": {
+      "SendMailRequest": {
         "type": "object",
         "properties": {
-          "tenantId": {
+          "tenantUniqueIdentifier": {
             "type": "string",
             "nullable": true
           },
-          "accountNo": {
-            "type": "string",
-            "nullable": true
-          },
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "emailAddress": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone": {
-            "type": "string",
-            "nullable": true
-          },
-          "customerType": {
-            "type": "string",
-            "nullable": true
-          },
-          "company": {
-            "$ref": "#/components/schemas/AddCompany"
-          },
-          "address": {
+          "to": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/AddAddress"
+              "$ref": "#/components/schemas/AddressCollection"
             },
             "nullable": true
           },
-          "inspectionReason": {
+          "cc": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "bcc": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "type": {
             "type": "string",
             "nullable": true
           },
-          "isActive": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "EditCustomerInfo": {
-        "type": "object",
-        "properties": {
-          "tenantId": {
-            "type": "string",
+          "context": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
             "nullable": true
           },
-          "accountNo": {
-            "type": "string",
-            "nullable": true
-          },
-          "firstName": {
-            "type": "string",
-            "nullable": true
-          },
-          "lastName": {
-            "type": "string",
-            "nullable": true
-          },
-          "emailAddress": {
-            "type": "string",
-            "nullable": true
-          },
-          "phone": {
-            "type": "string",
-            "nullable": true
-          },
-          "customerType": {
-            "type": "string",
-            "nullable": true
-          },
-          "company": {
-            "$ref": "#/components/schemas/AddCompany"
-          },
-          "inspectionReason": {
-            "type": "string",
-            "nullable": true
-          },
-          "isActive": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "filterCsv": {
-        "type": "object",
-        "properties": {
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "filename": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "filterCustomer": {
-        "type": "object",
-        "properties": {
-          "pageNumber": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "pageSize": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "searchTxt": {
-            "type": "string",
-            "nullable": true
-          },
-          "sortBy": {
-            "type": "string",
-            "nullable": true
-          },
-          "isAscending": {
-            "type": "boolean"
-          },
-          "customerType": {
-            "type": "string",
-            "nullable": true
-          },
-          "active": {
-            "type": "string",
+          "attachments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "nullable": true
           }
         },
