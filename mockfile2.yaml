@@ -14,7 +14,7 @@ paths:
       parameters:
         - name: bearer
           in: header
-          description: provide valid JWT tken here
+          description: provide valid JWT token here
           schema:
             type: string
       requestBody:
@@ -29,7 +29,7 @@ paths:
         '200':
           description: sucessfully created entity
         '401':
-          description: user unautorized to create new entity
+          description: user unauthorized to create new entity
     put:
       tags:
         - Entity
@@ -37,7 +37,7 @@ paths:
       parameters:
         - name: bearer
           in: header
-          description: provide valid JWT tken here
+          description: provide valid JWT token here
           schema:
             type: string
         - name: entityId
@@ -56,7 +56,7 @@ paths:
         '200':
           description: sucessfully updated entity
         '401':
-          description: user unautorized to update  entity
+          description: user unauthorized to update  entity
     get:
       tags:
         - Entity
@@ -69,7 +69,7 @@ paths:
             type: string
       responses:
         '200':
-          description: sucessfully fecthed list of entities
+          description: sucessfully fetched list of entities
     delete:
       tags:
         - Entity
@@ -89,7 +89,7 @@ paths:
         '200':
           description: sucessfully deleted the entity
         '401':
-          description: user unauthorized or dont have permission to delete the entity
+          description: user unauthorized or don't have permission to delete the entity
   /api/v1/persona:
     post:
       tags:
@@ -126,7 +126,7 @@ paths:
         '200':
           description: sucessfully fetched persona list
         '401':
-          description: user unauthorized or user dont have permission to view personas
+          description: user unauthorized or user don't have permission to view personas
   /api/v1/privacyTerms/personId:
     get:
       tags:
@@ -147,7 +147,7 @@ paths:
         '200':
           description: sucessfully fetched privacy terms of the given persona
         '401':
-          description: user unauthorized or user dont have permission to fetch privacy terms
+          description: user unauthorized or user don't have permission to fetch privacy terms
   /api/v1/seeddata/persona:
     get:
       tags:
@@ -224,7 +224,7 @@ paths:
     put:
       tags:
         - Rights
-      summary: This API is used to update rights  of a persona for RBAC
+      summary: This API is used to update rights of a persona for RBAC
       parameters:
         - name: bearer
           in: header
@@ -248,12 +248,12 @@ paths:
         '200':
           description: sucessfully updated rights for the given persona
         '401':
-          description: user unauthorized or user dont have permission to update rights
+          description: user unauthorized or user don't have permission to update rights
   /api/v1/rights/entity/{entityName}/operation/{operation}:
     get:
       tags:
         - Rights
-      summary: This API is used to check right of the user for a particular entity and operation
+      summary: This API is used to check rights of the user for a particular entity and operation
       parameters:
         - name: bearer
           in: header
@@ -274,9 +274,9 @@ paths:
             type: string
       responses:
         '200':
-          description: sucessfully fecthed the rights of persona for the operation and entity
+          description: sucessfully fetched the rights of persona for the operation and entity
         '401':
-          description: user doesnt have permission to perform the operation
+          description: user doesn't have permission to perform the operation
   /api/v1/rights:
     get:
       tags:
@@ -290,7 +290,7 @@ paths:
             type: string
       responses:
         '200':
-          description: sucessfully fetched right of the user
+          description: sucessfully fetched rights of the user
  
 components:
   schemas:
