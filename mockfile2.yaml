@@ -10,7 +10,7 @@ paths:
     post:
       tags:
         - Entity
-      summary: This API is used for creation of entities for RBAC, with this user can ccreate new entities for management
+      summary: This API is used for creation of entities for RBAC, with this user can create new entities for management
       parameters:
         - name: bearer
           in: header
