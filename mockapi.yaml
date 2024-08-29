@@ -1,872 +1,806 @@
-{
-    "openapi": "3.0.1",
-    "info": {
-        "title": "Asset Manager API Docs",
-        "description": "Asset Manager API Documentation",
-        "version": "v2"
-    },
-    "servers": [
-        {
-            "url": "/assetmanagement"
-        }
-    ],
-    "paths": {
-        "/api/v1/assets": {
-            "post": {
-                "tags": [
-                    "Assets"
-                ],
-                "summary": "this api allows user to create a aset for a specific assset type",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "description": "Requests",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AddAssets"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            },
-            "put": {
-                "tags": [
-                    "Assets"
-                ],
-                "summary": "this api allows user to edit the asset details of a specific asset",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "assetId",
-                        "in": "query",
-                        "description": "assetId",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "description": "Requests",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AddAssets"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            },
-            "get": {
-                "tags": [
-                    "Assets"
-                ],
-                "summary": "Get list of assets by tenant and status",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "status",
-                        "in": "query",
-                        "description": "status",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/api/v1/assets/customerId/{customerId}/siteId/{siteId}": {
-            "get": {
-                "tags": [
-                    "Assets"
-                ],
-                "summary": "Get list of assets by customerId and siteId",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "customerId",
-                        "in": "path",
-                        "description": "customerId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "siteId",
-                        "in": "path",
-                        "description": "siteId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/api/v1/assets/assetId/{assetId}": {
-            "get": {
-                "tags": [
-                    "Assets"
-                ],
-                "summary": "Get specific asset by assetId",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "assetId",
-                        "in": "path",
-                        "description": "assetId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "Assets"
-                ],
-                "summary": "Get specific asset by assetId",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "assetId",
-                        "in": "path",
-                        "description": "assetId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/api/v1/assets/assetId/{assetId}/approve": {
-            "put": {
-                "tags": [
-                    "Assets"
-                ],
-                "summary": "Get specific asset by assetId",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "assetId",
-                        "in": "path",
-                        "description": "assetId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/api/v1/assets/assetId/assetmedia/{assetUniqueId}": {
-            "post": {
-                "tags": [
-                    "Assets"
-                ],
-                "summary": "post specific asset media by assetId",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "assetUniqueId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "multipart/form-data": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "files": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "string",
-                                            "format": "binary"
-                                        }
-                                    }
-                                }
-                            },
-                            "encoding": {
-                                "files": {
-                                    "style": "form"
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/api/v2/assets": {
-            "post": {
-                "tags": [
-                    "Assets"
-                ],
-                "summary": "post specific asset media by assetId",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AddAssets"
-                            }
-                        },
-                        "text/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AddAssets"
-                            }
-                        },
-                        "application/*+json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AddAssets"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/api/v1/assets/assetUniqueId/{assetUniqueId}/isapproved": {
-            "get": {
-                "tags": [
-                    "Assets"
-                ],
-                "summary": "Get specific asset by assetId",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "assetUniqueId",
-                        "in": "path",
-                        "description": "assetUniqueId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/api/v1/assets/radius/{radius}/latitude/{latitude}/longitude/{longitude}/search": {
-            "get": {
-                "tags": [
-                    "Assets"
-                ],
-                "summary": "Search asset by radius",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "radius",
-                        "in": "path",
-                        "description": "radius",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "latitude",
-                        "in": "path",
-                        "description": "latitude",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    },
-                    {
-                        "name": "longitude",
-                        "in": "path",
-                        "description": "longitude",
-                        "required": true,
-                        "schema": {
-                            "type": "number",
-                            "format": "double"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/api/v1/assets/serialNo/{serialNo}/assetuniqueId/{assetuniqueId}": {
-            "delete": {
-                "tags": [
-                    "Assets"
-                ],
-                "summary": "Get specific asset by assetId",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "serialNo",
-                        "in": "path",
-                        "description": "serialNo",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "assetuniqueId",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/api/v1/assettype": {
-            "post": {
-                "tags": [
-                    "AssetType"
-                ],
-                "summary": "Create Asset Type for the given tenant",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "description": "Requests",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AddAssetType"
-                            }
-                        },
-                        "text/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AddAssetType"
-                            }
-                        },
-                        "application/*+json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AddAssetType"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            },
-            "get": {
-                "tags": [
-                    "AssetType"
-                ],
-                "summary": "Get Asset Type List",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/api/v1/assettype/assetTypeId/{assetTypeId}": {
-            "put": {
-                "tags": [
-                    "AssetType"
-                ],
-                "summary": "Update Asset Type for specific asset type Id",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "assetTypeId",
-                        "in": "path",
-                        "description": "assetTypeId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "description": "Requests",
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AddAssetType"
-                            }
-                        },
-                        "text/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AddAssetType"
-                            }
-                        },
-                        "application/*+json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/AddAssetType"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            },
-            "get": {
-                "tags": [
-                    "AssetType"
-                ],
-                "summary": "Get Asset Type information for given id",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "assetTypeId",
-                        "in": "path",
-                        "description": "assetTypeId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            },
-            "delete": {
-                "tags": [
-                    "AssetType"
-                ],
-                "summary": "Delete Asset Type information for given id",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "description": "bearer",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "name": "assetTypeId",
-                        "in": "path",
-                        "description": "assetTypeId",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/live": {
-            "get": {
-                "tags": [
-                    "SystemCheck"
-                ],
-                "summary": "Check if the API is Live",
-                "parameters": [
-                    {
-                        "name": "bearer",
-                        "in": "header",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        }
-    },
-    "components": {
-        "schemas": {
-            "AddAssetType": {
-                "type": "object",
-                "properties": {
-                    "assetTypeName": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "assetTypeDesc": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "assetTypeUniqueId": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "assetTypeVersion": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "assetTypeTenantIdentifier": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "assetTypeAppIdentified": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "associatedAssetType": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "nullable": true
-                    },
-                    "properties": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/AssetTypeProperty"
-                        },
-                        "nullable": true
-                    },
-                    "tags": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "string",
-                            "nullable": true
-                        },
-                        "nullable": true
-                    },
-                    "organizationId": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                },
-                "additionalProperties": false
-            },
-            "AddAssets": {
-                "type": "object",
-                "properties": {
-                    "assetName": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "assetUniqueId": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "assetLocation": {
-                        "$ref": "#/components/schemas/AddLocation"
-                    },
-                    "assetVersion": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "assetTenantIdentifier": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "assetDescription": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "assetTypeUniqueId": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "customerInfo": {
-                        "$ref": "#/components/schemas/CustomerInfo"
-                    },
-                    "modifiedOn": {
-                        "type": "string",
-                        "format": "date-time"
-                    },
-                    "assetIcons": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/Picture"
-                        },
-                        "nullable": true
-                    },
-                    "properties": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "string"
-                        },
-                        "nullable": true
-                    },
-                    "tags": {
-                        "type": "object",
-                        "additionalProperties": {
-                            "type": "string"
-                        },
-                        "nullable": true
-                    },
-                    "associatedAssets": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "nullable": true
-                    },
-                    "relatedAssets": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        },
-                        "nullable": true
-                    },
-                    "primaryModifiedOn": {
-                        "type": "string",
-                        "format": "date-time"
-                    }
-                },
-                "additionalProperties": false
-            },
-            "AddLocation": {
-                "type": "object",
-                "properties": {
-                    "coordinates": {
-                        "type": "array",
-                        "items": {
-                            "type": "number",
-                            "format": "double"
-                        },
-                        "nullable": true
-                    }
-                },
-                "additionalProperties": false
-            },
-            "AssetTypeProperty": {
-                "type": "object",
-                "properties": {
-                    "key": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "valueType": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "defaultValue": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "required": {
-                        "type": "boolean"
-                    }
-                },
-                "additionalProperties": false
-            },
-            "CustomerInfo": {
-                "type": "object",
-                "properties": {
-                    "customerId": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "siteId": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                },
-                "additionalProperties": false
-            },
-            "Picture": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "data": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                },
-                "additionalProperties": false
-            }
-        }
-    }
-}
+openapi: 3.0.1
+info:
+  title: Report Manager API Docs
+  description: Report Manager API Documentation
+  version: v2
+servers:
+  - url: /reportmanagement
+paths:
+  /api/v1/media/upload:
+    post:
+      tags:
+        - Media
+      summary: Upload media
+      parameters:
+        - name: bearer
+          in: header
+          description: bearer
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                reportId:
+                  type: string
+                correlationId:
+                  type: string
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+            encoding:
+              reportId:
+                style: form
+              correlationId:
+                style: form
+              files:
+                style: form
+      responses:
+        '200':
+          description: Success
+  /api/v1/report/appliancecheck:
+    post:
+      tags:
+        - Report
+      summary: This API is used to  Publish appliance check report for the tests (Via kafka publisher)
+      parameters:
+        - name: bearer
+          in: header
+          description: bearer
+          schema:
+            type: string
+      requestBody:
+        description: provide valid Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplianceCheckRequests'
+
+      responses:
+        '200':
+          description: sucessfully published report to kafka
+        '400':
+          description: customer details not found
+        '401':
+          description: user unauthorized or user dont have access to upload appliance check report
+  /api/v1/report/SystemCheck:
+    post:
+      tags:
+        - Report
+      summary: This API is used to  Publish system check report for the tests (Via kafka publisher)
+      parameters:
+        - name: bearer
+          in: header
+          description: bearer
+          schema:
+            type: string
+      requestBody:
+        description: provide valid Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SystemCheckRequests'
+        
+      responses:
+        '200':
+          description: sucessfully published report to kafka
+        '400':
+          description: customer details not found
+        '401':
+          description: user unauthorized or user dont have access to upload system check report
+  /api/v1/report/leaktest:
+    post:
+      tags:
+        - Report
+      summary: This API is used to  Publish leak check report for the tests (Via kafka publisher)
+      parameters:
+        - name: bearer
+          in: header
+          description: bearer
+          schema:
+            type: string
+      requestBody:
+        description: provide valid Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeakCheckRequests'
+         
+      responses:
+        '200':
+          description: sucessfully published report to kafka
+        '400':
+          description: customer details not found
+        '401':
+          description: user unauthorized or user dont have access to upload leak check report
+  /api/v1/report/cathodicprotection:
+    post:
+      tags:
+        - Report
+      summary: This API is used to  Publish cathodic protection check report for the tests (Via kafka publisher)
+      parameters:
+        - name: bearer
+          in: header
+          description: bearer
+          schema:
+            type: string
+      requestBody:
+        description: provide valid Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LeakCheckRequests'
+         
+      responses:
+        '200':
+          description: sucessfully published report to kafka
+        '400':
+          description: customer details not found
+        '401':
+          description: user unauthorized or user dont have access to upload cathodic protection check
+  /api/v1/report/tenantUniqueIdentifier/{tenantUniqueIdentifier}/all:
+    post:
+      tags:
+        - Report
+      summary: This API is used to fetch all the list of reports during a time period of fromDate to toDate. By triggering this API user will get all th reports that were created after FromDate and before ToDate.
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT toekn
+          schema:
+            type: string
+        - name: tenantUniqueIdentifier
+          in: path
+          description: provide tenant details of the report
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: provide valid Request Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FilterReport'
+         
+      responses:
+        '200':
+          description: sucessfully fetched reportrs duting the time period
+        '401':
+          description: user unauthorized or user dont have permission to view reports
+        '404':
+          description: No reports found for the filter
+  /api/v2/report/tenantUniqueIdentifier/{tenantUniqueIdentifier}/all:
+    post:
+      tags:
+        - Report
+      summary: This API is used to fetch  list of reports during a time period of fromDate to toDate in a batch manner. By triggering this API user will get all th reports that were created after FromDate and before ToDate in a batch manner . user can provide the batch size and the page number
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT toekn
+          schema:
+            type: string
+        - name: tenantUniqueIdentifier
+          in: path
+          description: provide tenant details of the report
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: provide valid Request Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paginatedReport'
+         
+      responses:
+        '200':
+          description: sucessfully fetched reportrs duting the time period
+        '401':
+          description: user unauthorized or user dont have permission to view reports
+        '404':
+          description: No reports found for the filter
+  /api/v2/reportCount/tenantUniqueIdentifier/{tenantUniqueIdentifier}/all:
+    post:
+      tags:
+        - Report
+      summary: This API provides the count of each type or report during a time period of FromDate to ToDate.
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT toekn
+          schema:
+            type: string
+        - name: tenantUniqueIdentifier
+          in: path
+          description: provide tenant details of the report
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: provide valid Request Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/paginatedReport'
+         
+      responses:
+        '200':
+          description: sucessfully fetched count of reports during the time period
+        '401':
+          description: user unauthorized or user dont have permission to view reports
+        '404':
+          description: No reports found for the filter
+  /api/v1/report/reportId/{reportId}:
+    get:
+      tags:
+        - Report
+      summary: This API is ued to fetch all the details of a particular report by Id
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token
+          schema:
+            type: string
+        - name: reportId
+          in: path
+          description: provide valid report Id
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fecthed the report by Id
+        '401':
+          description: user unauthorized or user dont have permission to view reports
+        '404':
+          description: no report found for the Id
+  /api/v1/report/tenantUniqueIdentifier/{tenantUniqueIdentifier}/customer/{accountNo}/reportType/{reportType}/tests:
+    get:
+      tags:
+        - Report
+      summary: This API is used to fetch all the report for a particular customer and also filter by report type
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token
+          schema:
+            type: string
+        - name: tenantUniqueIdentifier
+          in: path
+          description: provide valid tenant details
+          required: true
+          schema:
+            type: string
+        - name: accountNo
+          in: path
+          description: provide valid accountNo
+          required: true
+          schema:
+            type: string
+        - name: reportType
+          in: path
+          description: reportType
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fetched reports for particualr accountNo
+        '401':
+          description: user unauthorized or user dont have permission to view report details
+        '404':
+          description: No reports founf for the accountNo
+  /api/v1/report/customer/{accountNo}/siteId/{siteId}/tests:
+    get:
+      tags:
+        - Report
+      summary: This API is to fecth the report asset properties for given account number and siteId
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid bearer token
+          schema:
+            type: string
+        - name: accountNo
+          in: path
+          description: provide valid accountNo
+          required: true
+          schema:
+            type: string
+        - name: siteId
+          in: path
+          description: provide valid siteId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fetched the asset report proeprties for a given accountNo and SiteId
+        '401':
+          description: user unauthorized or user dont have permission to view report details
+        '404':
+          description: no asset report properties found for account no and siteId
+  /api/v1/report/assetdetails/{assetUniqueId}:
+    get:
+      tags:
+        - Report
+      summary: This API is used to fecth asset report properties based on asset unbiqueId
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid bearer token
+          schema:
+            type: string
+        - name: assetUniqueId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fecthed asset report props by asset unique Id
+        '401':
+          description: user unauthorized or user dont have permission to view asset report property details
+        '404':
+          description: no asset report properties found for assetUnique Id
+  /api/v1/report/tenant/{tenantUniqueIdentifier}/types:
+    get:
+      tags:
+        - Report
+      summary: This API is used to fetch all the report types
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token
+          schema:
+            type: string
+        - name: tenantUniqueIdentifier
+          in: path
+          description: provide valid tenant details
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fecthed list of report types
+        '401':
+          description: user unauthorized or dont have permission to view report types
+  
+components:
+  schemas:
+    AckForm:
+      type: object
+      properties:
+        formfield:
+          type: string
+          nullable: true
+        options:
+          type: string
+          nullable: true
+        formResponse:
+          type: string
+          nullable: true
+        formType:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Acknowledgement:
+      type: object
+      properties:
+        acknowledgementType:
+          type: string
+          nullable: true
+        signature:
+          $ref: '#/components/schemas/Signature'
+        ack_form:
+          type: array
+          items:
+            $ref: '#/components/schemas/AckForm'
+          nullable: true
+      additionalProperties: false
+    AddCustomerAddress:
+      type: object
+      properties:
+        siteId:
+          type: string
+          nullable: true
+        siteName:
+          type: string
+          nullable: true
+        siteType:
+          type: string
+          nullable: true
+        gasEquipPresent:
+          type: boolean
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        address:
+          type: string
+          nullable: true
+        state:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        zipCode:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        emailAddress:
+          type: string
+          nullable: true
+      additionalProperties: false
+    AddCustomerCompany:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        emailAddress:
+          type: string
+          nullable: true
+      additionalProperties: false
+    AddLocation:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+      additionalProperties: false
+    ApplianceCheckRequests:
+      type: object
+      properties:
+        reportId:
+          type: string
+          nullable: true
+        reportSchemaVer:
+          type: string
+          nullable: true
+        reportTotalTime:
+          type: integer
+          format: int32
+        reportDateTime:
+          type: string
+          format: date-time
+        tenantUniqueIdentifier:
+          type: string
+          nullable: true
+        reportLocation:
+          $ref: '#/components/schemas/ReportLocation'
+        customer:
+          $ref: '#/components/schemas/CustomerInfo'
+        technician:
+          $ref: '#/components/schemas/TechnicianInfo'
+        testNote:
+          type: string
+          nullable: true
+        extendedData:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        reportPayload:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: array
+              items:
+                $ref: '#/components/schemas/Payload'
+          nullable: true
+        leakTests:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeakTest'
+          nullable: true
+        acknowledgement:
+          type: array
+          items:
+            $ref: '#/components/schemas/Acknowledgement'
+          nullable: true
+      additionalProperties: false
+    CustomerInfo:
+      type: object
+      properties:
+        accountNo:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        emailAddress:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        customerType:
+          type: string
+          nullable: true
+        company:
+          $ref: '#/components/schemas/AddCustomerCompany'
+        address:
+          $ref: '#/components/schemas/AddCustomerAddress'
+      additionalProperties: false
+    FilterReport:
+      type: object
+      properties:
+        fromDate:
+          type: string
+          nullable: true
+        toDate:
+          type: string
+          nullable: true
+        tankSerialNumber:
+          type: string
+          nullable: true
+        reportType:
+          type: string
+          nullable: true
+        accountNo:
+          type: string
+          nullable: true
+        technicianEmail:
+          type: string
+          nullable: true
+      additionalProperties: false
+    LeakCheckRequests:
+      type: object
+      properties:
+        reportId:
+          type: string
+          nullable: true
+        reportSchemaVer:
+          type: string
+          nullable: true
+        reportTotalTime:
+          type: integer
+          format: int32
+        reportDateTime:
+          type: string
+          format: date-time
+        tenantUniqueIdentifier:
+          type: string
+          nullable: true
+        reportLocation:
+          $ref: '#/components/schemas/ReportLocation'
+        customer:
+          $ref: '#/components/schemas/CustomerInfo'
+        technician:
+          $ref: '#/components/schemas/TechnicianInfo'
+        testNote:
+          type: string
+          nullable: true
+        extendedData:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        tests:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeakTest'
+          nullable: true
+        tankDetails:
+          $ref: '#/components/schemas/TankInformation'
+        acknowledgement:
+          type: array
+          items:
+            $ref: '#/components/schemas/Acknowledgement'
+          nullable: true
+      additionalProperties: false
+    LeakTest:
+      type: object
+      properties:
+        data:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        correlationId:
+          type: string
+          nullable: true
+        pictures:
+          type: array
+          items:
+            $ref: '#/components/schemas/Picture'
+          nullable: true
+      additionalProperties: false
+    Payload:
+      type: object
+      properties:
+        primaryDataFields:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        inspectionDataFields:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        technicianAcknowledgment:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        correlationId:
+          type: string
+          nullable: true
+        pictures:
+          type: array
+          items:
+            $ref: '#/components/schemas/Picture'
+          nullable: true
+      additionalProperties: false
+    Picture:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        data:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ReportLocation:
+      type: object
+      properties:
+        latitude:
+          type: number
+          format: double
+        longitude:
+          type: number
+          format: double
+      additionalProperties: false
+    Signature:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        data:
+          type: string
+          nullable: true
+      additionalProperties: false
+    SystemCheckRequests:
+      type: object
+      properties:
+        reportId:
+          type: string
+          nullable: true
+        reportSchemaVer:
+          type: string
+          nullable: true
+        reportTotalTime:
+          type: integer
+          format: int32
+        reportDateTime:
+          type: string
+          format: date-time
+        tenantUniqueIdentifier:
+          type: string
+          nullable: true
+        reportLocation:
+          $ref: '#/components/schemas/ReportLocation'
+        customer:
+          $ref: '#/components/schemas/CustomerInfo'
+        technician:
+          $ref: '#/components/schemas/TechnicianInfo'
+        testNote:
+          type: string
+          nullable: true
+        extendedData:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        reportPayload:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: array
+              items:
+                $ref: '#/components/schemas/Payload'
+          nullable: true
+        leakTests:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeakTest'
+          nullable: true
+        acknowledgement:
+          type: array
+          items:
+            $ref: '#/components/schemas/Acknowledgement'
+          nullable: true
+        pressureTest:
+          type: array
+          items:
+            $ref: '#/components/schemas/LeakTest'
+          nullable: true
+      additionalProperties: false
+    TankInformation:
+      type: object
+      properties:
+        assetTypeUniqueId:
+          type: string
+          nullable: true
+        serialNo:
+          type: string
+          nullable: true
+        location:
+          $ref: '#/components/schemas/AddLocation'
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+      additionalProperties: false
+    TechnicianInfo:
+      type: object
+      properties:
+        email:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+    paginatedReport:
+      type: object
+      properties:
+        fromDate:
+          type: string
+          nullable: true
+        toDate:
+          type: string
+          nullable: true
+        tankSerialNumber:
+          type: string
+          nullable: true
+        reportType:
+          type: string
+          nullable: true
+        accountNo:
+          type: string
+          nullable: true
+        technicianEmail:
+          type: string
+          nullable: true
+        pageSize:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        sortBy:
+          type: string
+          nullable: true
+        isAscending:
+          type: boolean
+        searchtxt:
+          type: string
+          nullable: true
+      additionalProperties: false
