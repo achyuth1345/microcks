@@ -1,74 +1,16 @@
 openapi: 3.0.1
 info:
-  title: Organization Manager API Docs
-  description: Organization Manager API Documentation
+  title: Users Manager API Docs
+  description: Users Manager API Documentation
   version: v2
 servers:
-  - url: /organizationmanagement
+  - url: /usermanagement
 paths:
-  /api/v1/cargas/createapikey:
-    post:
-      tags:
-        - Cargas
-      summary: This APi is used to input a ERP (cargas) details into Rego Backend
-      description: "Request Body description:\r\n\r\n\r\n        CargasUrl: Url for Cargas Integration\r\n        ApiKey: authentication token for Cargas"
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CargasApiKey'
-         
-      responses:
-        '200':
-          description: sucessfully entered the Cargas information into rego system
-        '401':
-          description: unauthorized access or user dont have permission to add cargas information
-  /api/v1/cargas:
-    put:
-      tags:
-        - Cargas
-      summary: This API is used to edit the Cargas details for the organization . This APi also allows user to update the Since Date so that the Cargas sync cycle which would be one day could be restarted from 2010
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-        - name: providerId
-          in: query
-          description: provide valid provider Id
-          schema:
-            type: string
-        - name: changeSinceDate
-          in: query
-          description: provide boolean value true or false
-          schema:
-            type: boolean
-      requestBody:
-        description: provide valid Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CargasApiKey'
-          
-      responses:
-        '200':
-          description: sucessfully updated the cargas details
-        '401':
-          description: user dont have permission to update the extrnal provider details
-        '404':
-          description: provider Id not found
+  /api/v1/solution:
     get:
       tags:
-        - Cargas
-      summary: This APi is used to fetch the External Provider details
+        - UserManagement
+      summary: this API is used to get all the solution list from platform
       parameters:
         - name: bearer
           in: header
@@ -77,136 +19,47 @@ paths:
             type: string
       responses:
         '200':
-          description: sucessfully fecthed the external provider details
-        '401':
-          description: user dont have permission to fetch the external provider details
-        '404':
-          description: External Provider details not found
-  /api/v1/counties:
+          description: Return list of Solutions
+  /api/v1/token:
     get:
       tags:
-        - Organization
-      summary: This API is used to fetch Normalized the List of Countries names in the World
-      parameters:
-        - name: bearer
-          in: header
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fecthed Country details
-        '401':
-          description: user unauthorized
-  /api/v1/states:
-    get:
-      tags:
-        - Organization
-      summary: This API is used to fetch Normalized the List of states names in the World for a given country
-      parameters:
-        - name: bearer
-          in: header
-          schema:
-            type: string
-        - name: countryId
-          in: query
-          description: provide valid countryId
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: sucessfully fecthed state details
-        '401':
-          description: user unauthorized
-  /api/v1/cities:
-    get:
-      tags:
-        - Organization
-      summary: This API is used to fetch Normalized the List of cities names in the World for a given state
-      parameters:
-        - name: bearer
-          in: header
-          schema:
-            type: string
-        - name: stateId
-          in: query
-          description: provide valid stateId
-          schema:
-            type: integer
-            format: int32
-      responses:
-        '200':
-          description: sucessfully fecthed city details
-        '401':
-          description: user unauthorized
-  /api/v1/organization/types:
-    get:
-      tags:
-        - Organization
-      summary: This APi is sued to get the ist of Organization types
-      parameters:
-        - name: bearer
-          in: header
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fetched the list of organization types
-        '401':
-          description: unauthorized access or user dont have access to fetch the organization types list
-  /api/v1/organization:
-    post:
-      tags:
-        - Organization
-      summary: This api is used to Create a new Organization
-      description: "Request body description:\r\n        \r\n        \r\n        parentOrganizationID:  used to find out the heirarchy of the organization structure\r\n        organizationType: used to assignt he organization a type"
+        - UserManagement
+      summary: This API is used to fetch the long lived token for mobile application . When triggered this A?Pi talks to platform and provides the long lived token after authentication by platform.
       parameters:
         - name: bearer
           in: header
           description: provide valid JWT token here
           schema:
             type: string
-      requestBody:
-        description: provide vaid Request Body here
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateOrganizationRequests'
-         
       responses:
         '200':
-          description: sucessfully created organization
+          description: provides a long lived token  valid for 3 days
+        '401':
+          description: user is unauthorized to use api
+  /api/v1/authority:
+    get:
+      tags:
+        - UserManagement
+      summary: This API returns the list of Authorities from platform . Authorities are the B2C config values that are stored on platform side and these authorities are used during the user creation process
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Retruns list of Authorites from platform
         '400':
-          description: provide valid organization detals in request body
+          description: authorities not found for the users
         '401':
-          description: ''
-    get:
+          description: User is unauthorized to use the api please check the validity of the token
+  /api/v1/users:
+    post:
       tags:
-        - Organization
-      summary: This API is used to fecth list of all the organizations. when triggered by user the Rego Backend requets platform and fetches all the child organizations of the user's organization.
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-        - name: tenantUniqueIdentifier
-          in: query
-          description: provide tenant details of the organization
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfullt fetched the list of organiztions
-        '401':
-          description: unauthorized access or user dont have permission to fetch the organization list
-        '404':
-          description: organizations list not found
-  /api/v1/organization/uploadicon:
-    put:
-      tags:
-        - Organization
-      summary: This APi is used  upload organization images
+        - UserManagement
+      summary: This API is used to create new users . the api internally triggers the platform apis for creating the users
+      description: "Request body description\r\n\r\n\r\n\r\n    username: used for user login .\r\n    organiztionId: used for organization mapping of the  user."
       parameters:
         - name: bearer
           in: header
@@ -214,173 +67,187 @@ paths:
           schema:
             type: string
       requestBody:
+        description: Provide valid payload to create users
         content:
-          multipart/form-data:
+          application/json:
             schema:
-              type: object
-              properties:
-                files:
-                  type: array
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              files:
-                style: form
+              $ref: '#/components/schemas/AddUsers'
+         
+      responses:
+        '200':
+          description: returns list of users
+        '401':
+          description: user is unauthorized
+    put:
+      tags:
+        - UserManagement
+      summary: This api is used to update the user details by a admin user . This api request platform IDM service to update the user details .
+      description: "Request Body Description\r\n\r\n        \r\n        username: used for login purpose by the user and not editable\r\n        organizationId : used for organization mapping of the user"
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: provide the user Id of the user to be updated
+          schema:
+            type: string
+      requestBody:
+        description: Provide valid request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/updateUsers'
+         
+      responses:
+        '200':
+          description: returns 200 when user is edit successful
+        '400':
+          description: user is not found
+        '401':
+          description: user is unauthorized
+    delete:
+      tags:
+        - UserManagement
+      summary: This api is used to delete the users from the database paramanently
+      description: "Request Body description\r\n\r\n\r\n         username: used for login purpose by the user and not editable\r\n         organizationId : used for organization mapping of the user"
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: provide the userId of the user to be deleted
+          schema:
+            type: string
+      responses:
+        '200':
+          description: user delete successsfull
+        '400':
+          description: user not found
+        '401':
+          description: unauthorized action by the user or tokenis invalid
+    get:
+      tags:
+        - UserManagement
+      summary: This api is used to get all the users from platform. When triggered this api fetcheds all the users from platform and provides the list of all users to the client.
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      responses:
+        '200':
+          description: returns list of users
+        '400':
+          description: no users found
+        '401':
+          description: unauthorized user
+  /api/v1/user/getprivacyterms:
+    get:
+      tags:
+        - UserManagement
+      summary: This api is used to get the privacy terms (EULA) of the users . when the API is triggered , rego backend intern requests platform to provide the privacy terms of the user to whom the bearer JWT token belongs to
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
       responses:
         '200':
           description: Success
+        '400':
+          description: privacy terms not found for the user
         '401':
-          description: unauthorized access or user dont have access to upload images to organization
-  /api/v1/organization/deleteicon:
-    delete:
+          description: unauthorized user
+  /api/v1/user/setprivacyterms/{isTrue}:
+    put:
       tags:
-        - Organization
-      summary: This API is used to Delete organization images .
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token details
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully deleted organization images
-        '401':
-          description: unauthorized access or users dont have access to delete the files
-        '404':
-          description: images not found for the organization
-  /api/v1/organization/geticon:
-    get:
-      tags:
-        - Organization
-      summary: This API is used to fetch the SAS UEL of the organizatio icon
+        - UserManagement
+      summary: This api is used to accept the privacy terms of the users . when API is triggered with parameter true privacy terms are accpeted and when false is sent privacy terms are set to not yet accepted so once the user logs in again he has to accept the privacy terms again
       parameters:
         - name: bearer
           in: header
           description: provide valid JWT token here
           schema:
             type: string
+        - name: isTrue
+          in: path
+          description: booleanb to either accept or reject the privacy terms
+          required: true
+          schema:
+            type: boolean
       responses:
         '200':
-          description: sucessfully fetched the organization Logo SAS URL
+          description: privacy terms updated successfully
         '401':
-          description: unauthorized access or user dont have acces to fetch the organization logo
-        '404':
-          description: Organization logo not found
-  /api/v1/organization/orgId/{orgId}:
-    put:
+          description: unauthorized user
+  /api/v1/filter/users:
+    post:
       tags:
-        - Organization
-      summary: This API allows user to update th organization details of a particular organization by providing the OrgId in URL
+        - UserManagement
+      summary: This API is used to fetch the list of api batch wise . when this api is triggered Rego backed makes a api request to platform and fetches the users list in batch wise . batch size and page number can be set from the request payload
       parameters:
         - name: bearer
           in: header
-          description: povide valid JWT token here
-          schema:
-            type: string
-        - name: orgId
-          in: path
-          description: provide valid organization Id here
-          required: true
+          description: provide valid JWT token here
           schema:
             type: string
       requestBody:
-        description: provide valid Request Body here
+        description: filter request body to define batch size page number and search txt
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateOrganizationRequests'
+              $ref: '#/components/schemas/PlatformGetUsers'
          
       responses:
         '200':
-          description: organization details updated sucessfully
+          description: succesfully fetched the user list
+        '400':
+          description: no user found
         '401':
-          description: unauthorized access or user dont have access to update organization details
-        '404':
-          description: organization not found
-    get:
-      tags:
-        - Organization
-      summary: This APi is used to fetch organization details of one organization by providing the OrgId
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token
-          schema:
-            type: string
-        - name: orgId
-          in: path
-          description: provide Valid OrgId
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fetched organization details for the Id
-        '401':
-          description: unauthorized access or user dont have permission to fetch the organization details
-        '404':
-          description: organzation not found
-    delete:
-      tags:
-        - Organization
-      summary: This API is used to delete a organization based on the OrgId
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token
-          schema:
-            type: string
-        - name: orgId
-          in: path
-          description: provide Valid OrgId
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully deleted organization details for the Id
-        '401':
-          description: unauthorized access or user dont have permission to delete the organization details
-        '404':
-          description: organzation not found
-
+          description: unauthorized user
 components:
   schemas:
-    CargasApiKey:
+    AddUsers:
       type: object
       properties:
-        cargasUrl:
+        firstName:
           type: string
           nullable: true
-        apiKey:
+        lastName:
           type: string
           nullable: true
-      additionalProperties: false
-    CreateOrganizationRequests:
-      type: object
-      properties:
-        organizationName:
+        email:
           type: string
           nullable: true
-        organizationType:
+        authorityId:
           type: string
           nullable: true
-        organizationTypeId:
+        username:
           type: string
           nullable: true
-        tenantUniqueIdentifier:
+        companyName:
           type: string
           nullable: true
         alias:
           type: string
           nullable: true
-        description:
-          type: string
+        solutionIds:
+          type: array
+          items:
+            type: string
           nullable: true
-        parentOrganizationId:
-          type: string
+        solutions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Solution'
           nullable: true
         address1:
           type: string
@@ -409,10 +276,161 @@ components:
         ownAlternateNumber:
           type: string
           nullable: true
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
+        application:
+          type: string
+          nullable: true
+        isActive:
+          type: boolean
+        persona:
+          type: string
+          nullable: true
+        organizationId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    PlatformGetUsers:
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        total:
+          type: integer
+          format: int32
+        gotoPageNumber:
+          type: string
+          nullable: true
+        searchText:
+          type: string
+          nullable: true
+        sortBy:
+          type: string
+          nullable: true
+        isAscending:
+          type: boolean
+        organizationList:
+          type: array
+          items:
+            type: string
+          nullable: true
+        solutionIds:
+          type: array
+          items:
+            type: string
+          nullable: true
+        personaIds:
+          type: array
+          items:
+            type: string
+          nullable: true
+        noOfRecords:
+          type: integer
+          format: int32
+      additionalProperties: false
+    Solution:
+      type: object
+      properties:
+        id:
+          type: string
+          nullable: true
+        tenantName:
+          type: string
+          nullable: true
+        isActive:
+          type: boolean
+        startDate:
+          type: string
+          nullable: true
+        endDate:
+          type: string
+          nullable: true
+        lastUpdateDate:
+          type: string
+          nullable: true
+        isDefaultSolution:
+          type: boolean
+        idprevious:
+          type: string
+          nullable: true
+        isActiveprevious:
+          type: boolean
+      additionalProperties: false
+    updateUsers:
+      type: object
+      properties:
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        email:
+          type: string
+          nullable: true
+        authorityId:
+          type: string
+          nullable: true
+        username:
+          type: string
+          nullable: true
+        companyName:
+          type: string
+          nullable: true
+        alias:
+          type: string
+          nullable: true
+        solutionIds:
+          type: array
+          items:
+            type: string
+          nullable: true
+        solutions:
+          type: array
+          items:
+            $ref: '#/components/schemas/Solution'
+          nullable: true
+        address1:
+          type: string
+          nullable: true
+        address2:
+          type: string
+          nullable: true
+        country:
+          type: string
+          nullable: true
+        state:
+          type: string
+          nullable: true
+        city:
+          type: string
+          nullable: true
+        zipcode:
+          type: string
+          nullable: true
+        ownEmail:
+          type: string
+          nullable: true
+        ownPhoneNumber:
+          type: string
+          nullable: true
+        ownAlternateNumber:
+          type: string
+          nullable: true
+        application:
+          type: string
+          nullable: true
+        isActive:
+          type: boolean
+        persona:
+          type: string
+          nullable: true
+        organizationId:
+          type: string
+          nullable: true
+        oId:
+          type: string
+          nullable: true
       additionalProperties: false
