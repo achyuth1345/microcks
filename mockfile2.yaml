@@ -11,7 +11,7 @@ paths:
       tags:
         - Assets
       summary: This API is used to create a New Asset of a specific asset type
-      description: "Request Body Description\r\n\r\n        \r\n        assetUniqueId: this field is to provide a unique identitfier for the asset\r\n        assetTenantIdentifier: this field is to provide the tenant details of the asset\r\n        assetTypeUniqueId:  this field is to provide  unique identifier of the asset type so that asset and asset type mapping can be done.\r\n        proprtyies: this field is a list of keyvalue pair  where the inspection and test details of each asset are stored ."
+      description: "Request Body Description\r\n\r\n        \r\n        assetUniqueId: this field is to provide a unique identitfier for the asset\r\n        assetTenantIdentifier: this field is to provide the tenant details of the asset\r\n        assetTypeUniqueId:  this field is to provide the unque identifier of the asset type so that asseta nd asset type mapping can be done this is a required property\r\n        proprtyies: this field is a lit keyvalue pair  where the inspection and test details of each asset are stored ."
       parameters:
         - name: bearer
           in: header
@@ -24,19 +24,19 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AddAssets'
-          
+         
       responses:
         '200':
           description: Sucessfully created a new asset
         '400':
-          description: request body is not valid
+          description: requestbody is not valid
         '401':
           description: unauthorized user or user doent have access to create asset
     put:
       tags:
         - Assets
-      summary: This API is used to update the asset details of a specific asset. when this api is triggered Rego backend updates the asset details of the asset whose id in provided in URL
-      description: "Request Body Description\r\n\r\n        \r\n        assetUniqueId: this field is to provide a unique identitfier for the asset\r\n        assetTenantIdentifier: this field is to provide the tenant details of the asset\r\n        assetTypeUniqueId:  this field is to provide the unique identifier of the asset type so that asset and asset type mapping can be done.\r\n        properties: this field is a list keyvalue pair  where the inspection and test details of each asset are stored ."
+      summary: This api is used to update the asset details of a specific asset. when this api is triggered Rego backend updtes the asset details of the asset whose id in provided in URL
+      description: "Request Body Description\r\n\r\n        \r\n        assetUniqueId: this field is to provide a unique identitfier for the asset\r\n        assetTenantIdentifier: this field is to provide the tenant details of the asset\r\n        assetTypeUniqueId:  this field is to provide the unque identifier of the asset type so that asseta nd asset type mapping can be done this is a required property\r\n        properties: this field is a lit keyvalue pair  where the inspection and test details of each asset are stored ."
       parameters:
         - name: bearer
           in: header
@@ -45,7 +45,7 @@ paths:
             type: string
         - name: assetId
           in: query
-          description: provide assetId of the asset to be editted
+          description: Provide assetId of the asset to be editted
           schema:
             type: string
       requestBody:
@@ -54,8 +54,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AddAssets'
-          
-          
+         
       responses:
         '200':
           description: sucessfully updated the asset with given assetId
@@ -66,7 +65,7 @@ paths:
     get:
       tags:
         - Assets
-      summary: This API is to fetch the list of assets that are in approved status . the default status is approved so this api would fetch all the assets under the users organization
+      summary: This api is to fetch the list of assets that are in approved status . the default status is approved so this api would fetch all the assets under the users organization
       parameters:
         - name: bearer
           in: header
@@ -80,7 +79,7 @@ paths:
             type: string
       responses:
         '200':
-          description: Sucessfully fetched all the asssets based on the status
+          description: Sucessfullt fetched all the assse4ts based on the status
         '400':
           description: please check the request parameters values
         '401':
@@ -89,7 +88,7 @@ paths:
     get:
       tags:
         - Assets
-      summary: This API is used to get list of all the assets based on the customerId and siteId. When this API is triggered Rego backend fetches all the assets that are created for provided siteId and customerId .
+      summary: This api is used to get list of all the assets based on the customerId and siteId. When this API is triggered Rego backend fecthes alll the assets that are created for the siteId and customerId provided
       parameters:
         - name: bearer
           in: header
@@ -114,14 +113,14 @@ paths:
         '400':
           description: customerId or siteId not found under the user organization
         '401':
-          description: unauthorized user or user doesn't have permission to view the asset details
+          description: unauthorized user or user doent have permission to view the asset details
         '404':
           description: no asset found for given customerId and siteId
   /api/v1/assets/assetId/{assetId}:
     get:
       tags:
         - Assets
-      summary: This API is used to fetch the details of a particular asset  by providing the asset Id . when this API is triggered Rego Backend searches the asset by Id and return one asset with  details.
+      summary: This API is used to fetch the details of a particular asset  by providing the asset Id . whe this API is triggered Rego Backend searches the asset by Id and return one asset with its details.
       parameters:
         - name: bearer
           in: header
@@ -144,7 +143,7 @@ paths:
     delete:
       tags:
         - Assets
-      summary: This API is used to delete the asset by Id .When this API is triggered backend deletes the asset with this assetId
+      summary: This API is sued to delete the asset by ID .Whenm this API is triggered backend deletes the asset with this assetId
       parameters:
         - name: bearer
           in: header
@@ -161,14 +160,14 @@ paths:
         '200':
           description: sucessfully deleted the asset with given assetId
         '401':
-          description: unauthorized user or user doesn't have access to delete the asset
+          description: unauthorized user or user doesnt have access to delete the asset
         '404':
           description: asset with given assetId not found
   /api/v1/assets/assetId/{assetId}/approve:
     put:
       tags:
         - Assets
-      summary: This API is used to change status of the asset from Pending to Approved . when triggered backend changes the asset status . Only admins will have access to do this operation.
+      summary: This API is used to change status of the asset from Pending to Approved . when triggered bakcend changes the asset status . Only admins will have access to do this operation.
       parameters:
         - name: bearer
           in: header
@@ -185,7 +184,7 @@ paths:
         '200':
           description: sucessfully updated the status of asset
         '401':
-          description: unauthorized user or user doesn't have permission to approve the asset
+          description: unauthorized user or user doesnt have permission to approve the asset
         '404':
           description: asset with given asset Id not found
   /api/v1/assets/assetId/assetmedia/{assetUniqueId}:
@@ -232,7 +231,7 @@ paths:
     post:
       tags:
         - Assets
-      summary: This API is used to create or edit asset details with same end point . If the asset with the provided assetUnique Id is found the asset details will be updated and if the asset is not found the asset will be created.
+      summary: This API is sued to create or edit asset details with same end point . If the asset with the provided assetUnique Id is found the asset details will be updated and if the asset is not found the asset will be created.
       description: "Request Body Description\r\n\r\n        \r\n        assetUniqueId: this field is to provide a unique identitfier for the asset\r\n        assetTenantIdentifier: this field is to provide the tenant details of the asset\r\n        assetTypeUniqueId:  this field is to provide the unque identifier of the asset type so that asseta nd asset type mapping can be done this is a required property\r\n        propreties: this field is a lit keyvalue pair  where the inspection and test details of each asset are stored ."
       parameters:
         - name: bearer
@@ -241,12 +240,11 @@ paths:
           schema:
             type: string
       requestBody:
-        description: provide valid request body here
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/AddAssets'
-          
+         
       responses:
         '200':
           description: sucessfully updated/created the  asset
@@ -258,7 +256,7 @@ paths:
     get:
       tags:
         - Assets
-      summary: This API is to check the status of an asset . this API lets the user know if the asset status is Approved or Pending
+      summary: This API is to check the status of a asset . this api lets the user know if the asset status is Approved or Pending
       parameters:
         - name: bearer
           in: header
@@ -314,9 +312,9 @@ paths:
         '200':
           description: sucessfully fetched all the assets in the radius
         '401':
-          description: unauthorized user or user doesn't have permission to view the asset list
+          description: unauthorized user or user doesnt have permission to view the asset list
         '404':
-          description: No assests found in the radius specified
+          description: No assests founbd in the radius specified
   /api/v1/assetsprops/age:
     post:
       tags:
@@ -333,7 +331,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/filterAssetProps'
-          
+         
       responses:
         '200':
           description: Success
@@ -341,7 +339,7 @@ paths:
     delete:
       tags:
         - Assets
-      summary: This API lets the user to delete the asset based on the SerialNo and assetUniqueId. when triggered the asset with the provided serial number and provided assetUniqueId is deleted from the database
+      summary: This APi lets the user to delete the asset based on the SerialNo and assetUniqueId. when triggered the asset with the provided serial number and provided assetUniqueId is deleted from the database
       parameters:
         - name: bearer
           in: header
@@ -372,7 +370,7 @@ paths:
       tags:
         - AssetType
       summary: This API is used to create a new Asset Type .A new Asset type can be used for further asset creations.
-      description: "Request Body Description:\r\n\r\n    assetTypeUniqueId: a unique Identifier for the asset type , this value is used for mapping asset with asset type\r\n    properties: This field is a list of Jsons where each Json defines the properties the asset type . this field defines the list of keys the asset properties should contain and their data types and also if the key is mandatory or not .\r\n    organizationId: used for organization mapping of the asset type each organization can have independent assset types of their own ."
+      description: "Request Body Description:\r\n\r\n    assetTypeUniqueId: a unique Identifier ofor the asset type , this value is used for mapping asset with asset type\r\n    properties: This field is a list of Jsons where each Json defines the properties the asset type . this field defines the list of keys the asset properties should contain and their data types ,and if the key is mandatory or not .\r\n    organizationId: used for organization mapping of the asset type each organization can have independent assset types of their own ."
       parameters:
         - name: bearer
           in: header
@@ -385,14 +383,14 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AddAssetType'
-
+        
       responses:
         '200':
           description: asset type sucessfully created
         '400':
           description: provide valid request payload
         '401':
-          description: unauthorized user or user doesn't have the permission to create asset type
+          description: unauthorized user or user doesnt have the permission to create asset type
     get:
       tags:
         - AssetType
@@ -415,7 +413,7 @@ paths:
       tags:
         - AssetType
       summary: This API is used to update the Asset type details. When triggered the API will edit the details of asset type like the name , properties
-      description: "Request Body Description:\r\n\r\n    assetTypeUniqueId: a unique Identifier for the asset type , this value is used for mapping asset with asset type\r\n    properties: This field is a list of Jsons where each Json defines the properties the asset type . this field defines the list of keys the asset properties should contain and their data types and also if the key is mandatory or not .\r\n    organizationId: used for organization mapping of the asset type each organization can have independent assset types of their own ."
+      description: "Request Body Description:\r\n\r\n    assetTypeUniqueId: a unique Identifier ofor the asset type , this value is used for mapping asset with asset type\r\n    properties: This field is a list of Jsons where each Json defines the properties the asset type . this field defines the list of keys the asset properties should contain and their data types ,and if the key is mandatory or not .\r\n    organizationId: used for organization mapping of the asset type each organization can have independent assset types of their own ."
       parameters:
         - name: bearer
           in: header
@@ -434,14 +432,14 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AddAssetType'
-
+        
       responses:
         '200':
           description: asset type sucessfully created
         '400':
           description: provide valid request payload
         '401':
-          description: unauthorized user or user doesn't have the permission to create asset type
+          description: unauthorized user or user doesnt have the permission to create asset type
         '404':
           description: asset type with asset type Id not found
     get:
@@ -466,11 +464,11 @@ paths:
         '401':
           description: unauthorized access or user doesnt have access to fetch the asset id
         '404':
-          description: no asset type found for the given asset type Id
+          description: no asset type found for the given aset type Id
     delete:
       tags:
         - AssetType
-      summary: This API is used to delete a particular asset type by passing the Id in the URL
+      summary: This API is used to delete a particualr asset type by passing the Id in the URL
       parameters:
         - name: bearer
           in: header
@@ -489,7 +487,7 @@ paths:
         '401':
           description: unauthorized access or user doesnt have access to delete the asset type
         '404':
-          description: asset type with assetTypeId not found
+          description: asset with assetId not found
 components:
   schemas:
     AddAssetType:
