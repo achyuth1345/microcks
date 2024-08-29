@@ -341,7 +341,7 @@ paths:
     delete:
       tags:
         - Assets
-      summary: This APi lets the user to delete the asset based on the SerialNo and assetUniqueId. when triggered the asset with the provided serial number and provided assetUniqueId is deleted from the database
+      summary: This API lets the user to delete the asset based on the SerialNo and assetUniqueId. when triggered the asset with the provided serial number and provided assetUniqueId is deleted from the database
       parameters:
         - name: bearer
           in: header
