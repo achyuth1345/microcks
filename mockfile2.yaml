@@ -1,65 +1,17 @@
 openapi: 3.0.1
 info:
-  title: Users Manager API Docs
-  description: Users Manager API Documentation
+  title: Customer Manager API Docs
+  description: Customer Manager API Documentation
   version: v2
 servers:
-  - url: /usermanagement
+  - url: /customermanagement
 paths:
-  /api/v1/solution:
-    get:
-      tags:
-        - UserManagement
-      summary: this API is used to get all the solution list from platform
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Return list of Solutions
-  /api/v1/token:
-    get:
-      tags:
-        - UserManagement
-      summary: This API is used to fetch the long lived token for mobile application . When triggered this A?Pi talks to platform and provides the long lived token after authentication by platform.
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-      responses:
-        '200':
-          description: provides a long lived token  valid for 3 days
-        '401':
-          description: user is unauthorized to use api
-  /api/v1/authority:
-    get:
-      tags:
-        - UserManagement
-      summary: This API returns the list of Authorities from platform . Authorities are the B2C config values that are stored on platform side and these authorities are used during the user creation process
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Retruns list of Authorites from platform
-        '400':
-          description: authorities not found for the users
-        '401':
-          description: User is unauthorized to use the api please check the validity of the token
-  /api/v1/users:
+  /api/v1/customer:
     post:
       tags:
-        - UserManagement
-      summary: This API is used to create new users . the api internally triggers the platform apis for creating the users
-      description: "Request body description\r\n\r\n\r\n\r\n    username: used for user login .\r\n    organiztionId: used for organization mapping of the  user."
+        - Customers
+      summary: This API is used to create a new customer with multiple address locations .
+      description: "Request Body:\r\n\r\n        \r\n        \r\n        accountNo:  a Unique identifier for the customer in a particular organization\r\n        address:  a list of JSON where each JSON represents one particular location for a customer\r\n        customerType: a enum with two values Business or Residential"
       parameters:
         - name: bearer
           in: header
@@ -67,195 +19,532 @@ paths:
           schema:
             type: string
       requestBody:
-        description: Provide valid payload to create users
+        description: provide valid Request Body here
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddUsers'
+              $ref: '#/components/schemas/AddCustomerInfo'
          
       responses:
         '200':
-          description: returns list of users
+          description: sucessfully created a customer
+        '400':
+          description: request body is invalid , provide valid request body
         '401':
-          description: user is unauthorized
+          description: unauthorized acccess or use doesnt have permission to create a customer
+  /api/v1/customer/customerId/{customerId}:
     put:
       tags:
-        - UserManagement
-      summary: This api is used to update the user details by a admin user . This api request platform IDM service to update the user details .
-      description: "Request Body Description\r\n\r\n        \r\n        username: used for login purpose by the user and not editable\r\n        organizationId : used for organization mapping of the user"
+        - Customers
+      summary: This API is sued to update the details of a customer by providing a customerId.
+      description: "Request Body:\r\n\r\n        \r\n        \r\n        accountNo:  a Unique identifier for the customer in a particular organization\r\n        address:  a list of JSON where each JSON represents one particular location for a customer\r\n        customerType: a enum with two values Business or Residential"
       parameters:
         - name: bearer
           in: header
           description: provide valid JWT token here
           schema:
             type: string
-        - name: userId
-          in: query
-          description: provide the user Id of the user to be updated
+        - name: customerId
+          in: path
+          description: provide valid customerId
+          required: true
           schema:
             type: string
       requestBody:
-        description: Provide valid request body
+        description: provide valid Request Body
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/updateUsers'
+              $ref: '#/components/schemas/AddCustomerInfo'
          
       responses:
         '200':
-          description: returns 200 when user is edit successful
+          description: sucessfully updated the customer details
         '400':
-          description: user is not found
+          description: request body not valid
         '401':
-          description: user is unauthorized
+          description: unauthorized access or user doesnt have access to update the customer details
+        '404':
+          description: customer with provided id not found
+    get:
+      tags:
+        - Customers
+      summary: This API allows user to fetch the details of a customer by providing the customerId
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: provide valid customerId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fetched customer details
+        '401':
+          description: unauthorized user or user doent have acces to fetch the customer details
+        '404':
+          description: customer with Id not found
     delete:
       tags:
-        - UserManagement
-      summary: This api is used to delete the users from the database paramanently
-      description: "Request Body description\r\n\r\n\r\n         username: used for login purpose by the user and not editable\r\n         organizationId : used for organization mapping of the user"
+        - Customers
+      summary: This API is used to delete a customer by Id.
       parameters:
         - name: bearer
           in: header
-          description: provide valid JWT token here
+          description: bearer
           schema:
             type: string
-        - name: userId
-          in: query
-          description: provide the userId of the user to be deleted
+        - name: customerId
+          in: path
+          description: customerId
+          required: true
           schema:
             type: string
       responses:
         '200':
-          description: user delete successsfull
-        '400':
-          description: user not found
+          description: customer deleted sucessfully
         '401':
-          description: unauthorized action by the user or tokenis invalid
-    get:
-      tags:
-        - UserManagement
-      summary: This api is used to get all the users from platform. When triggered this api fetcheds all the users from platform and provides the list of all users to the client.
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-      responses:
-        '200':
-          description: returns list of users
-        '400':
-          description: no users found
-        '401':
-          description: unauthorized user
-  /api/v1/user/getprivacyterms:
-    get:
-      tags:
-        - UserManagement
-      summary: This api is used to get the privacy terms (EULA) of the users . when the API is triggered , rego backend intern requests platform to provide the privacy terms of the user to whom the bearer JWT token belongs to
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-      responses:
-        '200':
-          description: Success
-        '400':
-          description: privacy terms not found for the user
-        '401':
-          description: unauthorized user
-  /api/v1/user/setprivacyterms/{isTrue}:
+          description: unauthrized accesss or user doesnt have permisssion to delete the customer
+        '404':
+          description: customer not found for the Id
+  /api/v2/customer/customerId/{customerId}:
     put:
       tags:
-        - UserManagement
-      summary: This api is used to accept the privacy terms of the users . when API is triggered with parameter true privacy terms are accpeted and when false is sent privacy terms are set to not yet accepted so once the user logs in again he has to accept the privacy terms again
+        - Customers
+      summary: This is a Version 2 api for updtion of customer details where it only updates the customer details and address details remainas the same as before
+      description: "Request Body:\r\n\r\n        \r\n        \r\n        accountNo:  a Unique identifier for the customer in a particular organization\r\n        customerType: a enum with two values Business or Residential"
       parameters:
         - name: bearer
           in: header
           description: provide valid JWT token here
           schema:
             type: string
-        - name: isTrue
+        - name: customerId
           in: path
-          description: booleanb to either accept or reject the privacy terms
+          description: provide valid customerId
           required: true
+          schema:
+            type: string
+      requestBody:
+        description: provide valid Request Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditCustomerInfo'
+       
+      responses:
+        '200':
+          description: sucessfully updated the customer details
+        '400':
+          description: request body not valid
+        '401':
+          description: unauthorized access or user doesnt have access to update the customer details
+        '404':
+          description: customer with provided id not found
+    get:
+      tags:
+        - Customers
+      summary: This API allows user to fetch the details of a customer by providing the customerId
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: provide valid customerId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fetched customer details
+        '401':
+          description: unauthorized user or user doent have acces to fetch the customer details
+        '404':
+          description: customer with Id not found
+  /api/v2/addaddress/customerId/{customerId}:
+    post:
+      tags:
+        - Customers
+      summary: This is a Version 2 API for creating  new address in a customer . by triggering this API user will be able to create one address in a particular customer which doesn't conflict with any other address in that customer
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: provide valid customerId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: provide valid Request Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddAddress'
+         
+      responses:
+        '200':
+          description: sucessfully created the address details
+        '400':
+          description: request body not valid
+        '401':
+          description: unauthorized access or user doesnt have access to add the address details
+        '404':
+          description: customer with provided id not found
+  /api/v2/deleteaddress/customerId/{customerId}/siteId/{siteId}:
+    delete:
+      tags:
+        - Customers
+      summary: This is a version2 API for deleting a address from a particular customer . by triggering this API user should be able to delete only one address from list of address of a customer.
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: provide valid customerId
+          required: true
+          schema:
+            type: string
+        - name: siteId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully deleted the address details
+        '401':
+          description: unauthorized access or user doesnt have access to delete the address details
+        '404':
+          description: customer with provided id not found
+  /api/v2/updateAddress/Customer/{customerId}/siteId/{siteId}:
+    put:
+      tags:
+        - Customers
+      summary: This is a version2 API for updating a address from a particular customer . by triggering this API user should be able to update only one address from list of address of a customer.
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: provide valid customerId
+          required: true
+          schema:
+            type: string
+        - name: siteId
+          in: path
+          description: provide valid siteId
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: provide valid Request Body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddAddress'
+         
+      responses:
+        '200':
+          description: sucessfully update the address details
+        '401':
+          description: unauthorized access or user doesnt have access to update the address details
+        '404':
+          description: customer with provided id not found
+  /api/v1/customer/type/{customerType}/filter/{filter}:
+    get:
+      tags:
+        - Customers
+      summary: This API is used to fetch a list of all the customers with search text. By triggering thi API user can get list of all the customer and their address
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: customerType
+          in: path
+          description: provide the customerType filter values can be Residential, Business or All
+          required: true
+          schema:
+            type: string
+        - name: filter
+          in: path
+          description: Provide search text here , api searches the match in accountNo, address, company and email
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fetched the customer list
+        '401':
+          description: unauthorized access or user doesnt have permission to get customer list
+        '404':
+          description: customers not found in the user's organizations
+  /api/v2/customer/filter:
+    post:
+      tags:
+        - Customers
+      summary: This is a Versioni 2 API to get list of customers and address batch wise. By providing batch size and page number user can fetch only those customers and searching is also provided. Searching can also be done using the same API
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/filterCustomer'
+         
+      responses:
+        '200':
+          description: sucessfully fetched the customer list
+        '401':
+          description: unauthorized user or user doesnt have access to feth the customer list
+        '404':
+          description: customer not found in the search result
+  /api/v2/customer/{customerId}/getAddress/filter:
+    post:
+      tags:
+        - Customers
+      summary: This API is used to fetchg the list of address of a particular customer batch wise.
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: provide valid customer Id
+          required: true
+          schema:
+            type: string
+      requestBody:
+        description: provide the valid request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/filterCustomer'
+      
+      responses:
+        '200':
+          description: sucessfully fetch the list of adddress for the given customerId
+        '401':
+          description: user unauthorized or user dont have access to fetch list of address for the customer
+        '404':
+          description: customer not found for the given customerId
+  /api/v2/bulkUpload/customer:
+    post:
+      tags:
+        - Customers
+      summary: This API allows user to upload a csv file to initiate a bulk upload job which reads all the rows from the csv and starts creating  customers
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                fileSize:
+                  type: string
+                totalRecords:
+                  type: string
+                filename:
+                  type: string
+                username:
+                  type: string
+                file:
+                  type: string
+                  format: binary
+            encoding:
+              fileSize:
+                style: form
+              totalRecords:
+                style: form
+              filename:
+                style: form
+              username:
+                style: form
+              file:
+                style: form
+      responses:
+        '200':
+          description: sucessfully uploaded the CSV file
+        '400':
+          description: provide valid bulk upload file details
+        '401':
+          description: user unauthorized or user cannot upload CSV file
+  /api/v2/bulkUpload/customerfailrecords:
+    post:
+      tags:
+        - Customers
+      summary: This API allows user to download a csv file which contains all the failed records of the uploaded CSV
+      parameters:
+        - name: bearer
+          in: header
+          description: bearer
+          schema:
+            type: string
+      requestBody:
+        description: request body to fetch the bulk upload request details vatch wise
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/filterCsv'
+       
+      responses:
+        '200':
+          description: sucessfully fetched all the bulk requests batch wise
+        '401':
+          description: unauthorized user or user doesnt have permission to view all the bulk job requests
+        '404':
+          description: no bulk job requests found
+  /api/v2/bulkUpload/customer/getTemplate:
+    get:
+      tags:
+        - Customers
+      summary: This API is used to download the template CSV . User should use this template to add the customer information in each row and can upload the updated file for triggering bulk upload job
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fetched the CSV file
+        '401':
+          description: unauthorized access
+        '404':
+          description: file not found
+  /api/v1/customer/customerId/{customerId}/approve:
+    put:
+      tags:
+        - Customers
+      summary: This API is used to approve the status of the customer
+      parameters:
+        - name: bearer
+          in: header
+          description: bearer
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: customerId
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully approved the customer
+        '401':
+          description: user unauthorized or user doesn't have permission to edit the customer details
+        '404':
+          description: customer not found for the given Id
+  /api/v1/customer/accountNo/{accountNo}/isapproved:
+    get:
+      tags:
+        - Customers
+      summary: This API is used to check if the customer is approved based on the accountNo
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: accountNo
+          in: path
+          description: provide valid accountNo
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fetched the status of the customer for given accountNo
+        '401':
+          description: user unauthorized or user doesn't have access to check the status of customer
+        '404':
+          description: customer not found for given account number
+  /api/v2/customerId/{customerId}/active:
+    put:
+      tags:
+        - Customers
+      summary: This API is used to make the customer active/Inactive
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: active
+          in: query
+          description: provide boolean true or false here . True for activaing the customer false for inactivating the customer
           schema:
             type: boolean
       responses:
         '200':
-          description: privacy terms updated successfully
+          description: sucessfully updted the customer
         '401':
-          description: unauthorized user
-  /api/v1/filter/users:
-    post:
-      tags:
-        - UserManagement
-      summary: This API is used to fetch the list of api batch wise . when this api is triggered Rego backed makes a api request to platform and fetches the users list in batch wise . batch size and page number can be set from the request payload
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-      requestBody:
-        description: filter request body to define batch size page number and search txt
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PlatformGetUsers'
-         
-      responses:
-        '200':
-          description: succesfully fetched the user list
-        '400':
-          description: no user found
-        '401':
-          description: unauthorized user
+          description: user unauthorized or user doesn't have permission to update the customer
+        '404':
+          description: customer not found for the customerId
+
 components:
   schemas:
-    AddUsers:
+    AddAddress:
       type: object
       properties:
-        firstName:
+        siteId:
+          type: string
+          nullable: true
+        siteName:
+          type: string
+          nullable: true
+        siteType:
           type: string
           nullable: true
         lastName:
           type: string
           nullable: true
-        email:
+        firstName:
           type: string
           nullable: true
-        authorityId:
-          type: string
-          nullable: true
-        username:
-          type: string
-          nullable: true
-        companyName:
-          type: string
-          nullable: true
-        alias:
-          type: string
-          nullable: true
-        solutionIds:
-          type: array
-          items:
-            type: string
-          nullable: true
-        solutions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Solution'
-          nullable: true
-        address1:
-          type: string
-          nullable: true
-        address2:
-          type: string
-          nullable: true
+        gasEquipPresent:
+          type: boolean
         country:
+          type: string
+          nullable: true
+        address:
           type: string
           nullable: true
         state:
@@ -264,31 +553,96 @@ components:
         city:
           type: string
           nullable: true
-        zipcode:
+        zipCode:
           type: string
           nullable: true
-        ownEmail:
+        phone:
           type: string
           nullable: true
-        ownPhoneNumber:
+        emailAddress:
           type: string
           nullable: true
-        ownAlternateNumber:
+      additionalProperties: false
+    AddCompany:
+      type: object
+      properties:
+        name:
           type: string
           nullable: true
-        application:
+        emailAddress:
+          type: string
+          nullable: true
+      additionalProperties: false
+    AddCustomerInfo:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          nullable: true
+        accountNo:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        emailAddress:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        customerType:
+          type: string
+          nullable: true
+        company:
+          $ref: '#/components/schemas/AddCompany'
+        address:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddAddress'
+          nullable: true
+        inspectionReason:
           type: string
           nullable: true
         isActive:
           type: boolean
-        persona:
-          type: string
-          nullable: true
-        organizationId:
-          type: string
-          nullable: true
       additionalProperties: false
-    PlatformGetUsers:
+    EditCustomerInfo:
+      type: object
+      properties:
+        tenantId:
+          type: string
+          nullable: true
+        accountNo:
+          type: string
+          nullable: true
+        firstName:
+          type: string
+          nullable: true
+        lastName:
+          type: string
+          nullable: true
+        emailAddress:
+          type: string
+          nullable: true
+        phone:
+          type: string
+          nullable: true
+        customerType:
+          type: string
+          nullable: true
+        company:
+          $ref: '#/components/schemas/AddCompany'
+        inspectionReason:
+          type: string
+          nullable: true
+        isActive:
+          type: boolean
+      additionalProperties: false
+    filterCsv:
       type: object
       properties:
         pageNumber:
@@ -297,13 +651,20 @@ components:
         pageSize:
           type: integer
           format: int32
-        total:
-          type: integer
-          format: int32
-        gotoPageNumber:
+        filename:
           type: string
           nullable: true
-        searchText:
+      additionalProperties: false
+    filterCustomer:
+      type: object
+      properties:
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        searchTxt:
           type: string
           nullable: true
         sortBy:
@@ -311,126 +672,10 @@ components:
           nullable: true
         isAscending:
           type: boolean
-        organizationList:
-          type: array
-          items:
-            type: string
-          nullable: true
-        solutionIds:
-          type: array
-          items:
-            type: string
-          nullable: true
-        personaIds:
-          type: array
-          items:
-            type: string
-          nullable: true
-        noOfRecords:
-          type: integer
-          format: int32
-      additionalProperties: false
-    Solution:
-      type: object
-      properties:
-        id:
+        customerType:
           type: string
           nullable: true
-        tenantName:
-          type: string
-          nullable: true
-        isActive:
-          type: boolean
-        startDate:
-          type: string
-          nullable: true
-        endDate:
-          type: string
-          nullable: true
-        lastUpdateDate:
-          type: string
-          nullable: true
-        isDefaultSolution:
-          type: boolean
-        idprevious:
-          type: string
-          nullable: true
-        isActiveprevious:
-          type: boolean
-      additionalProperties: false
-    updateUsers:
-      type: object
-      properties:
-        firstName:
-          type: string
-          nullable: true
-        lastName:
-          type: string
-          nullable: true
-        email:
-          type: string
-          nullable: true
-        authorityId:
-          type: string
-          nullable: true
-        username:
-          type: string
-          nullable: true
-        companyName:
-          type: string
-          nullable: true
-        alias:
-          type: string
-          nullable: true
-        solutionIds:
-          type: array
-          items:
-            type: string
-          nullable: true
-        solutions:
-          type: array
-          items:
-            $ref: '#/components/schemas/Solution'
-          nullable: true
-        address1:
-          type: string
-          nullable: true
-        address2:
-          type: string
-          nullable: true
-        country:
-          type: string
-          nullable: true
-        state:
-          type: string
-          nullable: true
-        city:
-          type: string
-          nullable: true
-        zipcode:
-          type: string
-          nullable: true
-        ownEmail:
-          type: string
-          nullable: true
-        ownPhoneNumber:
-          type: string
-          nullable: true
-        ownAlternateNumber:
-          type: string
-          nullable: true
-        application:
-          type: string
-          nullable: true
-        isActive:
-          type: boolean
-        persona:
-          type: string
-          nullable: true
-        organizationId:
-          type: string
-          nullable: true
-        oId:
+        active:
           type: string
           nullable: true
       additionalProperties: false
