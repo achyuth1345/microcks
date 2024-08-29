@@ -24,7 +24,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AddAssets'
-         
+          
       responses:
         '200':
           description: Sucessfully created a new asset
@@ -54,7 +54,8 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AddAssets'
-         
+          
+          
       responses:
         '200':
           description: sucessfully updated the asset with given assetId
@@ -245,7 +246,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AddAssets'
-         
+          
       responses:
         '200':
           description: sucessfully updated/created the  asset
@@ -371,7 +372,7 @@ paths:
       tags:
         - AssetType
       summary: This API is used to create a new Asset Type .A new Asset type can be used for further asset creations.
-      description: "Request Body Description:\r\n\r\n    assetTypeUniqueId: a unique Identifier ofor the asset type , this value is used for mapping asset with asset type\r\n    properties: This field is a list of Jsons where each Json defines the properties the asset type . this field defines the list of keys the asset properties should contain and their data types ,and if the key is mandatory or not .\r\n    organizationId: used for organization mapping of the asset type each organization can have independent assset types of their own ."
+      description: "Request Body Description:\r\n\r\n    assetTypeUniqueId: a unique Identifier for the asset type , this value is used for mapping asset with asset type\r\n    properties: This field is a list of Jsons where each Json defines the properties the asset type . this field defines the list of keys the asset properties should contain and their data types and also if the key is mandatory or not .\r\n    organizationId: used for organization mapping of the asset type each organization can have independent assset types of their own ."
       parameters:
         - name: bearer
           in: header
@@ -384,14 +385,14 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AddAssetType'
-         
+
       responses:
         '200':
           description: asset type sucessfully created
         '400':
           description: provide valid request payload
         '401':
-          description: unauthorized user or user doesnt have the permission to create asset type
+          description: unauthorized user or user doesn't have the permission to create asset type
     get:
       tags:
         - AssetType
@@ -414,7 +415,7 @@ paths:
       tags:
         - AssetType
       summary: This API is used to update the Asset type details. When triggered the API will edit the details of asset type like the name , properties
-      description: "Request Body Description:\r\n\r\n    assetTypeUniqueId: a unique Identifier ofor the asset type , this value is used for mapping asset with asset type\r\n    properties: This field is a list of Jsons where each Json defines the properties the asset type . this field defines the list of keys the asset properties should contain and their data types ,and if the key is mandatory or not .\r\n    organizationId: used for organization mapping of the asset type each organization can have independent assset types of their own ."
+      description: "Request Body Description:\r\n\r\n    assetTypeUniqueId: a unique Identifier for the asset type , this value is used for mapping asset with asset type\r\n    properties: This field is a list of Jsons where each Json defines the properties the asset type . this field defines the list of keys the asset properties should contain and their data types and also if the key is mandatory or not .\r\n    organizationId: used for organization mapping of the asset type each organization can have independent assset types of their own ."
       parameters:
         - name: bearer
           in: header
@@ -433,14 +434,14 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/AddAssetType'
-         
+
       responses:
         '200':
           description: asset type sucessfully created
         '400':
           description: provide valid request payload
         '401':
-          description: unauthorized user or user doesnt have the permission to create asset type
+          description: unauthorized user or user doesn't have the permission to create asset type
         '404':
           description: asset type with asset type Id not found
     get:
@@ -465,11 +466,11 @@ paths:
         '401':
           description: unauthorized access or user doesnt have access to fetch the asset id
         '404':
-          description: no asset type found for the given aset type Id
+          description: no asset type found for the given asset type Id
     delete:
       tags:
         - AssetType
-      summary: This API is used to delete a particualr asset type by passing the Id in the URL
+      summary: This API is used to delete a particular asset type by passing the Id in the URL
       parameters:
         - name: bearer
           in: header
@@ -488,7 +489,7 @@ paths:
         '401':
           description: unauthorized access or user doesnt have access to delete the asset type
         '404':
-          description: asset with assetId not found
+          description: asset type with assetTypeId not found
 components:
   schemas:
     AddAssetType:
