@@ -1,106 +1,238 @@
 openapi: 3.0.1
 info:
-  title: Report Manager API Docs
-  description: Report Manager API Documentation
+  title: RBAC Manager API Docs
+  description: RBAC Manager API Documentation
   version: v2
 servers:
-  - url: /reportmanagement
+  - url: /rbacmanagement
 paths:
-  /api/v1/media/upload:
+  /api/v1/entities:
     post:
       tags:
-        - Media
-      summary: Upload media
+        - Entity
+      summary: This APi is used for creation of entities for RBAC., with this user can ccreate new entities for management
       parameters:
         - name: bearer
           in: header
-          description: bearer
+          description: provide valid JWT tken here
           schema:
             type: string
       requestBody:
-        content:
-          multipart/form-data:
-            schema:
-              type: object
-              properties:
-                reportId:
-                  type: string
-                correlationId:
-                  type: string
-                files:
-                  type: array
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              reportId:
-                style: form
-              correlationId:
-                style: form
-              files:
-                style: form
-      responses:
-        '200':
-          description: Success
-  /api/v1/report/appliancecheck:
-    post:
-      tags:
-        - Report
-      summary: This API is used to  Publish appliance check report for the tests (Via kafka publisher)
-      parameters:
-        - name: bearer
-          in: header
-          description: bearer
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request body
+        description: provide valid Request Body here
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ApplianceCheckRequests'
+              $ref: '#/components/schemas/AddEntities'
 
       responses:
         '200':
-          description: sucessfully published report to kafka
-        '400':
-          description: customer details not found
+          description: sucessfully created entity
         '401':
-          description: user unauthorized or user dont have access to upload appliance check report
-  /api/v1/report/SystemCheck:
-    post:
+          description: user unautorized to create new entity
+    put:
       tags:
-        - Report
-      summary: This API is used to  Publish system check report for the tests (Via kafka publisher)
+        - Entity
+      summary: This APi is used for update of entity details for RBAC., with this user can update entities for management
       parameters:
         - name: bearer
           in: header
-          description: bearer
+          description: provide valid JWT tken here
+          schema:
+            type: string
+        - name: entityId
+          in: query
+          description: provide valid entity Ids
           schema:
             type: string
       requestBody:
-        description: provide valid Request body
+        description: provide valid Request Body here
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SystemCheckRequests'
+              $ref: '#/components/schemas/AddEntities'
+         
+      responses:
+        '200':
+          description: sucessfully updated entity
+        '401':
+          description: user unautorized to update  entity
+    get:
+      tags:
+        - Entity
+      summary: This API is sued to fetch list of entities created
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fecthed list of entities
+    delete:
+      tags:
+        - Entity
+      summary: This API is used to delete entities. By triggering this API user can delete entities that are managed by his persona
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: entityId
+          in: query
+          description: provide valid entity here
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully deleted the entity
+        '401':
+          description: user unauthorized or dont have permission to delete the entity
+  /api/v1/persona:
+    post:
+      tags:
+        - Persona
+      summary: This API is used to create a new Persona .
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+      requestBody:
+        description: provide valid request body here
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddPersona'
         
       responses:
         '200':
-          description: sucessfully published report to kafka
-        '400':
-          description: customer details not found
-        '401':
-          description: user unauthorized or user dont have access to upload system check report
-  /api/v1/report/leaktest:
-    post:
+          description: Success
+    get:
       tags:
-        - Report
-      summary: This API is used to  Publish leak check report for the tests (Via kafka publisher)
+        - Persona
+      summary: This API is used to fetch the list of persona present in Rego
       parameters:
         - name: bearer
           in: header
-          description: bearer
+          description: provide valid bearer token here
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fetched persona list
+        '401':
+          description: user unauthorized or user dont have permission to view personas
+  /api/v1/privacyTerms/personId:
+    get:
+      tags:
+        - Persona
+      summary: This API is to fetch the privacy terms text from platform IDM service
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: personaId
+          in: query
+          description: provide valid persona Id here
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fetched privacy terms of the given persona
+        '401':
+          description: user unauthorized or user dont have permission to fetch privacy terms
+  /api/v1/seeddata/persona:
+    get:
+      tags:
+        - Persona
+      summary: This API is  to create Persona Seed data in Rego Backend so Platform Integration is sucessful
+      responses:
+        '200':
+          description: sucessfully created persona seed data
+  /api/v1/seeddata/entity:
+    get:
+      tags:
+        - Persona
+      summary: This API is used to created entity seed data . for platform IDM integration and RBAC management
+      responses:
+        '200':
+          description: sucessfully created entity details seed data
+  /api/v1/seeddata/rights:
+    get:
+      tags:
+        - Persona
+      summary: This API is used to created rights seed data . for platform IDM integration and RBAC management
+      responses:
+        '200':
+          description: sucessfully created rights details seed data
+  /api/v2/seeddata/rights:
+    get:
+      tags:
+        - Persona
+      summary: This API is version 2 used to created rights seed data . for platform IDM integration and RBAC management
+      responses:
+        '200':
+          description: sucessfully created rights details seed data
+  /api/v1/seeddata/assetType/organizationId/{organizationId}:
+    get:
+      tags:
+        - Persona
+      summary: This API is used t created asset type seed data for a organization
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: organizationId
+          in: path
+          description: provide valid organizationId here
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully created asset type details seed data
+  /api/v1/seeddata/emailTemplate/organizationId/{organizationId}:
+    get:
+      tags:
+        - Persona
+      summary: This API is used t created emailTemplate seed data for a organization
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: organizationId
+          in: path
+          description: provide valid organizationId here
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully created emailTemplate details seed data
+  /api/v1/rights/personaId/{personaId}:
+    put:
+      tags:
+        - Rights
+      summary: This API is used to update rights  for a persona for RBAC
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: personaId
+          in: path
+          description: provide valid persona Id
+          required: true
           schema:
             type: string
       requestBody:
@@ -108,699 +240,109 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/LeakCheckRequests'
+              $ref: '#/components/schemas/AddRights'
          
       responses:
         '200':
-          description: sucessfully published report to kafka
-        '400':
-          description: customer details not found
+          description: sucessfully updated rights for the given persona
         '401':
-          description: user unauthorized or user dont have access to upload leak check report
-  /api/v1/report/cathodicprotection:
-    post:
-      tags:
-        - Report
-      summary: This API is used to  Publish cathodic protection check report for the tests (Via kafka publisher)
-      parameters:
-        - name: bearer
-          in: header
-          description: bearer
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LeakCheckRequests'
-         
-      responses:
-        '200':
-          description: sucessfully published report to kafka
-        '400':
-          description: customer details not found
-        '401':
-          description: user unauthorized or user dont have access to upload cathodic protection check
-  /api/v1/report/tenantUniqueIdentifier/{tenantUniqueIdentifier}/all:
-    post:
-      tags:
-        - Report
-      summary: This API is used to fetch all the list of reports during a time period of fromDate to toDate. By triggering this API user will get all th reports that were created after FromDate and before ToDate.
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT toekn
-          schema:
-            type: string
-        - name: tenantUniqueIdentifier
-          in: path
-          description: provide tenant details of the report
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request Body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FilterReport'
-         
-      responses:
-        '200':
-          description: sucessfully fetched reportrs duting the time period
-        '401':
-          description: user unauthorized or user dont have permission to view reports
-        '404':
-          description: No reports found for the filter
-  /api/v2/report/tenantUniqueIdentifier/{tenantUniqueIdentifier}/all:
-    post:
-      tags:
-        - Report
-      summary: This API is used to fetch  list of reports during a time period of fromDate to toDate in a batch manner. By triggering this API user will get all th reports that were created after FromDate and before ToDate in a batch manner . user can provide the batch size and the page number
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT toekn
-          schema:
-            type: string
-        - name: tenantUniqueIdentifier
-          in: path
-          description: provide tenant details of the report
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request Body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/paginatedReport'
-         
-      responses:
-        '200':
-          description: sucessfully fetched reportrs duting the time period
-        '401':
-          description: user unauthorized or user dont have permission to view reports
-        '404':
-          description: No reports found for the filter
-  /api/v2/reportCount/tenantUniqueIdentifier/{tenantUniqueIdentifier}/all:
-    post:
-      tags:
-        - Report
-      summary: This API provides the count of each type or report during a time period of FromDate to ToDate.
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT toekn
-          schema:
-            type: string
-        - name: tenantUniqueIdentifier
-          in: path
-          description: provide tenant details of the report
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request Body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/paginatedReport'
-         
-      responses:
-        '200':
-          description: sucessfully fetched count of reports during the time period
-        '401':
-          description: user unauthorized or user dont have permission to view reports
-        '404':
-          description: No reports found for the filter
-  /api/v1/report/reportId/{reportId}:
+          description: user unauthorized or user dont have permission to update rights
+  /api/v1/rights/entity/{entityName}/operation/{operation}:
     get:
       tags:
-        - Report
-      summary: This API is ued to fetch all the details of a particular report by Id
+        - Rights
+      summary: This API is used to check right of the user for a particular entity and operation
       parameters:
         - name: bearer
           in: header
           description: provide valid JWT token
           schema:
             type: string
-        - name: reportId
+        - name: entityName
           in: path
-          description: provide valid report Id
+          description: provide valid entityName
+          required: true
+          schema:
+            type: string
+        - name: operation
+          in: path
+          description: provide valid operation operation
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: sucessfully fecthed the report by Id
-        '401':
-          description: user unauthorized or user dont have permission to view reports
-        '404':
-          description: no report found for the Id
-  /api/v1/report/tenantUniqueIdentifier/{tenantUniqueIdentifier}/customer/{accountNo}/reportType/{reportType}/tests:
+          description: sucessfully fecthed the rights of persona for the operation and entity
+  /api/v1/rights:
     get:
       tags:
-        - Report
-      summary: This API is used to fetch all the report for a particular customer and also filter by report type
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token
-          schema:
-            type: string
-        - name: tenantUniqueIdentifier
-          in: path
-          description: provide valid tenant details
-          required: true
-          schema:
-            type: string
-        - name: accountNo
-          in: path
-          description: provide valid accountNo
-          required: true
-          schema:
-            type: string
-        - name: reportType
-          in: path
-          description: reportType
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fetched reports for particualr accountNo
-        '401':
-          description: user unauthorized or user dont have permission to view report details
-        '404':
-          description: No reports founf for the accountNo
-  /api/v1/report/customer/{accountNo}/siteId/{siteId}/tests:
-    get:
-      tags:
-        - Report
-      summary: This API is to fecth the report asset properties for given account number and siteId
+        - Rights
+      summary: This APi is used to check right of the user
       parameters:
         - name: bearer
           in: header
           description: provide valid bearer token
           schema:
             type: string
-        - name: accountNo
-          in: path
-          description: provide valid accountNo
-          required: true
-          schema:
-            type: string
-        - name: siteId
-          in: path
-          description: provide valid siteId
-          required: true
-          schema:
-            type: string
       responses:
         '200':
-          description: sucessfully fetched the asset report proeprties for a given accountNo and SiteId
-        '401':
-          description: user unauthorized or user dont have permission to view report details
-        '404':
-          description: no asset report properties found for account no and siteId
-  /api/v1/report/assetdetails/{assetUniqueId}:
-    get:
-      tags:
-        - Report
-      summary: This API is used to fecth asset report properties based on asset unbiqueId
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid bearer token
-          schema:
-            type: string
-        - name: assetUniqueId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fecthed asset report props by asset unique Id
-        '401':
-          description: user unauthorized or user dont have permission to view asset report property details
-        '404':
-          description: no asset report properties found for assetUnique Id
-  /api/v1/report/tenant/{tenantUniqueIdentifier}/types:
-    get:
-      tags:
-        - Report
-      summary: This API is used to fetch all the report types
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token
-          schema:
-            type: string
-        - name: tenantUniqueIdentifier
-          in: path
-          description: provide valid tenant details
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fecthed list of report types
-        '401':
-          description: user unauthorized or dont have permission to view report types
-  
+          description: sucessfully fetched right of the user
+ 
 components:
   schemas:
-    AckForm:
+    AddEntities:
       type: object
       properties:
-        formfield:
+        entityName:
           type: string
           nullable: true
-        options:
+        entityType:
           type: string
           nullable: true
-        formResponse:
-          type: string
-          nullable: true
-        formType:
+        remarks:
           type: string
           nullable: true
       additionalProperties: false
-    Acknowledgement:
+    AddEntityInfo:
       type: object
       properties:
-        acknowledgementType:
+        entityName:
           type: string
           nullable: true
-        signature:
-          $ref: '#/components/schemas/Signature'
-        ack_form:
-          type: array
-          items:
-            $ref: '#/components/schemas/AckForm'
-          nullable: true
-      additionalProperties: false
-    AddCustomerAddress:
-      type: object
-      properties:
-        siteId:
-          type: string
-          nullable: true
-        siteName:
-          type: string
-          nullable: true
-        siteType:
-          type: string
-          nullable: true
-        gasEquipPresent:
+        view:
           type: boolean
-        firstName:
-          type: string
-          nullable: true
-        lastName:
-          type: string
-          nullable: true
-        country:
-          type: string
-          nullable: true
-        address:
-          type: string
-          nullable: true
-        state:
-          type: string
-          nullable: true
-        city:
-          type: string
-          nullable: true
-        zipCode:
-          type: string
-          nullable: true
-        phone:
-          type: string
-          nullable: true
-        emailAddress:
-          type: string
-          nullable: true
-      additionalProperties: false
-    AddCustomerCompany:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-        emailAddress:
-          type: string
-          nullable: true
-      additionalProperties: false
-    AddLocation:
-      type: object
-      properties:
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-      additionalProperties: false
-    ApplianceCheckRequests:
-      type: object
-      properties:
-        reportId:
-          type: string
-          nullable: true
-        reportSchemaVer:
-          type: string
-          nullable: true
-        reportTotalTime:
-          type: integer
-          format: int32
-        reportDateTime:
-          type: string
-          format: date-time
-        tenantUniqueIdentifier:
-          type: string
-          nullable: true
-        reportLocation:
-          $ref: '#/components/schemas/ReportLocation'
-        customer:
-          $ref: '#/components/schemas/CustomerInfo'
-        technician:
-          $ref: '#/components/schemas/TechnicianInfo'
-        testNote:
-          type: string
-          nullable: true
-        extendedData:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        reportPayload:
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              type: array
-              items:
-                $ref: '#/components/schemas/Payload'
-          nullable: true
-        leakTests:
-          type: array
-          items:
-            $ref: '#/components/schemas/LeakTest'
-          nullable: true
-        acknowledgement:
-          type: array
-          items:
-            $ref: '#/components/schemas/Acknowledgement'
-          nullable: true
-      additionalProperties: false
-    CustomerInfo:
-      type: object
-      properties:
-        accountNo:
-          type: string
-          nullable: true
-        firstName:
-          type: string
-          nullable: true
-        lastName:
-          type: string
-          nullable: true
-        emailAddress:
-          type: string
-          nullable: true
-        phone:
-          type: string
-          nullable: true
-        customerType:
-          type: string
-          nullable: true
-        company:
-          $ref: '#/components/schemas/AddCustomerCompany'
-        address:
-          $ref: '#/components/schemas/AddCustomerAddress'
-      additionalProperties: false
-    FilterReport:
-      type: object
-      properties:
-        fromDate:
-          type: string
-          nullable: true
-        toDate:
-          type: string
-          nullable: true
-        tankSerialNumber:
-          type: string
-          nullable: true
-        reportType:
-          type: string
-          nullable: true
-        accountNo:
-          type: string
-          nullable: true
-        technicianEmail:
-          type: string
-          nullable: true
-      additionalProperties: false
-    LeakCheckRequests:
-      type: object
-      properties:
-        reportId:
-          type: string
-          nullable: true
-        reportSchemaVer:
-          type: string
-          nullable: true
-        reportTotalTime:
-          type: integer
-          format: int32
-        reportDateTime:
-          type: string
-          format: date-time
-        tenantUniqueIdentifier:
-          type: string
-          nullable: true
-        reportLocation:
-          $ref: '#/components/schemas/ReportLocation'
-        customer:
-          $ref: '#/components/schemas/CustomerInfo'
-        technician:
-          $ref: '#/components/schemas/TechnicianInfo'
-        testNote:
-          type: string
-          nullable: true
-        extendedData:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        tests:
-          type: array
-          items:
-            $ref: '#/components/schemas/LeakTest'
-          nullable: true
-        tankDetails:
-          $ref: '#/components/schemas/TankInformation'
-        acknowledgement:
-          type: array
-          items:
-            $ref: '#/components/schemas/Acknowledgement'
-          nullable: true
-      additionalProperties: false
-    LeakTest:
-      type: object
-      properties:
-        data:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        correlationId:
-          type: string
-          nullable: true
-        pictures:
-          type: array
-          items:
-            $ref: '#/components/schemas/Picture'
-          nullable: true
-      additionalProperties: false
-    Payload:
-      type: object
-      properties:
-        primaryDataFields:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        inspectionDataFields:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        technicianAcknowledgment:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        correlationId:
-          type: string
-          nullable: true
-        pictures:
-          type: array
-          items:
-            $ref: '#/components/schemas/Picture'
-          nullable: true
-      additionalProperties: false
-    Picture:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-        data:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ReportLocation:
-      type: object
-      properties:
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-      additionalProperties: false
-    Signature:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-        data:
-          type: string
-          nullable: true
-      additionalProperties: false
-    SystemCheckRequests:
-      type: object
-      properties:
-        reportId:
-          type: string
-          nullable: true
-        reportSchemaVer:
-          type: string
-          nullable: true
-        reportTotalTime:
-          type: integer
-          format: int32
-        reportDateTime:
-          type: string
-          format: date-time
-        tenantUniqueIdentifier:
-          type: string
-          nullable: true
-        reportLocation:
-          $ref: '#/components/schemas/ReportLocation'
-        customer:
-          $ref: '#/components/schemas/CustomerInfo'
-        technician:
-          $ref: '#/components/schemas/TechnicianInfo'
-        testNote:
-          type: string
-          nullable: true
-        extendedData:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        reportPayload:
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              type: array
-              items:
-                $ref: '#/components/schemas/Payload'
-          nullable: true
-        leakTests:
-          type: array
-          items:
-            $ref: '#/components/schemas/LeakTest'
-          nullable: true
-        acknowledgement:
-          type: array
-          items:
-            $ref: '#/components/schemas/Acknowledgement'
-          nullable: true
-        pressureTest:
-          type: array
-          items:
-            $ref: '#/components/schemas/LeakTest'
-          nullable: true
-      additionalProperties: false
-    TankInformation:
-      type: object
-      properties:
-        assetTypeUniqueId:
-          type: string
-          nullable: true
-        serialNo:
-          type: string
-          nullable: true
-        location:
-          $ref: '#/components/schemas/AddLocation'
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-      additionalProperties: false
-    TechnicianInfo:
-      type: object
-      properties:
-        email:
-          type: string
-          nullable: true
-        name:
-          type: string
-          nullable: true
-      additionalProperties: false
-    paginatedReport:
-      type: object
-      properties:
-        fromDate:
-          type: string
-          nullable: true
-        toDate:
-          type: string
-          nullable: true
-        tankSerialNumber:
-          type: string
-          nullable: true
-        reportType:
-          type: string
-          nullable: true
-        accountNo:
-          type: string
-          nullable: true
-        technicianEmail:
-          type: string
-          nullable: true
-        pageSize:
-          type: integer
-          format: int32
-        pageNumber:
-          type: integer
-          format: int32
-        sortBy:
-          type: string
-          nullable: true
-        isAscending:
+        add:
           type: boolean
-        searchtxt:
+        edit:
+          type: boolean
+        delete:
+          type: boolean
+      additionalProperties: false
+    AddPersona:
+      type: object
+      properties:
+        orgTypeId:
           type: string
+          nullable: true
+        personaId:
+          type: string
+          nullable: true
+        personaName:
+          type: string
+          nullable: true
+        personaType:
+          type: string
+          nullable: true
+        remarks:
+          type: string
+          nullable: true
+      additionalProperties: false
+    AddRights:
+      type: object
+      properties:
+        entities:
+          type: array
+          items:
+            $ref: '#/components/schemas/AddEntityInfo'
           nullable: true
       additionalProperties: false
