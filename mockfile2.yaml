@@ -1,16 +1,17 @@
 openapi: 3.0.1
 info:
-  title: RBAC Manager API Docs
-  description: RBAC Manager API Documentation
+  title: Asset Manager API Docs
+  description: Asset Manager API Documentation
   version: v2
 servers:
-  - url: /rbacmanagement
+  - url: /assetmanagement
 paths:
-  /api/v1/entities:
+  /api/v1/assets:
     post:
       tags:
-        - Entity
-      summary: This API is used for creation of entities for RBAC, with this user can create new entities for management
+        - Assets
+      summary: This API is used to create a New Asset of a specific asset type
+      description: "Request Body Description\r\n\r\n        \r\n        assetUniqueId: this field is to provide a unique identitfier for the asset\r\n        assetTenantIdentifier: this field is to provide the tenant details of the asset\r\n        assetTypeUniqueId:  this field is to provide  unique identifier of the asset type so that asset and asset type mapping can be done.\r\n        proprtyies: this field is a list of keyvalue pair  where the inspection and test details of each asset are stored ."
       parameters:
         - name: bearer
           in: header
@@ -18,83 +19,220 @@ paths:
           schema:
             type: string
       requestBody:
-        description: provide valid Request Body here
+        description: provide valid Request Body
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddEntities'
-          
-          
+              $ref: '#/components/schemas/AddAssets'
+         
       responses:
         '200':
-          description: sucessfully created entity
+          description: Sucessfully created a new asset
+        '400':
+          description: request body is not valid
         '401':
-          description: user unauthorized to create new entity
+          description: unauthorized user or user doent have access to create asset
     put:
       tags:
-        - Entity
-      summary: This API is used for update of entity details for RBAC, with this user can update entities for management
+        - Assets
+      summary: This API is used to update the asset details of a specific asset. when this api is triggered Rego backend updates the asset details of the asset whose id in provided in URL
+      description: "Request Body Description\r\n\r\n        \r\n        assetUniqueId: this field is to provide a unique identitfier for the asset\r\n        assetTenantIdentifier: this field is to provide the tenant details of the asset\r\n        assetTypeUniqueId:  this field is to provide the unique identifier of the asset type so that asset and asset type mapping can be done.\r\n        properties: this field is a list keyvalue pair  where the inspection and test details of each asset are stored ."
       parameters:
         - name: bearer
           in: header
           description: provide valid JWT token here
           schema:
             type: string
-        - name: entityId
+        - name: assetId
           in: query
-          description: provide valid entity Ids
+          description: provide assetId of the asset to be editted
           schema:
             type: string
       requestBody:
-        description: provide valid Request Body here
+        description: provide valid Request body
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddEntities'
-          
+              $ref: '#/components/schemas/AddAssets'
+         
       responses:
         '200':
-          description: sucessfully updated entity
+          description: sucessfully updated the asset with given assetId
         '401':
-          description: user unauthorized to update  entity
+          description: unauthorized user or user doesn't have permission to perform the edit operation
+        '404':
+          description: asset not found with the given assetId
     get:
       tags:
-        - Entity
-      summary: This API is used to fetch list of entities created
+        - Assets
+      summary: This API is to fetch the list of assets that are in approved status . the default status is approved so this api would fetch all the assets under the users organization
       parameters:
         - name: bearer
           in: header
           description: provide valid JWT token here
           schema:
             type: string
+        - name: status
+          in: query
+          description: Approved,Pending or All only these values are accepted as values and backend searches the assets based on the status and provides only those assets
+          schema:
+            type: string
       responses:
         '200':
-          description: sucessfully fetched list of entities
+          description: Sucessfully fetched all the asssets based on the status
+        '400':
+          description: please check the request parameters values
+        '401':
+          description: unauthorized user or user doesnt have permission to view assets
+  /api/v1/assets/customerId/{customerId}/siteId/{siteId}:
+    get:
+      tags:
+        - Assets
+      summary: This API is used to get list of all the assets based on the customerId and siteId. When this API is triggered Rego backend fetches all the assets that are created for provided siteId and customerId .
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: customerId
+          in: path
+          description: provide valid customerId here
+          required: true
+          schema:
+            type: string
+        - name: siteId
+          in: path
+          description: provide valid siteId here
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fetched list of assets for given customerId and siteId
+        '400':
+          description: customerId or siteId not found under the user organization
+        '401':
+          description: unauthorized user or user doesn't have permission to view the asset details
+        '404':
+          description: no asset found for given customerId and siteId
+  /api/v1/assets/assetId/{assetId}:
+    get:
+      tags:
+        - Assets
+      summary: This API is used to fetch the details of a particular asset  by providing the asset Id . when this API is triggered Rego Backend searches the asset by Id and return one asset with  details.
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: assetId
+          in: path
+          description: provide valid asset Id here
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fetched the asset by Id
+        '401':
+          description: unauthorized user or user dont have access to view the asset details
+        '404':
+          description: asset not found for this assetId
     delete:
       tags:
-        - Entity
-      summary: This API is used to delete entities. By triggering this API user can delete entities that are managed by his persona
+        - Assets
+      summary: This API is used to delete the asset by Id .When this API is triggered backend deletes the asset with this assetId
       parameters:
         - name: bearer
           in: header
           description: provide valid JWT token here
           schema:
             type: string
-        - name: entityId
-          in: query
-          description: provide valid entity here
+        - name: assetId
+          in: path
+          description: provide valid assetId here
+          required: true
           schema:
             type: string
       responses:
         '200':
-          description: sucessfully deleted the entity
+          description: sucessfully deleted the asset with given assetId
         '401':
-          description: user unauthorized or don't have permission to delete the entity
-  /api/v1/persona:
+          description: unauthorized user or user doesn't have access to delete the asset
+        '404':
+          description: asset with given assetId not found
+  /api/v1/assets/assetId/{assetId}/approve:
+    put:
+      tags:
+        - Assets
+      summary: This API is used to change status of the asset from Pending to Approved . when triggered backend changes the asset status . Only admins will have access to do this operation.
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: assetId
+          in: path
+          description: provide valid assetId here
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully updated the status of asset
+        '401':
+          description: unauthorized user or user doesn't have permission to approve the asset
+        '404':
+          description: asset with given asset Id not found
+  /api/v1/assets/assetId/assetmedia/{assetUniqueId}:
     post:
       tags:
-        - Persona
-      summary: This API is used to create a new Persona .
+        - Assets
+      summary: This API is used to add list of Images or icons for a particular asset . When trigggered  the API will upload the assets to blob store and when more than 8 images are uploaded only latest 8 images are stored as part of image imformation rest would be deleted
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: assetUniqueId
+          in: path
+          description: provide valid assetUniqueId here
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                files:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+            encoding:
+              files:
+                style: form
+      responses:
+        '200':
+          description: sucessfully updated the images of asset
+        '400':
+          description: image format or file format is not supported please provide valid format
+        '401':
+          description: unauthorized user or user doesnt have permission to upload images to the asset
+        '404':
+          description: asset with given asset unique Id not found
+  /api/v2/assets:
+    post:
+      tags:
+        - Assets
+      summary: This API is used to create or edit asset details with same end point . If the asset with the provided assetUnique Id is found the asset details will be updated and if the asset is not found the asset will be created.
+      description: "Request Body Description\r\n\r\n        \r\n        assetUniqueId: this field is to provide a unique identitfier for the asset\r\n        assetTenantIdentifier: this field is to provide the tenant details of the asset\r\n        assetTypeUniqueId:  this field is to provide the unque identifier of the asset type so that asseta nd asset type mapping can be done this is a required property\r\n        propreties: this field is a lit keyvalue pair  where the inspection and test details of each asset are stored ."
       parameters:
         - name: bearer
           in: header
@@ -106,247 +244,419 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddPersona'
+              $ref: '#/components/schemas/AddAssets'
+         
+      responses:
+        '200':
+          description: sucessfully updated/created the  asset
+        '400':
+          description: provide valid request object body
+        '401':
+          description: unauthorized user or user doesnt have permission to upload images to the asset
+  /api/v1/assets/assetUniqueId/{assetUniqueId}/isapproved:
+    get:
+      tags:
+        - Assets
+      summary: This API is to check the status of an asset . this API lets the user know if the asset status is Approved or Pending
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: assetUniqueId
+          in: path
+          description: provide valid assetUniqueId here
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: sucessfully fetched the status of asset
+        '401':
+          description: unauthorized user or user doesnt have permission to view the asset
+        '404':
+          description: asset with given asset unique Id not found
+  /api/v1/assets/radius/{radius}/latitude/{latitude}/longitude/{longitude}/search:
+    get:
+      tags:
+        - Assets
+      summary: This API lets users to fetch the asset based on the geo location and radius. When provided of the cuurent location of user and radius this API would list all the assets in the radius of the user
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: radius
+          in: path
+          description: provide radius in which the assets are too be searched
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: latitude
+          in: path
+          description: provide the latitude of the centre or latitude of the user
+          required: true
+          schema:
+            type: number
+            format: double
+        - name: longitude
+          in: path
+          description: provide the longitude of the centre or longitude of the user
+          required: true
+          schema:
+            type: number
+            format: double
+      responses:
+        '200':
+          description: sucessfully fetched all the assets in the radius
+        '401':
+          description: unauthorized user or user doesn't have permission to view the asset list
+        '404':
+          description: No assests found in the radius specified
+  /api/v1/assetsprops/age:
+    post:
+      tags:
+        - Assets
+      summary: get assetprops  by age
+      parameters:
+        - name: bearer
+          in: header
+          description: bearer
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/filterAssetProps'
           
-           
       responses:
         '200':
           description: Success
-    get:
+  /api/v1/assets/serialNo/{serialNo}/assetuniqueId/{assetuniqueId}:
+    delete:
       tags:
-        - Persona
-      summary: This API is used to fetch the list of persona present in Rego
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid bearer token here
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fetched persona list
-        '401':
-          description: user unauthorized or user don't have permission to view personas
-  /api/v1/privacyTerms/personId:
-    get:
-      tags:
-        - Persona
-      summary: This API is used to fetch the privacy terms text from platform IDM service
+        - Assets
+      summary: This APi lets the user to delete the asset based on the SerialNo and assetUniqueId. when triggered the asset with the provided serial number and provided assetUniqueId is deleted from the database
       parameters:
         - name: bearer
           in: header
           description: provide valid JWT token here
           schema:
             type: string
-        - name: personaId
-          in: query
-          description: provide valid persona Id here
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fetched privacy terms of the given persona
-        '401':
-          description: user unauthorized or user don't have permission to fetch privacy terms
-  /api/v1/seeddata/persona:
-    get:
-      tags:
-        - Persona
-      summary: This API is  to create Persona Seed data in Rego Backend so Platform Integration is sucessful
-      responses:
-        '200':
-          description: sucessfully created persona seed data
-  /api/v1/seeddata/entity:
-    get:
-      tags:
-        - Persona
-      summary: This API is used to created entity seed data for platform IDM integration and RBAC management
-      responses:
-        '200':
-          description: sucessfully created entity details seed data
-  /api/v1/seeddata/rights:
-    get:
-      tags:
-        - Persona
-      summary: This API is used to created rights seed data for platform IDM integration and RBAC management
-      responses:
-        '200':
-          description: sucessfully created rights details seed data
-  /api/v2/seeddata/rights:
-    get:
-      tags:
-        - Persona
-      summary: This API is version 2, used to created rights seed data for platform IDM integration and RBAC management
-      responses:
-        '200':
-          description: sucessfully created rights details seed data
-  /api/v1/seeddata/assetType/organizationId/{organizationId}:
-    get:
-      tags:
-        - Persona
-      summary: This API is used to created asset type seed data for a organization
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-        - name: organizationId
+        - name: serialNo
           in: path
-          description: provide valid organizationId here
+          description: provide valid SerialNo here
+          required: true
+          schema:
+            type: string
+        - name: assetuniqueId
+          in: path
+          description: provide valid asset Unique Id
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: sucessfully created asset type details seed data
-  /api/v1/seeddata/emailTemplate/organizationId/{organizationId}:
-    get:
+          description: sucessfully deleted the asset with provided serial number and asset uniqueId
+        '401':
+          description: user unauthorized or user doesnt have permission to delete the asset
+        '404':
+          description: No asset is found with the provided serial and assetunique Id
+  /api/v1/assettype:
+    post:
       tags:
-        - Persona
-      summary: This API is used to created emailTemplate seed data for a organization
+        - AssetType
+      summary: This API is used to create a new Asset Type .A new Asset type can be used for further asset creations.
+      description: "Request Body Description:\r\n\r\n    assetTypeUniqueId: a unique Identifier ofor the asset type , this value is used for mapping asset with asset type\r\n    properties: This field is a list of Jsons where each Json defines the properties the asset type . this field defines the list of keys the asset properties should contain and their data types ,and if the key is mandatory or not .\r\n    organizationId: used for organization mapping of the asset type each organization can have independent assset types of their own ."
       parameters:
         - name: bearer
           in: header
           description: provide valid JWT token here
           schema:
             type: string
-        - name: organizationId
-          in: path
-          description: provide valid organizationId here
-          required: true
+      requestBody:
+        description: Provide valid Request Body here
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddAssetType'
+         
+      responses:
+        '200':
+          description: asset type sucessfully created
+        '400':
+          description: provide valid request payload
+        '401':
+          description: unauthorized user or user doesnt have the permission to create asset type
+    get:
+      tags:
+        - AssetType
+      summary: This API allows user to fetch all the asset types in his particular organization.
+      parameters:
+        - name: bearer
+          in: header
+          description: provide valid JWT token here
           schema:
             type: string
       responses:
         '200':
-          description: sucessfully created emailTemplate details seed data
-  /api/v1/rights/personaId/{personaId}:
+          description: sucessffully fetched all the asst types
+        '401':
+          description: unauthorized access or user dont have permission to fetch the asset types
+        '404':
+          description: asset types not found
+  /api/v1/assettype/assetTypeId/{assetTypeId}:
     put:
       tags:
-        - Rights
-      summary: This API is used to update rights of a persona for RBAC
+        - AssetType
+      summary: This API is used to update the Asset type details. When triggered the API will edit the details of asset type like the name , properties
+      description: "Request Body Description:\r\n\r\n    assetTypeUniqueId: a unique Identifier ofor the asset type , this value is used for mapping asset with asset type\r\n    properties: This field is a list of Jsons where each Json defines the properties the asset type . this field defines the list of keys the asset properties should contain and their data types ,and if the key is mandatory or not .\r\n    organizationId: used for organization mapping of the asset type each organization can have independent assset types of their own ."
       parameters:
         - name: bearer
           in: header
           description: provide valid JWT token here
           schema:
             type: string
-        - name: personaId
+        - name: assetTypeId
           in: path
-          description: provide valid persona Id
+          description: provide valid assetTypeId
           required: true
           schema:
             type: string
       requestBody:
-        description: provide valid Request body
+        description: provide valid Request body here
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/AddRights'
+              $ref: '#/components/schemas/AddAssetType'
          
       responses:
         '200':
-          description: sucessfully updated rights for the given persona
+          description: asset type sucessfully created
+        '400':
+          description: provide valid request payload
         '401':
-          description: user unauthorized or user don't have permission to update rights
-  /api/v1/rights/entity/{entityName}/operation/{operation}:
+          description: unauthorized user or user doesnt have the permission to create asset type
+        '404':
+          description: asset type with asset type Id not found
     get:
       tags:
-        - Rights
-      summary: This API is used to check rights of the user for a particular entity and operation
+        - AssetType
+      summary: This asset type API allows user to fetch the details of a asset type based on asset type Id
       parameters:
         - name: bearer
           in: header
-          description: provide valid JWT token
+          description: provide valid JWT token here
           schema:
             type: string
-        - name: entityName
+        - name: assetTypeId
           in: path
-          description: provide valid entityName
-          required: true
-          schema:
-            type: string
-        - name: operation
-          in: path
-          description: provide valid operation
+          description: provide valid assetTypeId
           required: true
           schema:
             type: string
       responses:
         '200':
-          description: sucessfully fetched the rights of persona for the operation and entity
+          description: asset type sucessfully found ,for the Id
         '401':
-          description: user doesn't have permission to perform the operation
-  /api/v1/rights:
-    get:
+          description: unauthorized access or user doesnt have access to fetch the asset id
+        '404':
+          description: no asset type found for the given aset type Id
+    delete:
       tags:
-        - Rights
-      summary: This API is used to check right of the user
+        - AssetType
+      summary: This API is used to delete a particualr asset type by passing the Id in the URL
       parameters:
         - name: bearer
           in: header
-          description: provide valid bearer token
+          description: provide valid JWT token here
+          schema:
+            type: string
+        - name: assetTypeId
+          in: path
+          description: provide valid assetTypeId
+          required: true
           schema:
             type: string
       responses:
         '200':
-          description: sucessfully fetched rights of the user
- 
+          description: sucessfully delete assset type with given id
+        '401':
+          description: unauthorized access or user doesnt have access to delete the asset type
+        '404':
+          description: asset with assetId not found
 components:
   schemas:
-    AddEntities:
+    AddAssetType:
       type: object
       properties:
-        entityName:
+        assetTypeName:
           type: string
           nullable: true
-        entityType:
+        assetTypeDesc:
           type: string
           nullable: true
-        remarks:
+        assetTypeUniqueId:
           type: string
           nullable: true
-      additionalProperties: false
-    AddEntityInfo:
-      type: object
-      properties:
-        entityName:
+        assetTypeVersion:
           type: string
           nullable: true
-        view:
-          type: boolean
-        add:
-          type: boolean
-        edit:
-          type: boolean
-        delete:
-          type: boolean
-      additionalProperties: false
-    AddPersona:
-      type: object
-      properties:
-        orgTypeId:
+        assetTypeTenantIdentifier:
           type: string
           nullable: true
-        personaId:
+        assetTypeAppIdentified:
           type: string
           nullable: true
-        personaName:
-          type: string
-          nullable: true
-        personaType:
-          type: string
-          nullable: true
-        remarks:
-          type: string
-          nullable: true
-      additionalProperties: false
-    AddRights:
-      type: object
-      properties:
-        entities:
+        associatedAssetType:
           type: array
           items:
-            $ref: '#/components/schemas/AddEntityInfo'
+            type: string
           nullable: true
+        properties:
+          type: array
+          items:
+            $ref: '#/components/schemas/AssetTypeProperty'
+          nullable: true
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+            nullable: true
+          nullable: true
+        organizationId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    AddAssets:
+      type: object
+      properties:
+        assetName:
+          type: string
+          nullable: true
+        assetUniqueId:
+          type: string
+          nullable: true
+        assetLocation:
+          $ref: '#/components/schemas/AddLocation'
+        assetVersion:
+          type: string
+          nullable: true
+        assetTenantIdentifier:
+          type: string
+          nullable: true
+        assetDescription:
+          type: string
+          nullable: true
+        assetTypeUniqueId:
+          type: string
+          nullable: true
+        customerInfo:
+          $ref: '#/components/schemas/CustomerInfo'
+        modifiedOn:
+          type: string
+          format: date-time
+        assetIcons:
+          type: array
+          items:
+            $ref: '#/components/schemas/Picture'
+          nullable: true
+        properties:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        tags:
+          type: object
+          additionalProperties:
+            type: string
+          nullable: true
+        associatedAssets:
+          type: array
+          items:
+            type: string
+          nullable: true
+        relatedAssets:
+          type: array
+          items:
+            type: string
+          nullable: true
+        primaryModifiedOn:
+          type: string
+          format: date-time
+      additionalProperties: false
+    AddLocation:
+      type: object
+      properties:
+        coordinates:
+          type: array
+          items:
+            type: number
+            format: double
+          nullable: true
+      additionalProperties: false
+    AssetTypeProperty:
+      type: object
+      properties:
+        key:
+          type: string
+          nullable: true
+        valueType:
+          type: string
+          nullable: true
+        defaultValue:
+          type: string
+          nullable: true
+        required:
+          type: boolean
+      additionalProperties: false
+    CustomerInfo:
+      type: object
+      properties:
+        customerId:
+          type: string
+          nullable: true
+        siteId:
+          type: string
+          nullable: true
+      additionalProperties: false
+    Picture:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        data:
+          type: string
+          nullable: true
+      additionalProperties: false
+    filterAssetProps:
+      type: object
+      properties:
+        age:
+          type: integer
+          format: int32
+        isGreater:
+          type: boolean
+        pageSize:
+          type: integer
+          format: int32
+        pageNumber:
+          type: integer
+          format: int32
+        assetType:
+          type: string
+          nullable: true
+        searchtxt:
+          type: string
+          nullable: true
+        sortBy:
+          type: string
+          nullable: true
+        isAscending:
+          type: boolean
       additionalProperties: false
