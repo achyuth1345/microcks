@@ -1,806 +1,356 @@
-openapi: 3.0.1
+---
+openapi: 3.0.2
 info:
-  title: Report Manager API Docs
-  description: Report Manager API Documentation
-  version: v2
-servers:
-  - url: /reportmanagement
+  title: API Cargas - 1.0
+  version: 1.0.0
+  description: API definition of Cargas
+  contact:
+    name: Cargas-lakesgas
+    url: https://lakesgas-cargas.silverlinevps.com
+    email: achyuth@mailinator.com
 paths:
-  /api/v1/media/upload:
+  /API/GetNewCustomers:
+    summary: Get list of new customers
     post:
-      tags:
-        - Media
-      summary: Upload media
-      parameters:
-        - name: bearer
-          in: header
-          description: bearer
-          schema:
-            type: string
+      responses:
+        "200":
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Customers'
+              examples:
+                New Customers Example:
+                  value: '<Results>
+  <DataSet>
+    <Table>
+      <CustomerID>12312313</CustomerID>
+    </Table>
+    <Table>
+      <CustomerID>12312314</CustomerID>
+    </Table>
+  </DataSet>
+</Results>'
+                    
+          description: Changed Customers
+      operationId: GetNewCustomers
+      summary: Get New Customers
+  /API/GetCustomerAccount:
+    summary: Get list of customer accounts
+    post:
       requestBody:
         content:
-          multipart/form-data:
+          application/xml:
             schema:
-              type: object
-              properties:
-                reportId:
-                  type: string
-                correlationId:
-                  type: string
-                files:
-                  type: array
-                  items:
-                    type: string
-                    format: binary
-            encoding:
-              reportId:
-                style: form
-              correlationId:
-                style: form
-              files:
-                style: form
+              $ref: '#/components/schemas/CustomerId'
       responses:
-        '200':
-          description: Success
-  /api/v1/report/appliancecheck:
+        "200":
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Accounts'
+              examples:
+                Customer Accounts Example:
+                  value: '<Results>
+  <DataSet>
+    <Table>
+      <CustomerID>0040</CustomerID>
+      <CustomerStatus>Active</CustomerStatus>
+      <CustomerType>Residential</CustomerType>
+      <EmailAddress>ayadav11@yopmail.com</EmailAddress>
+      <Address1>PO BOX4422</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>sadasdd2</City>
+      <State>sdasdasd2</State>
+      <Zipcode>87895552</Zipcode>
+      <ContactPerson>adasdsa2</ContactPerson>
+    
+      <PrimaryPhone>7878978782</PrimaryPhone>
+    </Table>
+  </DataSet>
+</Results>'
+                   
+          description: Changed
+      operationId: GetCustomerAccounts
+      summary: Get Customer Accounts
+  /API/GetCustomerLocations:
+    summary: Get customer locations
     post:
-      tags:
-        - Report
-      summary: This API is used to  Publish appliance check report for the tests (Via kafka publisher)
-      parameters:
-        - name: bearer
-          in: header
-          description: bearer
-          schema:
-            type: string
       requestBody:
-        description: provide valid Request body
         content:
-          application/json:
+          application/xml:
             schema:
-              $ref: '#/components/schemas/ApplianceCheckRequests'
-
+              $ref: '#/components/schemas/CustomerId'
       responses:
-        '200':
-          description: sucessfully published report to kafka
-        '400':
-          description: customer details not found
-        '401':
-          description: user unauthorized or user dont have access to upload appliance check report
-  /api/v1/report/SystemCheck:
-    post:
-      tags:
-        - Report
-      summary: This API is used to  Publish system check report for the tests (Via kafka publisher)
-      parameters:
-        - name: bearer
-          in: header
-          description: bearer
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SystemCheckRequests'
-        
-      responses:
-        '200':
-          description: sucessfully published report to kafka
-        '400':
-          description: customer details not found
-        '401':
-          description: user unauthorized or user dont have access to upload system check report
-  /api/v1/report/leaktest:
-    post:
-      tags:
-        - Report
-      summary: This API is used to  Publish leak check report for the tests (Via kafka publisher)
-      parameters:
-        - name: bearer
-          in: header
-          description: bearer
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LeakCheckRequests'
-         
-      responses:
-        '200':
-          description: sucessfully published report to kafka
-        '400':
-          description: customer details not found
-        '401':
-          description: user unauthorized or user dont have access to upload leak check report
-  /api/v1/report/cathodicprotection:
-    post:
-      tags:
-        - Report
-      summary: This API is used to  Publish cathodic protection check report for the tests (Via kafka publisher)
-      parameters:
-        - name: bearer
-          in: header
-          description: bearer
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LeakCheckRequests'
-         
-      responses:
-        '200':
-          description: sucessfully published report to kafka
-        '400':
-          description: customer details not found
-        '401':
-          description: user unauthorized or user dont have access to upload cathodic protection check
-  /api/v1/report/tenantUniqueIdentifier/{tenantUniqueIdentifier}/all:
-    post:
-      tags:
-        - Report
-      summary: This API is used to fetch all the list of reports during a time period of fromDate to toDate. By triggering this API user will get all th reports that were created after FromDate and before ToDate.
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT toekn
-          schema:
-            type: string
-        - name: tenantUniqueIdentifier
-          in: path
-          description: provide tenant details of the report
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request Body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/FilterReport'
-         
-      responses:
-        '200':
-          description: sucessfully fetched reportrs duting the time period
-        '401':
-          description: user unauthorized or user dont have permission to view reports
-        '404':
-          description: No reports found for the filter
-  /api/v2/report/tenantUniqueIdentifier/{tenantUniqueIdentifier}/all:
-    post:
-      tags:
-        - Report
-      summary: This API is used to fetch  list of reports during a time period of fromDate to toDate in a batch manner. By triggering this API user will get all th reports that were created after FromDate and before ToDate in a batch manner . user can provide the batch size and the page number
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT toekn
-          schema:
-            type: string
-        - name: tenantUniqueIdentifier
-          in: path
-          description: provide tenant details of the report
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request Body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/paginatedReport'
-         
-      responses:
-        '200':
-          description: sucessfully fetched reportrs duting the time period
-        '401':
-          description: user unauthorized or user dont have permission to view reports
-        '404':
-          description: No reports found for the filter
-  /api/v2/reportCount/tenantUniqueIdentifier/{tenantUniqueIdentifier}/all:
-    post:
-      tags:
-        - Report
-      summary: This API provides the count of each type or report during a time period of FromDate to ToDate.
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT toekn
-          schema:
-            type: string
-        - name: tenantUniqueIdentifier
-          in: path
-          description: provide tenant details of the report
-          required: true
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request Body
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/paginatedReport'
-         
-      responses:
-        '200':
-          description: sucessfully fetched count of reports during the time period
-        '401':
-          description: user unauthorized or user dont have permission to view reports
-        '404':
-          description: No reports found for the filter
-  /api/v1/report/reportId/{reportId}:
-    get:
-      tags:
-        - Report
-      summary: This API is ued to fetch all the details of a particular report by Id
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token
-          schema:
-            type: string
-        - name: reportId
-          in: path
-          description: provide valid report Id
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fecthed the report by Id
-        '401':
-          description: user unauthorized or user dont have permission to view reports
-        '404':
-          description: no report found for the Id
-  /api/v1/report/tenantUniqueIdentifier/{tenantUniqueIdentifier}/customer/{accountNo}/reportType/{reportType}/tests:
-    get:
-      tags:
-        - Report
-      summary: This API is used to fetch all the report for a particular customer and also filter by report type
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token
-          schema:
-            type: string
-        - name: tenantUniqueIdentifier
-          in: path
-          description: provide valid tenant details
-          required: true
-          schema:
-            type: string
-        - name: accountNo
-          in: path
-          description: provide valid accountNo
-          required: true
-          schema:
-            type: string
-        - name: reportType
-          in: path
-          description: reportType
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fetched reports for particualr accountNo
-        '401':
-          description: user unauthorized or user dont have permission to view report details
-        '404':
-          description: No reports founf for the accountNo
-  /api/v1/report/customer/{accountNo}/siteId/{siteId}/tests:
-    get:
-      tags:
-        - Report
-      summary: This API is to fecth the report asset properties for given account number and siteId
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid bearer token
-          schema:
-            type: string
-        - name: accountNo
-          in: path
-          description: provide valid accountNo
-          required: true
-          schema:
-            type: string
-        - name: siteId
-          in: path
-          description: provide valid siteId
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fetched the asset report proeprties for a given accountNo and SiteId
-        '401':
-          description: user unauthorized or user dont have permission to view report details
-        '404':
-          description: no asset report properties found for account no and siteId
-  /api/v1/report/assetdetails/{assetUniqueId}:
-    get:
-      tags:
-        - Report
-      summary: This API is used to fecth asset report properties based on asset unbiqueId
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid bearer token
-          schema:
-            type: string
-        - name: assetUniqueId
-          in: path
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fecthed asset report props by asset unique Id
-        '401':
-          description: user unauthorized or user dont have permission to view asset report property details
-        '404':
-          description: no asset report properties found for assetUnique Id
-  /api/v1/report/tenant/{tenantUniqueIdentifier}/types:
-    get:
-      tags:
-        - Report
-      summary: This API is used to fetch all the report types
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token
-          schema:
-            type: string
-        - name: tenantUniqueIdentifier
-          in: path
-          description: provide valid tenant details
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fecthed list of report types
-        '401':
-          description: user unauthorized or dont have permission to view report types
-  
+        "200":
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Locations'
+              examples:
+                Customer Locations Example:
+                  value:
+                    '<Results>
+  <DataSet>
+    <Table>
+      <Name>dsfsadsad</Name>
+      <Address1>edasdas</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>dsfsdf</City> 
+      <State>dasdas</State>
+      <Zipcode>546546422</Zipcode>
+     <ContactPerson>dasda22</ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType></LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+    <Table>
+      <Name>Primary Locationnnnnnnnnnnnnnn</Name>
+      <Address1>500 INDIANA AVE22</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType></LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+   
+  </DataSet>
+</Results>'
+          description: Changed
+      operationId: GetCustomerLocations
+      summary: Get Customer Locations
 components:
   schemas:
-    AckForm:
+    CustomerId:
       type: object
       properties:
-        formfield:
+        CustomerID:
           type: string
-          nullable: true
-        options:
-          type: string
-          nullable: true
-        formResponse:
-          type: string
-          nullable: true
-        formType:
-          type: string
-          nullable: true
-      additionalProperties: false
-    Acknowledgement:
+          description: Customer Id
+          example: 12312313
+    Customers:
+      title: Root Type for custoemrs
+      description: The root of the customers type's schema.
       type: object
       properties:
-        acknowledgementType:
-          type: string
-          nullable: true
-        signature:
-          $ref: '#/components/schemas/Signature'
-        ack_form:
-          type: array
-          items:
-            $ref: '#/components/schemas/AckForm'
-          nullable: true
-      additionalProperties: false
-    AddCustomerAddress:
-      type: object
-      properties:
-        siteId:
-          type: string
-          nullable: true
-        siteName:
-          type: string
-          nullable: true
-        siteType:
-          type: string
-          nullable: true
-        gasEquipPresent:
-          type: boolean
-        firstName:
-          type: string
-          nullable: true
-        lastName:
-          type: string
-          nullable: true
-        country:
-          type: string
-          nullable: true
-        address:
-          type: string
-          nullable: true
-        state:
-          type: string
-          nullable: true
-        city:
-          type: string
-          nullable: true
-        zipCode:
-          type: string
-          nullable: true
-        phone:
-          type: string
-          nullable: true
-        emailAddress:
-          type: string
-          nullable: true
-      additionalProperties: false
-    AddCustomerCompany:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-        emailAddress:
-          type: string
-          nullable: true
-      additionalProperties: false
-    AddLocation:
-      type: object
-      properties:
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-      additionalProperties: false
-    ApplianceCheckRequests:
-      type: object
-      properties:
-        reportId:
-          type: string
-          nullable: true
-        reportSchemaVer:
-          type: string
-          nullable: true
-        reportTotalTime:
-          type: integer
-          format: int32
-        reportDateTime:
-          type: string
-          format: date-time
-        tenantUniqueIdentifier:
-          type: string
-          nullable: true
-        reportLocation:
-          $ref: '#/components/schemas/ReportLocation'
-        customer:
-          $ref: '#/components/schemas/CustomerInfo'
-        technician:
-          $ref: '#/components/schemas/TechnicianInfo'
-        testNote:
-          type: string
-          nullable: true
-        extendedData:
+        Results:
           type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        reportPayload:
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              type: array
-              items:
-                $ref: '#/components/schemas/Payload'
-          nullable: true
-        leakTests:
-          type: array
-          items:
-            $ref: '#/components/schemas/LeakTest'
-          nullable: true
-        acknowledgement:
-          type: array
-          items:
-            $ref: '#/components/schemas/Acknowledgement'
-          nullable: true
-      additionalProperties: false
-    CustomerInfo:
+          properties:
+            DataSet:
+              type: object
+              properties:
+                Table: 
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      CustomerID:
+                        type: string
+      example:
+        value: '<Results>
+  <DataSet>
+    <Table>
+      <CustomerID>12312313</CustomerID>
+    </Table>
+    <Table>
+      <CustomerID>12312314</CustomerID>
+    </Table>
+    <Table>
+      <CustomerID>12312315</CustomerID>
+    </Table>
+    <Table>
+      <CustomerID>12312316</CustomerID>
+    </Table>
+    <Table>
+      <CustomerID>12312317</CustomerID>
+    </Table>
+    <Table>
+      <CustomerID>12312318</CustomerID>
+    </Table>
+    <Table>
+      <CustomerID>12312319</CustomerID>
+    </Table>
+    <Table>
+      <CustomerID>12312310</CustomerID>
+    </Table>
+    <Table>
+      <CustomerID>12312311</CustomerID>
+    </Table>
+    <Table>
+      <CustomerID>12312312</CustomerID>
+    </Table>
+    <Table>
+      <CustomerID>12312112</CustomerID>
+    </Table>
+  </DataSet>
+</Results>'
+    Accounts:
+      title: Root Type for accounts
+      description: The root of the accounts type's schema.
       type: object
       properties:
-        accountNo:
-          type: string
-          nullable: true
-        firstName:
-          type: string
-          nullable: true
-        lastName:
-          type: string
-          nullable: true
-        emailAddress:
-          type: string
-          nullable: true
-        phone:
-          type: string
-          nullable: true
-        customerType:
-          type: string
-          nullable: true
-        company:
-          $ref: '#/components/schemas/AddCustomerCompany'
-        address:
-          $ref: '#/components/schemas/AddCustomerAddress'
-      additionalProperties: false
-    FilterReport:
-      type: object
-      properties:
-        fromDate:
-          type: string
-          nullable: true
-        toDate:
-          type: string
-          nullable: true
-        tankSerialNumber:
-          type: string
-          nullable: true
-        reportType:
-          type: string
-          nullable: true
-        accountNo:
-          type: string
-          nullable: true
-        technicianEmail:
-          type: string
-          nullable: true
-      additionalProperties: false
-    LeakCheckRequests:
-      type: object
-      properties:
-        reportId:
-          type: string
-          nullable: true
-        reportSchemaVer:
-          type: string
-          nullable: true
-        reportTotalTime:
-          type: integer
-          format: int32
-        reportDateTime:
-          type: string
-          format: date-time
-        tenantUniqueIdentifier:
-          type: string
-          nullable: true
-        reportLocation:
-          $ref: '#/components/schemas/ReportLocation'
-        customer:
-          $ref: '#/components/schemas/CustomerInfo'
-        technician:
-          $ref: '#/components/schemas/TechnicianInfo'
-        testNote:
-          type: string
-          nullable: true
-        extendedData:
+        Results:
           type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        tests:
-          type: array
-          items:
-            $ref: '#/components/schemas/LeakTest'
-          nullable: true
-        tankDetails:
-          $ref: '#/components/schemas/TankInformation'
-        acknowledgement:
-          type: array
-          items:
-            $ref: '#/components/schemas/Acknowledgement'
-          nullable: true
-      additionalProperties: false
-    LeakTest:
+          properties:
+            DataSet:
+              type: object
+              properties:
+                Table: 
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      CustomerID:
+                        type: string
+                      CustomerStatus:
+                        type: string
+                      CustomerType:
+                        type: string                  
+                      EmailAddress:
+                        type: string
+                      Address1:
+                        type: string                  
+                      Address2:
+                        type: string                  
+                      Address3:
+                        type: string                  
+                      City:
+                        type: string                  
+                      State:
+                        type: string                    
+                      Zipcode:
+                        type: string
+                      ContactPerson:
+                        type: string
+                      PrimaryPhone:
+                        type: string
+                      CustomerLastName:
+                        type: string
+                      CustomerFirstName:
+                        type: string
+      example:
+        Value: '<Results>
+  <DataSet>
+    <Table>
+      <CustomerID>94603</CustomerID>
+      <CustomerStatus>Active</CustomerStatus>
+      <CustomerType>Residential</CustomerType>
+      <EmailAddress>dt2013@hotmail.com</EmailAddress>
+      <Address1>PO BOX442</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <PrimaryPhone>5072274738</PrimaryPhone>
+      <CustomerLastName>ROSALES</CustomerLastName>
+      <CustomerFirstName>DANIELLE</CustomerFirstName>
+    </Table>
+    <Table>
+      <CustomerID>94603</CustomerID>
+      <CustomerStatus>Active</CustomerStatus>
+      <CustomerType>Residential</CustomerType>
+      <EmailAddress>dt2013@hotmail.com</EmailAddress>
+      <Address1>PO BOX442</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <PrimaryPhone>5072274738</PrimaryPhone>
+      <CustomerLastName>ROSALES</CustomerLastName>
+      <CustomerFirstName>DANIELLE</CustomerFirstName>
+    </Table>
+  </DataSet>
+</Results>'
+        
+    Locations:
+      title: Root Type for locations
+      description: The root of the locations type's schema.
       type: object
       properties:
-        data:
+        Results:
           type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        correlationId:
-          type: string
-          nullable: true
-        pictures:
-          type: array
-          items:
-            $ref: '#/components/schemas/Picture'
-          nullable: true
-      additionalProperties: false
-    Payload:
-      type: object
-      properties:
-        primaryDataFields:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        inspectionDataFields:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        technicianAcknowledgment:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        correlationId:
-          type: string
-          nullable: true
-        pictures:
-          type: array
-          items:
-            $ref: '#/components/schemas/Picture'
-          nullable: true
-      additionalProperties: false
-    Picture:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-        data:
-          type: string
-          nullable: true
-      additionalProperties: false
-    ReportLocation:
-      type: object
-      properties:
-        latitude:
-          type: number
-          format: double
-        longitude:
-          type: number
-          format: double
-      additionalProperties: false
-    Signature:
-      type: object
-      properties:
-        name:
-          type: string
-          nullable: true
-        data:
-          type: string
-          nullable: true
-      additionalProperties: false
-    SystemCheckRequests:
-      type: object
-      properties:
-        reportId:
-          type: string
-          nullable: true
-        reportSchemaVer:
-          type: string
-          nullable: true
-        reportTotalTime:
-          type: integer
-          format: int32
-        reportDateTime:
-          type: string
-          format: date-time
-        tenantUniqueIdentifier:
-          type: string
-          nullable: true
-        reportLocation:
-          $ref: '#/components/schemas/ReportLocation'
-        customer:
-          $ref: '#/components/schemas/CustomerInfo'
-        technician:
-          $ref: '#/components/schemas/TechnicianInfo'
-        testNote:
-          type: string
-          nullable: true
-        extendedData:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-        reportPayload:
-          type: array
-          items:
-            type: object
-            additionalProperties:
-              type: array
-              items:
-                $ref: '#/components/schemas/Payload'
-          nullable: true
-        leakTests:
-          type: array
-          items:
-            $ref: '#/components/schemas/LeakTest'
-          nullable: true
-        acknowledgement:
-          type: array
-          items:
-            $ref: '#/components/schemas/Acknowledgement'
-          nullable: true
-        pressureTest:
-          type: array
-          items:
-            $ref: '#/components/schemas/LeakTest'
-          nullable: true
-      additionalProperties: false
-    TankInformation:
-      type: object
-      properties:
-        assetTypeUniqueId:
-          type: string
-          nullable: true
-        serialNo:
-          type: string
-          nullable: true
-        location:
-          $ref: '#/components/schemas/AddLocation'
-        properties:
-          type: object
-          additionalProperties:
-            type: string
-          nullable: true
-      additionalProperties: false
-    TechnicianInfo:
-      type: object
-      properties:
-        email:
-          type: string
-          nullable: true
-        name:
-          type: string
-          nullable: true
-      additionalProperties: false
-    paginatedReport:
-      type: object
-      properties:
-        fromDate:
-          type: string
-          nullable: true
-        toDate:
-          type: string
-          nullable: true
-        tankSerialNumber:
-          type: string
-          nullable: true
-        reportType:
-          type: string
-          nullable: true
-        accountNo:
-          type: string
-          nullable: true
-        technicianEmail:
-          type: string
-          nullable: true
-        pageSize:
-          type: integer
-          format: int32
-        pageNumber:
-          type: integer
-          format: int32
-        sortBy:
-          type: string
-          nullable: true
-        isAscending:
-          type: boolean
-        searchtxt:
-          type: string
-          nullable: true
-      additionalProperties: false
+          properties: 
+            DataSet:
+              type: object
+              properties:
+                Table: 
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      Name:
+                        type: string
+                      Address1:
+                        type: string                  
+                      Address2:
+                        type: string                  
+                      Address3:
+                        type: string                  
+                      City:
+                        type: string                  
+                      State:
+                        type: string                    
+                      Zipcode:
+                        type: string
+                      ContactPerson:
+                        type: string
+                      Inactive:
+                        type: boolean
+                      LocationType:
+                        type: string                  
+                      PhoneNumber:
+                        type: string
+      example:
+        Value: '<Results>
+  <DataSet>
+    <Table>
+      <Name></Name>
+      <Address1>PO BOX 442222222222</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType></LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+    <Table>
+  
+      <Name>Primary Location</Name>
+      <Address1>500 INDIANA AVE</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType></LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+    <Table>
+      <Name>Primary Location</Name>
+      <Address1>500 INDIANA AVEEEEESSSSSSSSS</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType>Owner</LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+  </DataSet>
+</Results>'      
