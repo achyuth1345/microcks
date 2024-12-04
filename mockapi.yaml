@@ -5,8 +5,8 @@ info:
   version: 1.0.0
   description: API definition of Cargas
   contact:
-    name: Cargas-lakesgas
-    url: https://lakesgas-cargas.silverlinevps.com
+    name: Cargas-asdasdad
+    url: https://asddasdasd
     email: achyuth@mailinator.com
 paths:
   /API/GetNewCustomers:
@@ -24,6 +24,9 @@ paths:
   <DataSet>
     <Table>
       <CustomerID>12312313</CustomerID>
+    </Table>
+    <Table>
+      <CustomerID>12312314</CustomerID>
     </Table>
   </DataSet>
 </Results>'
