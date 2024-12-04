@@ -1,348 +1,236 @@
-openapi: 3.0.1
+---
+openapi: 3.0.2
 info:
-  title: RBAC Manager API Docs
-  description: RBAC Manager API Documentation
-  version: v2
-servers:
-  - url: /rbacmanagement
+  title: API Cargas - 1.0
+  version: 1.0.0
+  description: API definition of Cargas
+  contact:
+    name: Cargas-lakesgas
+    url: https://lakesgas-cargas.silverlinevps.com
+    email: achyuth@mailinator.com
 paths:
-  /api/v1/entities:
+  /API/GetNewCustomers:
+    summary: Get list of new customers
     post:
-      tags:
-        - Entity
-      summary: This APi is used for creation of entities for RBAC., with this user can ccreate new entities for management
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT tken here
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request Body here
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddEntities'
-
       responses:
-        '200':
-          description: sucessfully created entity
-        '401':
-          description: user unautorized to create new entity
-    put:
-      tags:
-        - Entity
-      summary: This APi is used for update of entity details for RBAC., with this user can update entities for management
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT tken here
-          schema:
-            type: string
-        - name: entityId
-          in: query
-          description: provide valid entity Ids
-          schema:
-            type: string
-      requestBody:
-        description: provide valid Request Body here
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/AddEntities'
-         
-      responses:
-        '200':
-          description: sucessfully updated entity
-        '401':
-          description: user unautorized to update  entity
-    get:
-      tags:
-        - Entity
-      summary: This API is sued to fetch list of entities created
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fecthed list of entities
-    delete:
-      tags:
-        - Entity
-      summary: This API is used to delete entities. By triggering this API user can delete entities that are managed by his persona
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-        - name: entityId
-          in: query
-          description: provide valid entity here
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully deleted the entity
-        '401':
-          description: user unauthorized or dont have permission to delete the entity
-  /api/v1/persona:
+        "200":
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Customers'
+              examples:
+                New Customers Example:
+                  value: '<Results>
+  <DataSet>
+    <Table>
+      <CustomerID>12312313</CustomerID>
+    </Table>
+  </DataSet>
+</Results>'
+                    
+          description: Changed Customers
+      operationId: GetNewCustomers
+      summary: Get New Customers
+  /API/GetCustomerAccount:
+    summary: Get list of customer accounts
     post:
-      tags:
-        - Persona
-      summary: This API is used to create a new Persona .
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
       requestBody:
-        description: provide valid request body here
         content:
-          application/json:
+          application/xml:
             schema:
-              $ref: '#/components/schemas/AddPersona'
-        
+              $ref: '#/components/schemas/CustomerId'
       responses:
-        '200':
-          description: Success
-    get:
-      tags:
-        - Persona
-      summary: This API is used to fetch the list of persona present in Rego
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid bearer token here
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fetched persona list
-        '401':
-          description: user unauthorized or user dont have permission to view personas
-  /api/v1/privacyTerms/personId:
-    get:
-      tags:
-        - Persona
-      summary: This API is to fetch the privacy terms text from platform IDM service
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-        - name: personaId
-          in: query
-          description: provide valid persona Id here
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fetched privacy terms of the given persona
-        '401':
-          description: user unauthorized or user dont have permission to fetch privacy terms
-  /api/v1/seeddata/persona:
-    get:
-      tags:
-        - Persona
-      summary: This API is  to create Persona Seed data in Rego Backend so Platform Integration is sucessful
-      responses:
-        '200':
-          description: sucessfully created persona seed data
-  /api/v1/seeddata/entity:
-    get:
-      tags:
-        - Persona
-      summary: This API is used to created entity seed data . for platform IDM integration and RBAC management
-      responses:
-        '200':
-          description: sucessfully created entity details seed data
-  /api/v1/seeddata/rights:
-    get:
-      tags:
-        - Persona
-      summary: This API is used to created rights seed data . for platform IDM integration and RBAC management
-      responses:
-        '200':
-          description: sucessfully created rights details seed data
-  /api/v2/seeddata/rights:
-    get:
-      tags:
-        - Persona
-      summary: This API is version 2 used to created rights seed data . for platform IDM integration and RBAC management
-      responses:
-        '200':
-          description: sucessfully created rights details seed data
-  /api/v1/seeddata/assetType/organizationId/{organizationId}:
-    get:
-      tags:
-        - Persona
-      summary: This API is used t created asset type seed data for a organization
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-        - name: organizationId
-          in: path
-          description: provide valid organizationId here
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully created asset type details seed data
-  /api/v1/seeddata/emailTemplate/organizationId/{organizationId}:
-    get:
-      tags:
-        - Persona
-      summary: This API is used t created emailTemplate seed data for a organization
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-        - name: organizationId
-          in: path
-          description: provide valid organizationId here
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully created emailTemplate details seed data
-  /api/v1/rights/personaId/{personaId}:
-    put:
-      tags:
-        - Rights
-      summary: This API is used to update rights  for a persona for RBAC
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token here
-          schema:
-            type: string
-        - name: personaId
-          in: path
-          description: provide valid persona Id
-          required: true
-          schema:
-            type: string
+        "200":
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Accounts'
+              examples:
+                Customer Accounts Example:
+                  value: '<Results>
+  <DataSet>
+    <Table>
+      <CustomerID>12312313</CustomerID>
+      <CustomerStatus>Active</CustomerStatus>
+      <CustomerType>Agriculture</CustomerType>
+      <EmailAddress>dt2013@hotmail.com</EmailAddress>
+      <Address1>PO BOX442</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <PrimaryPhone>5072274738</PrimaryPhone>
+      <CustomerLastName>ROSALES</CustomerLastName>
+      <CustomerFirstName>DANIELLE</CustomerFirstName>
+    </Table>
+  </DataSet>
+</Results>'
+                   
+          description: Changed
+      operationId: GetCustomerAccounts
+      summary: Get Customer Accounts
+  /API/GetCustomerLocations:
+    summary: Get customer locations
+    post:
       requestBody:
-        description: provide valid Request body
         content:
-          application/json:
+          application/xml:
             schema:
-              $ref: '#/components/schemas/AddRights'
-         
+              $ref: '#/components/schemas/CustomerId'
       responses:
-        '200':
-          description: sucessfully updated rights for the given persona
-        '401':
-          description: user unauthorized or user dont have permission to update rights
-  /api/v1/rights/entity/{entityName}/operation/{operation}:
-    get:
-      tags:
-        - Rights
-      summary: This API is used to check right of the user for a particular entity and operation
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid JWT token
-          schema:
-            type: string
-        - name: entityName
-          in: path
-          description: provide valid entityName
-          required: true
-          schema:
-            type: string
-        - name: operation
-          in: path
-          description: provide valid operation operation
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fecthed the rights of persona for the operation and entity
-  /api/v1/rights:
-    get:
-      tags:
-        - Rights
-      summary: This APi is used to check right of the user
-      parameters:
-        - name: bearer
-          in: header
-          description: provide valid bearer token
-          schema:
-            type: string
-      responses:
-        '200':
-          description: sucessfully fetched right of the user
- 
+        "200":
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Locations'
+              examples:
+                Customer Locations Example:
+                  value:
+                    '<Results>
+  <DataSet>
+    <Table>
+      <Name>dsfsadsaasdd</Name>
+      <Address1>edasdas</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>dsfsdf</City> 
+      <State>dasdas</State>
+      <Zipcode>546546422</Zipcode>
+     <ContactPerson>dasda22</ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType></LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+    <Table>
+      <Name>Primary Locationnnnnnnnnnnnnnn</Name>
+      <Address1>500 INDIANA AVE22</Address1>
+      <Address2></Address2>
+      <Address3></Address3>
+      <City>ADRIAN</City>
+      <State>MN</State>
+      <Zipcode>56110</Zipcode>
+      <ContactPerson></ContactPerson>
+      <Inactive>false</Inactive>
+      <LocationType></LocationType>
+      <PhoneNumber>(507) 227-4738</PhoneNumber>
+    </Table>
+   
+  </DataSet>
+</Results>'
+          description: Changed
+      operationId: GetCustomerLocations
+      summary: Get Customer Locations
 components:
   schemas:
-    AddEntities:
+    CustomerId:
       type: object
       properties:
-        entityName:
+        CustomerID:
           type: string
-          nullable: true
-        entityType:
-          type: string
-          nullable: true
-        remarks:
-          type: string
-          nullable: true
-      additionalProperties: false
-    AddEntityInfo:
+          description: Customer Id
+          example: 12312313
+    Customers:
+      title: Root Type for custoemrs
+      description: The root of the customers type's schema.
       type: object
       properties:
-        entityName:
-          type: string
-          nullable: true
-        view:
-          type: boolean
-        add:
-          type: boolean
-        edit:
-          type: boolean
-        delete:
-          type: boolean
-      additionalProperties: false
-    AddPersona:
+        Results:
+          type: object
+          properties:
+            DataSet:
+              type: object
+              properties:
+                Table: 
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      CustomerID:
+                        type: string
+
+    Accounts:
+      title: Root Type for accounts
+      description: The root of the accounts type's schema.
       type: object
       properties:
-        orgTypeId:
-          type: string
-          nullable: true
-        personaId:
-          type: string
-          nullable: true
-        personaName:
-          type: string
-          nullable: true
-        personaType:
-          type: string
-          nullable: true
-        remarks:
-          type: string
-          nullable: true
-      additionalProperties: false
-    AddRights:
+        Results:
+          type: object
+          properties:
+            DataSet:
+              type: object
+              properties:
+                Table: 
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      CustomerID:
+                        type: string
+                      CustomerStatus:
+                        type: string
+                      CustomerType:
+                        type: string                  
+                      EmailAddress:
+                        type: string
+                      Address1:
+                        type: string                  
+                      Address2:
+                        type: string                  
+                      Address3:
+                        type: string                  
+                      City:
+                        type: string                  
+                      State:
+                        type: string                    
+                      Zipcode:
+                        type: string
+                      ContactPerson:
+                        type: string
+                      PrimaryPhone:
+                        type: string
+                      CustomerLastName:
+                        type: string
+                      CustomerFirstName:
+                        type: string
+        
+    Locations:
+      title: Root Type for locations
+      description: The root of the locations type's schema.
       type: object
       properties:
-        entities:
-          type: array
-          items:
-            $ref: '#/components/schemas/AddEntityInfo'
-          nullable: true
-      additionalProperties: false
+        Results:
+          type: object
+          properties: 
+            DataSet:
+              type: object
+              properties:
+                Table: 
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      Name:
+                        type: string
+                      Address1:
+                        type: string                  
+                      Address2:
+                        type: string                  
+                      Address3:
+                        type: string                  
+                      City:
+                        type: string                  
+                      State:
+                        type: string                    
+                      Zipcode:
+                        type: string
+                      ContactPerson:
+                        type: string
+                      Inactive:
+                        type: boolean
+                      LocationType:
+                        type: string                  
+                      PhoneNumber:
+                        type: string
+   
