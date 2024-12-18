@@ -23,10 +23,10 @@ paths:
                   value: '<Results>
   <DataSet>
     <Table>
-      <CustomerID>136479</CustomerID>
+      <CustomerID>136470</CustomerID>
     </Table>
     <Table>
-      <CustomerID>136479</CustomerID>
+      <CustomerID>136470</CustomerID>
     </Table>
   </DataSet>
 </Results>'
@@ -53,9 +53,9 @@ paths:
                   value: '<Results>
   <DataSet>
     <Table>
-      <CustomerID>136479</CustomerID>
+      <CustomerID>136470</CustomerID>
       <CustomerStatus>Active</CustomerStatus>
-      <CustomerType>Farm</CustomerType>
+      <CustomerType>Agriculture</CustomerType>
       <EmailAddress>achyuth@hotmail.com</EmailAddress>
       <Address1>136479 addresss</Address1>
       <Address2></Address2>
@@ -94,8 +94,8 @@ paths:
                     '<Results>
   <DataSet>
     <Table>
-      <Name>136479</Name>
-      <Address1>136479 address1</Address1>
+      <Name>136470</Name>
+      <Address1>136470 address1</Address1>
       <Address2>123</Address2>
       <Address3></Address3>
       <City>city136479</City> 
