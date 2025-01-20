@@ -1,0 +1,588 @@
+---
+openapi: 3.0.2
+info:
+  title: API RCC - 1.0
+  version: 1.0.0
+  description: API definition of RCC
+  contact:
+    name: RCC-asdasdad
+    url: https://asddasdasd
+    email: achyuth@mailinator.com
+paths:
+  /Interface/Customer/Get/Ids:
+    parameters:
+    - in: query
+      name: lastUpdatedSince
+      schema:
+        type: string
+      description: The number of items to skip before starting to collect the result set
+    summary: Get list of new customers
+    get:
+      responses: 
+        200:
+          content: 
+            application/json:
+              schema: 
+                type: "object"
+                properties: 
+                  CustomerBases: 
+                    type: "array"
+                    items: 
+                      type: "object"
+                      properties: 
+                        AccountNumber: 
+                          type: "number"
+                          description: ""
+                        CustomerId: 
+                          type: "string"
+                          description: ""
+                  Result: 
+                    type: "boolean"
+                    description: ""
+                  ErrorCode: 
+                    type: "string"
+                    description: ""
+                  ErrorMessage: 
+                    type: "string"
+                    description: ""
+      # responses:
+      #   "200":
+      #     content:
+      #       application/json:
+      #         schema:
+      #           $ref: '#/components/schemas/Customers'
+              examples:
+                New Customers Example:
+                  value: '{
+  "CustomerBases": [
+    {
+      "AccountNumber": 0,
+      "CustomerId": ""
+    }
+  ],
+  "Result": true,
+  "ErrorCode": null,
+  "ErrorMessage": null
+}'
+                    
+          description: Changed Customers
+      operationId: GetNewCustomers
+      summary: Get customer Ids
+  /Interface/Customer/GetList:
+    summary: Get list of customer accounts
+    parameters:
+    - in: query
+      name: filter
+      schema:
+        type: string
+      description: The number of items to skip before starting to collect the result set
+    get:
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties: 
+                  Customer: 
+                    type: "string"
+                    description: ""
+                  Customers: 
+                    type: "array"
+                    items: 
+                      type: "object"
+                      properties: 
+                        Id: 
+                          type: "string"
+                          description: ""
+                        CustomerId: 
+                          type: "string"
+                          description: ""
+                        BranchNumber: 
+                          type: "string"
+                          description: ""
+                        Name: 
+                          type: "string"
+                          description: ""
+                        Contacts: 
+                          type: "array"
+                          items: 
+                            type: "object"
+                            properties: 
+                              Title: 
+                                type: "string"
+                                description: ""
+                              FirstName: 
+                                type: "string"
+                                description: ""
+                              MiddleName: 
+                                type: "string"
+                                description: ""
+                              LastName: 
+                                type: "string"
+                                description: ""
+                              Suffix: 
+                                type: "string"
+                                description: ""
+                              PrimaryEmailAddr: 
+                                type: "string"
+                                description: ""
+                              Cc: 
+                                type: "string"
+                                description: ""
+                              Phone: 
+                                type: "string"
+                                description: ""
+                              PhoneExt: 
+                                type: "string"
+                                description: ""
+                              PhoneType: 
+                                type: "string"
+                                description: ""
+                              Fax: 
+                                type: "string"
+                                description: ""
+                        BillingAddress: 
+                          type: "object"
+                          properties: 
+                            Address1: 
+                              type: "string"
+                              description: ""
+                            Address2: 
+                              type: "string"
+                              description: ""
+                            Address3: 
+                              type: "string"
+                              description: ""
+                            Address4: 
+                              type: "string"
+                              description: ""
+                            Address5: 
+                              type: "string"
+                              description: ""
+                            City: 
+                              type: "string"
+                              description: ""
+                            State: 
+                              type: "string"
+                              description: ""
+                            PostalCode: 
+                              type: "string"
+                              description: ""
+                            Country: 
+                              type: "string"
+                              description: ""
+                            Note: 
+                              type: "string"
+                              description: ""
+                            Latitude: 
+                              type: "number"
+                              description: ""
+                            Longitude: 
+                              type: "number"
+                              description: ""
+                        Notes: 
+                          type: "string"
+                          description: ""
+                        CurrentBalance: 
+                          type: "number"
+                          description: ""
+                        CreditLimit: 
+                          type: "number"
+                          description: ""
+                        StartCode: 
+                          type: "string"
+                          description: ""
+                        TaxClass: 
+                          type: "string"
+                          description: ""
+                        TaxGroup: 
+                          type: "string"
+                          description: ""
+                        TaxLicenseNumber: 
+                          type: "string"
+                          description: ""
+                        IsActive: 
+                          type: "boolean"
+                          description: ""
+                        IsCommercial: 
+                          type: "boolean"
+                          description: ""
+                        RunCode: 
+                          type: "number"
+                          description: ""
+                        Locations: 
+                          type: "array"
+                          items: 
+                            type: "object"
+                            properties: 
+                              Id: 
+                                type: "string"
+                                description: ""
+                              LocationNumber: 
+                                type: "number"
+                                description: ""
+                              Name: 
+                                type: "string"
+                                description: ""
+                              DeliveryAddress: 
+                                type: "object"
+                                properties: 
+                                  Address1: 
+                                    type: "string"
+                                    description: ""
+                                  Address2: 
+                                    type: "string"
+                                    description: ""
+                                  Address3: 
+                                    type: "string"
+                                    description: ""
+                                  Address4: 
+                                    type: "string"
+                                    description: ""
+                                  Address5: 
+                                    type: "string"
+                                    description: ""
+                                  City: 
+                                    type: "string"
+                                    description: ""
+                                  State: 
+                                    type: "string"
+                                    description: ""
+                                  PostalCode: 
+                                    type: "string"
+                                    description: ""
+                                  Country: 
+                                    type: "string"
+                                    description: ""
+                                  Note: 
+                                    type: "string"
+                                    description: ""
+                                  Latitude: 
+                                    type: "number"
+                                    description: ""
+                                  Longitude: 
+                                    type: "number"
+                                    description: ""
+                              StartCode: 
+                                type: "string"
+                                description: ""
+                              TaxClass: 
+                                type: "string"
+                                description: ""
+                              TaxGroup: 
+                                type: "string"
+                                description: ""
+                              HeatCapacity: 
+                                type: "number"
+                                description: ""
+                        Contracts: 
+                          type: "string"
+                          description: ""
+                  Result: 
+                    type: "boolean"
+                    description: ""
+                  ErrorCode: 
+                    type: "string"
+                    description: ""
+                  ErrorMessage: 
+                    type: "string"
+                    description: ""
+
+              examples:
+                Customer Details Example:
+                  value: '{
+  "Customer": null,
+  "Customers": [
+    {
+      "Id": null,
+      "CustomerId": "MARSPE",
+      "BranchNumber": "A000",
+      "Name": "Marketing Specialties",
+      "Contacts": [
+        {
+          "Title": null,
+          "FirstName": "John",
+          "MiddleName": null,
+          "LastName": "Michaels",
+          "Suffix": null,
+          "PrimaryEmailAddr": "jmichaels@mar.com",
+          "Cc": null,
+          "Phone": "3202311211",
+          "PhoneExt": null,
+          "PhoneType": "Home",
+          "Fax": null
+        },
+        {
+          "Title": null,
+          "FirstName": "Mike",
+          "MiddleName": null,
+          "LastName": "Peterson",
+          "Suffix": null,
+          "PrimaryEmailAddr": "mpeterson@mar.com",
+          "Cc": null,
+          "Phone": "3202311212",
+          "PhoneExt": null,
+          "PhoneType": "Home",
+          "Fax": null
+        },
+        {
+          "Title": null,
+          "FirstName": "Jan",
+          "MiddleName": null,
+          "LastName": "Smith",
+          "Suffix": null,
+          "PrimaryEmailAddr": "jsmith@mar.com",
+          "Cc": null,
+          "Phone": "5003327897",
+          "PhoneExt": null,
+          "PhoneType": "Home",
+          "Fax": null
+        }
+      ],
+      "BillingAddress": {
+        "Address1": "81210 405th St",
+        "Address2": "",
+        "Address3": null,
+        "Address4": null,
+        "Address5": null,
+        "City": "Bird Island",
+        "State": "MN",
+        "PostalCode": "55310",
+        "Country": null,
+        "Note": null,
+        "Latitude": 0,
+        "Longitude": 0
+      },
+      "Notes": null,
+      "CurrentBalance": 0,
+      "CreditLimit": 4500,
+      "StartCode": null,
+      "TaxClass": null,
+      "TaxGroup": null,
+      "TaxLicenseNumber": null,
+      "IsActive": true,
+      "IsCommercial": false,
+      "RunCode": 0,
+      "Locations": [
+        {
+          "Id": null,
+          "LocationNumber": 1,
+          "Name": "Shop",
+          "DeliveryAddress": {
+            "Address1": "88889 405th St",
+            "Address2": "",
+            "Address3": null,
+            "Address4": null,
+            "Address5": null,
+            "City": "Cokato",
+            "State": "MN",
+            "PostalCode": "553210",
+            "Country": "",
+            "Note": null,
+            "Latitude": 0,
+            "Longitude": 0
+          },
+          "StartCode": null,
+          "TaxClass": null,
+          "TaxGroup": null,
+          "HeatCapacity": 0
+        },
+        {
+          "Id": null,
+          "LocationNumber": 2,
+          "Name": "Hogs",
+          "DeliveryAddress": {
+            "Address1": "81387 County Road 3",
+            "Address2": "",
+            "Address3": null,
+            "Address4": null,
+            "Address5": null,
+            "City": "Bird Island",
+            "State": "MN",
+            "PostalCode": "55310",
+            "Country": "",
+            "Note": null,
+            "Latitude": 0,
+            "Longitude": 0
+          },
+          "StartCode": null,
+          "TaxClass": null,
+          "TaxGroup": null,
+          "HeatCapacity": 0
+        },
+        {
+          "Id": null,
+          "LocationNumber": 3,
+          "Name": "Tdry",
+          "DeliveryAddress": {
+            "Address1": "40304 870th AVe",
+            "Address2": "",
+            "Address3": null,
+            "Address4": null,
+            "Address5": null,
+            "City": "Bird Island",
+            "State": "MN",
+            "PostalCode": "55310",
+            "Country": "",
+            "Note": null,
+            "Latitude": 0,
+            "Longitude": 0
+          },
+          "StartCode": null,
+          "TaxClass": null,
+          "TaxGroup": null,
+          "HeatCapacity": 0
+        },
+        {
+          "Id": null,
+          "LocationNumber": 4,
+          "Name": "Cndo",
+          "DeliveryAddress": {
+            "Address1": "211 S 10th St",
+            "Address2": "",
+            "Address3": null,
+            "Address4": null,
+            "Address5": null,
+            "City": "Bird Island",
+            "State": "MN",
+            "PostalCode": "55310",
+            "Country": "",
+            "Note": null,
+            "Latitude": 0,
+            "Longitude": 0
+          },
+          "StartCode": null,
+          "TaxClass": null,
+          "TaxGroup": null,
+          "HeatCapacity": 0
+        },
+        {
+          "Id": null,
+          "LocationNumber": 5,
+          "Name": "Pool",
+          "DeliveryAddress": {
+            "Address1": "88889 405th St",
+            "Address2": "",
+            "Address3": null,
+            "Address4": null,
+            "Address5": null,
+            "City": "Bird Island",
+            "State": "MN",
+            "PostalCode": "55310",
+            "Country": "",
+            "Note": null,
+            "Latitude": 0,
+            "Longitude": 0
+          },
+          "StartCode": null,
+          "TaxClass": null,
+          "TaxGroup": null,
+          "HeatCapacity": 0
+        },
+        {
+          "Id": null,
+          "LocationNumber": 6,
+          "Name": "Shed",
+          "DeliveryAddress": {
+            "Address1": "80301 County Road 3",
+            "Address2": "",
+            "Address3": null,
+            "Address4": null,
+            "Address5": null,
+            "City": "Hector",
+            "State": "MN",
+            "PostalCode": "55342",
+            "Country": "",
+            "Note": null,
+            "Latitude": 0,
+            "Longitude": 0
+          },
+          "StartCode": null,
+          "TaxClass": null,
+          "TaxGroup": null,
+          "HeatCapacity": 0
+        },
+        {
+          "Id": null,
+          "LocationNumber": 7,
+          "Name": "Inds",
+          "DeliveryAddress": {
+            "Address1": "80301 County Road 3",
+            "Address2": "",
+            "Address3": null,
+            "Address4": null,
+            "Address5": null,
+            "City": "Hector",
+            "State": "MN",
+            "PostalCode": "55342",
+            "Country": "",
+            "Note": null,
+            "Latitude": 0,
+            "Longitude": 0
+          },
+          "StartCode": null,
+          "TaxClass": null,
+          "TaxGroup": null,
+          "HeatCapacity": 0
+        },
+        {
+          "Id": null,
+          "LocationNumber": 8,
+          "Name": "Hogs",
+          "DeliveryAddress": {
+            "Address1": "",
+            "Address2": "",
+            "Address3": null,
+            "Address4": null,
+            "Address5": null,
+            "City": "",
+            "State": "",
+            "PostalCode": "",
+            "Country": "",
+            "Note": null,
+            "Latitude": 0,
+            "Longitude": 0
+          },
+          "StartCode": null,
+          "TaxClass": null,
+          "TaxGroup": null,
+          "HeatCapacity": 0
+        },
+        {
+          "Id": null,
+          "LocationNumber": 99,
+          "Name": "",
+          "DeliveryAddress": {
+            "Address1": "17600 New Hope Street",
+            "Address2": "",
+            "Address3": null,
+            "Address4": null,
+            "Address5": null,
+            "City": "Fountain Valley",
+            "State": "CA",
+            "PostalCode": "92708",
+            "Country": "",
+            "Note": null,
+            "Latitude": 0,
+            "Longitude": 0
+          },
+          "StartCode": null,
+          "TaxClass": null,
+          "TaxGroup": null,
+          "HeatCapacity": 0
+        }
+      ],
+      "Contracts": null
+    }
+  ],
+  "Result": true,
+  "ErrorCode": null,
+  "ErrorMessage": null
+}'
+          description: Changed Customer Details
+      operationId: Get Customer Details
+      summary: Get Customer Details
+         
+    
+ 
