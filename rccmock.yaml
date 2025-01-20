@@ -583,6 +583,64 @@ paths:
           description: Changed Customer Details
       operationId: Get Customer Details
       summary: Get Customer Details
+      
+  /Token:
+    summary: Get access token
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: achyuth
+                password:
+                  type: string
+      responses:
+        
+        200:
+          content: 
+            application/json:
+              schema: 
+                type: "object"
+                properties: 
+                  access_token: 
+                    type: "string"
+                    description: ""
+                  token_type: 
+                    type: "string"
+                    description: ""
+                  expires_in: 
+                    type: "number"
+                    description: ""
+                  userName: 
+                    type: "string"
+                    description: ""
+                  .issued: 
+                    type: "string"
+                    description: ""
+                  .expires: 
+                    type: "string"
+                    description: ""
+    
+              examples:
+                New Customers Example:
+                  value: '{
+    "access_token": "j8Cu3D-htqLhAgj_64OO2Wn-zk5WyPa29DGTZDYwDNVhS7zlammWq-2j_q7f08wUXrUHoImdWY7qSqaOszwhWVTVswZiCMj7IXa8vSPXM80e14AGBavEPctg-lVBxMWYnhNjHbe3TcCPsCvKtKdSBT8VFEIfhp7Nd5ZrsAWCLwoP10HmCd0OWbqq62IxJ1tmTQqRdU6U3PopLpmv86yVPkdhfNyMIHC5YxmVkO3tdxGzkWAzlQ0OSs9-C8YU2K3nwoq0krgMCxVC_KMl8nWou2x0xEVSR7i2tcXiAL6jkErkQfc7xzhGiorQ06weaSSK9XN_83QcZPj7oCkzhi7Bd-whjulHHq4wAXP52Qp24hY2r_QHThD_otge94Tr1cSPmrFsVEIid0HelWiwO-X_tMyDWIzQsNdDF7ZHMnOUd6X1c_C4BSebn7a9gBcKEH0xPPF2lYOcjz5bIlth1wPc32nB9CentJsIYm3fAGWx5m7BT_6H2xvAEQo2QuTPq20eL54TcwxUJV29Ff4eAXqvGWeG-4teoQ0NFiuEORpUS3HliRKtmUoLzDeI_-UWQo8cZs8XpknwnfAXaxajYrFzfbaVASAL_qbqITcA5AKN3LKiFG8Ik2FTINdhrCUALUc6",
+    "token_type": "bearer",
+    "expires_in": 1209599,
+    "userName": "demo",
+    ".issued": "Mon, 20 Jan 2025 14:21:30 GMT",
+    ".expires": "Mon, 03 Feb 2025 14:21:30 GMT"
+}
+'
+                    
+          description: Changed Customers
+      operationId: Get Token
+      summary: Get customer Ids            
+      
          
     
  
