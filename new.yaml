@@ -53,7 +53,7 @@ paths:
                   value: '<Results>
   <DataSet>
     <Table>
-      <CustomerID>{{requests.body["CustomerID"]}}</CustomerID>
+      <CustomerID>{{requests.data["CustomerID"]}}</CustomerID>
       <CustomerStatus>Active</CustomerStatus>
       <CustomerType>Agriculture</CustomerType>
       <EmailAddress>ayadav11@yopmail.com</EmailAddress>
