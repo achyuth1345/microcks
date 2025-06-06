@@ -219,6 +219,7 @@ paths:
      <ContactPerson>dasda22</ContactPerson>
       <Inactive>false</Inactive>
       <LocationType></LocationType>
+      <bLocationID>24324</bLocationID>
       <PhoneNumber>(507) 227-4738</PhoneNumber>
     </Table>
     <Table>
@@ -232,6 +233,7 @@ paths:
       <ContactPerson></ContactPerson>
       <Inactive>false</Inactive>
       <LocationType></LocationType>
+      <bLocationID>45667</bLocationID>
       <PhoneNumber>(507) 227-4738</PhoneNumber>
     </Table>
    
@@ -460,4 +462,4 @@ components:
       <PhoneNumber>(507) 227-4738</PhoneNumber>
     </Table>
   </DataSet>
-</Results>'      
+</Results>'
